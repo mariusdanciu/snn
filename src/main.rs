@@ -13,10 +13,13 @@ fn main() {
         .expect("Time went backwards");
     let res = IdxFile.load_data(String::from("./train-images-idx3-ubyte"));
     let end = SystemTime::now().duration_since(UNIX_EPOCH)
-        .expect("Time went backwards");;
+        .expect("Time went backwards");
+
+
 
     println!("Data read in {} ms", (end - start).as_millis());
     let img = res.unwrap();
 
+    println!("Shapes {:?}", img.shape()[1]);
     println!("Res = {:3?}", img.slice(s![60..61, 0..]).into_shape((28, 28)));
 }
