@@ -22,3 +22,18 @@ impl MLOps {
         - (y * y_hat.ln() + (1. - y)*(1. - y_hat).ln())
     }
 }
+
+pub enum ActivationType {
+    sigmoid,
+    relu,
+    soft_max
+}
+
+pub struct Layer {
+    pub num_activations: i32,
+    pub activation_type: ActivationType
+}
+
+pub struct NeuralNetwork {
+    pub layers: Vec<Layer>
+}

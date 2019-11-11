@@ -2,7 +2,7 @@
 use ndarray::{arr2, Array1, Array2};
 use rand::Rng;
 
-use crate::neunet::definitions::MLOps;
+use crate::neunet::definitions::{MLOps, NeuralNetwork};
 
 trait Optimizer {
     fn optimize(&self,
@@ -13,12 +13,13 @@ trait Optimizer {
 struct StochasticGradientDescent {
     pub learning_rate: f64, // 0.0001
     pub stop_cost_quota: f64, // 10 ^ -4
+    pub network: NeuralNetwork
 }
 
 impl Optimizer for StochasticGradientDescent {
+
     ///
     ///
-    /// learning_rate = 0.001
     ///
     fn optimize(&self,
                 data: &Array2<f64>,
