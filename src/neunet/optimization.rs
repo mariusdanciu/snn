@@ -7,18 +7,22 @@ use crate::neunet::definitions::MLOps;
 trait Optimizer {
     fn optimize(&self,
                 data: &Array2<f64>,
-                labels: &Array1<f64>,
-                learning_rate: f64) -> ();
+                labels: &Array1<f64>) -> ();
 }
 
-struct StochasticGradientDescent;
-
+struct StochasticGradientDescent {
+    pub learning_rate: f64, // 0.0001
+    pub stop_cost_quota: f64, // 10 ^ -4
+}
 
 impl Optimizer for StochasticGradientDescent {
+    ///
+    ///
+    /// learning_rate = 0.001
+    ///
     fn optimize(&self,
                 data: &Array2<f64>,
-                y: &Array1<f64>,
-                learning_rate: f64) -> () {
+                y: &Array1<f64>) -> () {
         let mut r = rand::thread_rng();
         let shape = data.shape();
 
@@ -32,7 +36,7 @@ impl Optimizer for StochasticGradientDescent {
         let mut db = 0.;
         let mut cost = 0.;
 
-        let converged = false;
+        let mut converged = false;
 
         let mut iteration = 0;
         while !converged {
@@ -56,19 +60,22 @@ impl Optimizer for StochasticGradientDescent {
                 db += dz_i;
             }
 
-            println!("Loss {}", cost);
+            println!("Cost {}", cost);
+
             for j in 0..num_features {
                 dw[j] /= num_examples as f64;
-                w[j] -= learning_rate * dw[j];
+                w[j] -= self.learning_rate * dw[j];
             }
 
             db /= num_examples as f64;
 
             cost /= num_examples as f64;
 
-            b -= learning_rate * db;
+            b -= self.learning_rate * db;
 
             iteration += 1;
+
+            converged = cost < self.stop_cost_quota;
         }
 
         unimplemented!()
