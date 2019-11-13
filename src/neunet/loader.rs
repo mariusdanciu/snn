@@ -1,6 +1,6 @@
-use ndarray::prelude::*;
+use nalgebra::*;
 use std::io::*;
 
 pub trait DataLoader {
-    fn load_data(self, path: String) -> Result<Array2<u8>>;
+    fn load_data(self, path: String) -> Result<DMatrix<u8>>;
 }

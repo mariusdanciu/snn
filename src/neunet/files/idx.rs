@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::*;
 
-use ndarray::*;
+use nalgebra::*;
 
 use crate::neunet::loader::DataLoader;
 use crate::neunet::utils::binary::BinaryOps;
@@ -9,7 +9,7 @@ use crate::neunet::utils::binary::BinaryOps;
 pub struct IdxFile;
 
 impl DataLoader for IdxFile {
-    fn load_data(self, path: String) -> Result<Array2<u8>> {
+    fn load_data(self, path: String) -> Result<DMatrix<u8>> {
         println!("Path {}", path);
         let mut buf: [u8; 8] = [0; 8];
 
@@ -39,7 +39,7 @@ impl DataLoader for IdxFile {
         let read_bytes = reader.read_to_end(&mut out)?;
 
         println!("read_bytes {}", read_bytes);
-        let r = Array::from_shape_vec((num, img_size), out);
-        Ok(r.unwrap())
+        let r = DMatrix::from_vec(img_size, num, out);
+        Ok(r)
     }
 }
