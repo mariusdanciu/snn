@@ -27,17 +27,19 @@ fn main() {
 
     let start = SystemTime::now().duration_since(UNIX_EPOCH)
         .expect("Time went backwards");
-    let res = IdxFile.load_data(String::from("./train-images-idx3-ubyte"));
+    let res = IdxFile.load_data(String::from("./train-images-idx3-ubyte"), String::from("./train-labels-idx1-ubyte"));
     let end = SystemTime::now().duration_since(UNIX_EPOCH)
         .expect("Time went backwards");
 
 
     println!("Data read in {} ms", (end - start).as_millis());
-    let img = res.unwrap();
+    let (img, labels) = res.unwrap();
 
     println!("Shapes {:?}", img.shape());
     let r = img.column(30);
+    let label = labels[30];
 
     println!("Img {}", DMatrix::from_row_slice(28, 28, r.as_slice()));
+    println!("Label {}", label);
 
 }
