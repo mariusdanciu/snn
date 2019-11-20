@@ -51,7 +51,7 @@ impl IdxFile {
 
         let num = IdxFile::read_head(&mut data_reader).unwrap() as usize;
 
-        println!("Num images: {}", num);
+        println!("Num labels: {}", num);
 
         let mut out: Vec<u8> = vec![0; 0];
 
