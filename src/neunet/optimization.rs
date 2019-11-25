@@ -1,6 +1,6 @@
 use nalgebra::*;
 
-use crate::neunet::definitions::{MLOps, NeuralNetwork};
+use crate::neunet::definitions::{ActivationType, MLOps, NeuralNetwork};
 
 trait Optimizer {
     fn optimize(&self,
@@ -16,6 +16,42 @@ struct StochasticGradientDescent {
     pub network: NeuralNetwork,
 }
 
+trait ForwardProp {
+    fn forward_prop(&self, inputs: DVector<f64>) -> DVector<f64>;
+}
+
+struct BackPropOut {
+    weights: DVector<f64>,
+    intercepts: DVector<f64>
+}
+
+trait BackProp {
+    fn back_prop(&self, inputs: DVector<f64>) -> BackPropOut;
+}
+
+impl ForwardProp for NeuralNetwork {
+    fn forward_prop(&self, inputs: DVector<f64>) -> DVector<f64> {
+        let mut current = inputs;
+
+        for l in &self.layers {
+            current = &l.weights * current + &l.intercepts;
+            current = current.map(|e| MLOps.sigmoid(e));
+        }
+
+        current
+    }
+}
+
+impl BackProp for NeuralNetwork {
+    fn back_prop(&self, inputs: DVector<f64>) -> BackPropOut {
+
+        let mut current = inputs;
+
+        for l in &self.layers {
+        }
+        unimplemented!()
+    }
+}
 
 impl Optimizer for StochasticGradientDescent {
     ///
@@ -24,10 +60,13 @@ impl Optimizer for StochasticGradientDescent {
     fn optimize(&self,
                 data: &DMatrix<f64>,
                 y: &DVector<f64>) -> () {
-        fn forward_prop(features: &DVectorSlice<f64>, w: &DVector<f64>, b: f64) -> f64 {
+        fn forward_prop(features: &DVectorSlice<f64>, w: &DVector<f64>, b: f64, activation_type: ActivationType) -> f64 {
             let z_i = MLOps.hypothesis(&w, &features, b);
 
-            MLOps.sigmoid(z_i)
+            match activation_type {
+                ActivationType::sigmoid => MLOps.sigmoid(z_i),
+                _ => MLOps.sigmoid(z_i)
+            }
         }
 
         fn back_prop(y_hat: f64,
@@ -66,7 +105,7 @@ impl Optimizer for StochasticGradientDescent {
             for i in 0..num_examples {
                 let x_i = data.column(i);
 
-                let y_hat_i = forward_prop(&x_i, &w, b);
+                let y_hat_i = forward_prop(&x_i, &w, b, ActivationType::sigmoid);
 
                 cost += MLOps.loss_from_pred(y[i], y_hat_i);
 

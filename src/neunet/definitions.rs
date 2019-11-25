@@ -10,7 +10,50 @@ impl MLOps {
     }
 
     pub fn sigmoid(&self, z: f64) -> f64 {
-        1. / (1. + EPSILON.powf(-z))
+        1.0_f64 / (1.0_f64 + (-z).exp())
+    }
+
+    pub fn sigmoid_derivative(&self, z: f64) -> f64 {
+        let s = self.sigmoid(z);
+        s * (1.0_f64 - s)
+    }
+
+    pub fn relu(&self, z: f64) -> f64 {
+        z.max(0.0_f64)
+    }
+
+    pub fn relu_derivative(&self, z: f64) -> f64 {
+        if z >= 0.0_f64 {
+            1.0_f64
+        } else {
+            0.0_f64
+        }
+    }
+
+    pub fn tanh(&self, z: f64) -> f64 {
+        z.tanh()
+    }
+
+    pub fn tanh_derivative(&self, z: f64) -> f64 {
+        1.0_f64 - z.tanh().powi(2)
+    }
+
+    pub fn soft_max(&self, v: DVector<f64>) -> DVector<f64> {
+        let mut sum = 0.0_f64;
+        for e in v.iter() {
+            sum += e.exp();
+        }
+
+        v / sum
+    }
+
+    pub fn soft_max_derivative(&self, v: DVector<f64>) -> DVector<f64> {
+        let mut sum = 0.0_f64;
+        for e in v.iter() {
+            sum += e.exp();
+        }
+
+        v.map(|e| e * (sum - e) / sum.powi(2))
     }
 
     pub fn loss(&self, y: f64, w: &DVector<f64>, x: &DVectorSlice<f64>, b: f64) -> f64 {

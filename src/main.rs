@@ -6,6 +6,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use nalgebra::*;
 use rand::{Rng, SeedableRng};
 
+use crate::neunet::definitions::MLOps;
 use crate::neunet::files::idx::IdxFile;
 use crate::neunet::loader::DataLoader;
 
@@ -39,7 +40,21 @@ fn main() {
     let r = img.column(30);
     let label = labels[30];
 
+
     println!("Img {}", DMatrix::from_row_slice(28, 28, r.as_slice()));
     println!("Label {}", label);
 
+
+    let b = DVector::from_vec(vec![1, 2]);
+    let x = DVector::from_vec(vec![1, 2, 3]);
+    let w = DMatrix::from_vec(2, 3, vec![1, 2, 3, 4, 5, 6]);
+    println!("w {}", w);
+    println!("x {}", x);
+    println!("b {}", b);
+
+    use std::f64::EPSILON;
+
+    println!("z {:.5}", (w * x + b).map(|e| {
+        MLOps.sigmoid((e as f64))
+    }));
 }
