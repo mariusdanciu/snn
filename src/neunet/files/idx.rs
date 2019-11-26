@@ -46,7 +46,7 @@ impl IdxFile {
 
     fn read_labels(labels_path: String) -> Result<DVector<u8>> {
         let f = File::open(labels_path)?;
-        let mut buf: [u8; 8] = [0; 8];
+        let  buf: [u8; 8] = [0; 8];
         let mut data_reader = BufReader::new(f);
 
         let num = IdxFile::read_head(&mut data_reader).unwrap() as usize;

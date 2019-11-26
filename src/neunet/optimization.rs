@@ -17,12 +17,12 @@ struct StochasticGradientDescent {
 }
 
 trait ForwardProp {
-    fn forward_prop(&self, inputs: DVector<f64>) -> DVector<f64>;
+    fn forward_prop(&self, inputs: &DVector<f64>) -> DVector<f64>;
 }
 
 struct BackPropOut {
     weights: DVector<f64>,
-    intercepts: DVector<f64>
+    intercepts: DVector<f64>,
 }
 
 trait BackProp {
@@ -30,24 +30,36 @@ trait BackProp {
 }
 
 impl ForwardProp for NeuralNetwork {
-    fn forward_prop(&self, inputs: DVector<f64>) -> DVector<f64> {
+    fn forward_prop(&self, inputs: &DVector<f64>) -> DVector<f64> {
         let mut current = inputs;
+        let mut k: DVector<f64>;
+
 
         for l in &self.layers {
-            current = &l.weights * current + &l.intercepts;
-            current = current.map(|e| MLOps.sigmoid(e));
-        }
+            let t = &(&l.weights * current + &l.intercepts);
+            match &l.activation_type {
+                sigmoid =>
+                    k = MLOps.sigmoid_vec(t),
+                relu =>
+                    k = MLOps.relu_vec(t),
+                soft_max =>
+                    k = MLOps.soft_max(t)
+            };
+            current = &k;
 
-        current
+        };
+
+        current.clone()
     }
 }
 
 impl BackProp for NeuralNetwork {
     fn back_prop(&self, inputs: DVector<f64>) -> BackPropOut {
+        let len = self.layers.len();
+        let mut current = &self.layers[len - 1];
+        for k in (0..len).rev() {
+             let l = &self.layers[k];
 
-        let mut current = inputs;
-
-        for l in &self.layers {
         }
         unimplemented!()
     }

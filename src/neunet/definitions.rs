@@ -9,6 +9,10 @@ impl MLOps {
         w.dot(x) + b
     }
 
+    pub fn sigmoid_vec(&self, z: &DVector<f64>) -> DVector<f64> {
+        z.map(|e| 1.0_f64 / (1.0_f64 + (-e).exp()))
+    }
+
     pub fn sigmoid(&self, z: f64) -> f64 {
         1.0_f64 / (1.0_f64 + (-z).exp())
     }
@@ -18,6 +22,9 @@ impl MLOps {
         s * (1.0_f64 - s)
     }
 
+    pub fn relu_vec(&self, z: &DVector<f64>) -> DVector<f64> {
+        z.map(|e| e.max(0.0_f64))
+    }
     pub fn relu(&self, z: f64) -> f64 {
         z.max(0.0_f64)
     }
@@ -38,7 +45,7 @@ impl MLOps {
         1.0_f64 - z.tanh().powi(2)
     }
 
-    pub fn soft_max(&self, v: DVector<f64>) -> DVector<f64> {
+    pub fn soft_max(&self, v: &DVector<f64>) -> DVector<f64> {
         let mut sum = 0.0_f64;
         for e in v.iter() {
             sum += e.exp();
@@ -47,13 +54,10 @@ impl MLOps {
         v / sum
     }
 
-    pub fn soft_max_derivative(&self, v: DVector<f64>) -> DVector<f64> {
-        let mut sum = 0.0_f64;
-        for e in v.iter() {
-            sum += e.exp();
-        }
+    pub fn soft_max_derivative(&self, v: &DVector<f64>) -> DVector<f64> {
+        let sm = self.soft_max(&v);
 
-        v.map(|e| e * (sum - e) / sum.powi(2))
+        sm.map(|e| e * (1. - e))
     }
 
     pub fn loss(&self, y: f64, w: &DVector<f64>, x: &DVectorSlice<f64>, b: f64) -> f64 {

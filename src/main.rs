@@ -52,9 +52,8 @@ fn main() {
     println!("x {}", x);
     println!("b {}", b);
 
-    use std::f64::EPSILON;
-
     println!("z {:.5}", (w * x + b).map(|e| {
-        MLOps.sigmoid((e as f64))
+        MLOps.sigmoid(e as f64)
     }));
+
 }
