@@ -67,7 +67,7 @@ impl BackProp for NeuralNetwork {
                 soft_max => MLOps::soft_max_derivative(&self.layers[k].outs),
             };
 
-            dJ = &self.layers[k].weights * dJ * t;
+            dJ = (&self.layers[k].weights * dJ).component_mul(&t);
 
             current = &self.layers[k];
         }
