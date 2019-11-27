@@ -32,20 +32,19 @@ trait BackProp {
 impl ForwardProp for NeuralNetwork {
     fn forward_prop(&mut self, inputs: &DVector<f64>) -> DVector<f64> {
         let mut current = inputs;
-        let mut k: DVector<f64>;
-
 
         for mut l in &mut self.layers {
             let t = &(&l.weights * current + &l.intercepts);
-            match &l.activation_type {
+            l.outs = match &l.activation_type {
                 sigmoid =>
-                    k = MLOps.sigmoid_vec(t),
+                    MLOps::vectorize(t, MLOps::sigmoid),
                 relu =>
-                    k = MLOps.relu_vec(t),
+                    MLOps::vectorize(t, MLOps::relu),
+                tanh =>
+                    MLOps::vectorize(t, MLOps::tanh),
                 soft_max =>
-                    k = MLOps.soft_max(t)
+                    MLOps::soft_max(t)
             };
-            l.outs = k;
             current = &l.outs;
         };
 
@@ -62,13 +61,13 @@ impl BackProp for NeuralNetwork {
 
         for k in (0..len - 1).rev() {
             let t = match &self.layers[k].activation_type {
-                relu => MLOps.relu_vec_derivative(&self.layers[k].outs),
-                sigmoid => MLOps.sigmoid_vec_derivative(&self.layers[k].outs),
-                tanh => MLOps.tanh_vec_derivative(&self.layers[k].outs),
-                soft_max => MLOps.soft_max_derivative(&self.layers[k].outs),
+                relu => MLOps::vectorize(&self.layers[k].outs, MLOps::relu_derivative),
+                sigmoid => MLOps::vectorize(&self.layers[k].outs, MLOps::sigmoid_derivative),
+                tanh => MLOps::vectorize(&self.layers[k].outs, MLOps::tanh_derivative),
+                soft_max => MLOps::soft_max_derivative(&self.layers[k].outs),
             };
 
-            dJ = &self.layers[k].weights*dJ * t;
+            dJ = &self.layers[k].weights * dJ * t;
 
             current = &self.layers[k];
         }
@@ -84,11 +83,11 @@ impl Optimizer for StochasticGradientDescent {
                 data: &DMatrix<f64>,
                 y: &DVector<f64>) -> () {
         fn forward_prop(features: &DVectorSlice<f64>, w: &DVector<f64>, b: f64, activation_type: ActivationType) -> f64 {
-            let z_i = MLOps.hypothesis(&w, &features, b);
+            let z_i = MLOps::hypothesis(&w, &features, b);
 
             match activation_type {
-                ActivationType::sigmoid => MLOps.sigmoid(z_i),
-                _ => MLOps.sigmoid(z_i)
+                ActivationType::sigmoid => MLOps::sigmoid(z_i),
+                _ => MLOps::sigmoid(z_i)
             }
         }
 
@@ -130,7 +129,7 @@ impl Optimizer for StochasticGradientDescent {
 
                 let y_hat_i = forward_prop(&x_i, &w, b, ActivationType::sigmoid);
 
-                cost += MLOps.loss_from_pred(y[i], y_hat_i);
+                cost += MLOps::loss_from_pred(y[i], y_hat_i);
 
                 back_prop(y_hat_i, y[i], &x_i, &mut dw, &mut db);
             }

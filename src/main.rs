@@ -53,7 +53,7 @@ fn main() {
     println!("b {}", b);
 
     println!("z {:.5}", (w * x + b).map(|e| {
-        MLOps.sigmoid(e as f64)
+        MLOps::sigmoid(e as f64)
     }));
 
 }

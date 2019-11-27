@@ -5,55 +5,42 @@ use nalgebra::{DMatrix, DVector, DVectorSlice};
 pub struct MLOps;
 
 impl MLOps {
-    pub fn hypothesis(&self, w: &DVector<f64>, x: &DVectorSlice<f64>, b: f64) -> f64 {
+    pub fn hypothesis(w: &DVector<f64>, x: &DVectorSlice<f64>, b: f64) -> f64 {
         w.dot(x) + b
     }
 
-    pub fn sigmoid_vec(&self, z: &DVector<f64>) -> DVector<f64> {
-        z.map(|e| 1.0_f64 / (1.0_f64 + (-e).exp()))
+    pub fn vectorize(v: &DVector<f64>, f: fn(f64) -> f64) -> DVector<f64> {
+        v.map(|e| f(e))
     }
 
-    pub fn sigmoid(&self, z: f64) -> f64 {
+    pub fn sigmoid(z: f64) -> f64 {
         1.0_f64 / (1.0_f64 + (-z).exp())
     }
 
-    pub fn sigmoid_derivative(&self, z: f64) -> f64 {
-        let s = self.sigmoid(z);
+    pub fn sigmoid_derivative(z: f64) -> f64 {
+        let s = MLOps::sigmoid(z);
         s * (1.0_f64 - s)
     }
-    pub fn sigmoid_vec_derivative(&self, z: &DVector<f64>) -> DVector<f64> {
-        z.map(|e| self.sigmoid_derivative(e))
-    }
 
-
-    pub fn relu_vec(&self, z: &DVector<f64>) -> DVector<f64> {
-        z.map(|e| e.max(0.0_f64))
-    }
-    pub fn relu(&self, z: f64) -> f64 {
+    pub fn relu(z: f64) -> f64 {
         z.max(0.0_f64)
     }
-    pub fn relu_derivative(&self, z: f64) -> f64 {
+    pub fn relu_derivative(z: f64) -> f64 {
         if z >= 0.0_f64 {
             1.0_f64
         } else {
             0.0_f64
         }
     }
-    pub fn relu_vec_derivative(&self, z: &DVector<f64>) -> DVector<f64> {
-        z.map(|e| self.relu_derivative(e))
-    }
 
-    pub fn tanh(&self, z: f64) -> f64 {
+    pub fn tanh(z: f64) -> f64 {
         z.tanh()
     }
-    pub fn tanh_derivative(&self, z: f64) -> f64 {
+    pub fn tanh_derivative(z: f64) -> f64 {
         1.0_f64 - z.tanh().powi(2)
     }
-    pub fn tanh_vec_derivative(&self, z: &DVector<f64>) -> DVector<f64> {
-        z.map(|e| self.tanh_derivative(e))
-    }
 
-    pub fn soft_max(&self, v: &DVector<f64>) -> DVector<f64> {
+    pub fn soft_max(v: &DVector<f64>) -> DVector<f64> {
         let mut sum = 0.0_f64;
         for e in v.iter() {
             sum += e.exp();
@@ -62,18 +49,18 @@ impl MLOps {
         v / sum
     }
 
-    pub fn soft_max_derivative(&self, v: &DVector<f64>) -> DVector<f64> {
-        let sm = self.soft_max(&v);
+    pub fn soft_max_derivative(v: &DVector<f64>) -> DVector<f64> {
+        let sm = MLOps::soft_max(&v);
 
         sm.map(|e| e * (1. - e))
     }
 
-    pub fn loss(&self, y: f64, w: &DVector<f64>, x: &DVectorSlice<f64>, b: f64) -> f64 {
-        let y_hat = self.sigmoid(self.hypothesis(w, x, b));
+    pub fn loss(y: f64, w: &DVector<f64>, x: &DVectorSlice<f64>, b: f64) -> f64 {
+        let y_hat = MLOps::sigmoid(MLOps::hypothesis(w, x, b));
         -(y * y_hat.ln() + (1. - y) * (1. - y_hat).ln())
     }
 
-    pub fn loss_from_pred(&self, y: f64, y_hat: f64) -> f64 {
+    pub fn loss_from_pred(y: f64, y_hat: f64) -> f64 {
         -(y * y_hat.ln() + (1. - y) * (1. - y_hat).ln())
     }
 }
