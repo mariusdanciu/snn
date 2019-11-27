@@ -17,7 +17,7 @@ struct StochasticGradientDescent {
 }
 
 trait ForwardProp {
-    fn forward_prop(&self, inputs: &DVector<f64>) -> DVector<f64>;
+    fn forward_prop(&mut self, inputs: &DVector<f64>) -> DVector<f64>;
 }
 
 struct BackPropOut {
@@ -26,16 +26,16 @@ struct BackPropOut {
 }
 
 trait BackProp {
-    fn back_prop(&self, inputs: DVector<f64>) -> BackPropOut;
+    fn back_prop(&mut self, inputs: DVector<f64>, labels: DVector<f64>) -> BackPropOut;
 }
 
 impl ForwardProp for NeuralNetwork {
-    fn forward_prop(&self, inputs: &DVector<f64>) -> DVector<f64> {
+    fn forward_prop(&mut self, inputs: &DVector<f64>) -> DVector<f64> {
         let mut current = inputs;
         let mut k: DVector<f64>;
 
 
-        for l in &self.layers {
+        for mut l in &mut self.layers {
             let t = &(&l.weights * current + &l.intercepts);
             match &l.activation_type {
                 sigmoid =>
@@ -45,8 +45,8 @@ impl ForwardProp for NeuralNetwork {
                 soft_max =>
                     k = MLOps.soft_max(t)
             };
-            current = &k;
-
+            l.outs = k;
+            current = &l.outs;
         };
 
         current.clone()
@@ -54,12 +54,23 @@ impl ForwardProp for NeuralNetwork {
 }
 
 impl BackProp for NeuralNetwork {
-    fn back_prop(&self, inputs: DVector<f64>) -> BackPropOut {
+    fn back_prop(&mut self, inputs: DVector<f64>, labels: DVector<f64>) -> BackPropOut {
         let len = self.layers.len();
         let mut current = &self.layers[len - 1];
-        for k in (0..len).rev() {
-             let l = &self.layers[k];
 
+        let mut dJ = inputs - labels;
+
+        for k in (0..len - 1).rev() {
+            let t = match &self.layers[k].activation_type {
+                relu => MLOps.relu_vec_derivative(&self.layers[k].outs),
+                sigmoid => MLOps.sigmoid_vec_derivative(&self.layers[k].outs),
+                tanh => MLOps.tanh_vec_derivative(&self.layers[k].outs),
+                soft_max => MLOps.soft_max_derivative(&self.layers[k].outs),
+            };
+
+            dJ = &self.layers[k].weights*dJ * t;
+
+            current = &self.layers[k];
         }
         unimplemented!()
     }

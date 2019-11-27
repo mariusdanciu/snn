@@ -21,6 +21,10 @@ impl MLOps {
         let s = self.sigmoid(z);
         s * (1.0_f64 - s)
     }
+    pub fn sigmoid_vec_derivative(&self, z: &DVector<f64>) -> DVector<f64> {
+        z.map(|e| self.sigmoid_derivative(e))
+    }
+
 
     pub fn relu_vec(&self, z: &DVector<f64>) -> DVector<f64> {
         z.map(|e| e.max(0.0_f64))
@@ -28,7 +32,6 @@ impl MLOps {
     pub fn relu(&self, z: f64) -> f64 {
         z.max(0.0_f64)
     }
-
     pub fn relu_derivative(&self, z: f64) -> f64 {
         if z >= 0.0_f64 {
             1.0_f64
@@ -36,13 +39,18 @@ impl MLOps {
             0.0_f64
         }
     }
+    pub fn relu_vec_derivative(&self, z: &DVector<f64>) -> DVector<f64> {
+        z.map(|e| self.relu_derivative(e))
+    }
 
     pub fn tanh(&self, z: f64) -> f64 {
         z.tanh()
     }
-
     pub fn tanh_derivative(&self, z: f64) -> f64 {
         1.0_f64 - z.tanh().powi(2)
+    }
+    pub fn tanh_vec_derivative(&self, z: &DVector<f64>) -> DVector<f64> {
+        z.map(|e| self.tanh_derivative(e))
     }
 
     pub fn soft_max(&self, v: &DVector<f64>) -> DVector<f64> {
@@ -79,6 +87,7 @@ pub enum OptimizationType {
 pub enum ActivationType {
     sigmoid,
     relu,
+    tanh,
     soft_max,
 }
 
@@ -86,6 +95,7 @@ pub enum ActivationType {
 pub struct Layer {
     pub intercepts: DVector<f64>,
     pub weights: DMatrix<f64>,
+    pub outs: DVector<f64>,
     pub activation_type: ActivationType,
 }
 
