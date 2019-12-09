@@ -1,3 +1,5 @@
+#![feature(nll)]
+
 use nalgebra::*;
 
 use crate::neunet::definitions::{ActivationType, MLOps, NeuralNetwork};
@@ -26,26 +28,29 @@ struct BackPropOut {
 }
 
 trait BackProp {
-    fn back_prop(&mut self, inputs: DVector<f64>, labels: DVector<f64>) -> BackPropOut;
+    fn back_prop(&mut self, x: &DVector<f64>, y_hat: &DVector<f64>, y: &DVector<f64>) -> BackPropOut;
 }
 
 impl ForwardProp for NeuralNetwork {
     fn forward_prop(&mut self, inputs: &DVector<f64>) -> DVector<f64> {
         let mut current = inputs;
+        let mut t;
 
         for mut l in &mut self.layers {
-            let t = &(&l.weights * current + &l.intercepts);
-            l.outs = match &l.activation_type {
-                sigmoid =>
-                    MLOps::vectorize(t, MLOps::sigmoid),
-                relu =>
-                    MLOps::vectorize(t, MLOps::relu),
-                tanh =>
-                    MLOps::vectorize(t, MLOps::tanh),
-                soft_max =>
-                    MLOps::soft_max(t)
+            let z = &l.weights * current + &l.intercepts;
+            t = match &l.activation_type {
+                ActivationType::Sigmoid =>
+                    MLOps::vectorize(&z, MLOps::sigmoid),
+                ActivationType::Relu =>
+                    MLOps::vectorize(&z, MLOps::relu),
+                ActivationType::Tanh =>
+                    MLOps::vectorize(&z, MLOps::tanh),
+                ActivationType::SoftMax =>
+                    MLOps::soft_max(&z)
             };
-            current = &l.outs;
+            l.z = z;
+            l.a = t.clone();
+            current = &t;
         };
 
         current.clone()
@@ -53,24 +58,51 @@ impl ForwardProp for NeuralNetwork {
 }
 
 impl BackProp for NeuralNetwork {
-    fn back_prop(&mut self, inputs: DVector<f64>, labels: DVector<f64>) -> BackPropOut {
-        let len = self.layers.len();
-        let mut current = &self.layers[len - 1];
+    fn back_prop(&mut self, x: &DVector<f64>, y_hat: &DVector<f64>, y: &DVector<f64>) -> BackPropOut {
+        let l = &mut self.layers;
+        let mut idx = l.len() - 1;
 
-        let mut dJ = inputs - labels;
+        l[idx].dz = y_hat - y;
+        l[idx].dw = &l[idx].dz * y_hat;
+        l[idx].db = l[idx].dz.clone();
 
-        for k in (0..len - 1).rev() {
-            let t = match &self.layers[k].activation_type {
-                relu => MLOps::vectorize(&self.layers[k].outs, MLOps::relu_derivative),
-                sigmoid => MLOps::vectorize(&self.layers[k].outs, MLOps::sigmoid_derivative),
-                tanh => MLOps::vectorize(&self.layers[k].outs, MLOps::tanh_derivative),
-                soft_max => MLOps::soft_max_derivative(&self.layers[k].outs),
+        idx -= 1;
+        while idx >= 0_usize {
+            let t = match &l[idx].activation_type {
+                ActivationType::Relu => MLOps::vectorize(&l[idx].z, MLOps::relu_derivative),
+                ActivationType::Sigmoid => MLOps::vectorize(&l[idx].z, MLOps::sigmoid_derivative),
+                ActivationType::Tanh => MLOps::vectorize(&l[idx].z, MLOps::tanh_derivative),
+                ActivationType::SoftMax => MLOps::soft_max_derivative(&l[idx].z),
             };
 
-            dJ = (&self.layers[k].weights * dJ).component_mul(&t);
+            l[idx].dz = (&l[idx + 1].dz * &l[idx + 1].weights).component_mul(&t);
+            l[idx].dw = if idx > 0 {
+                &l[idx].dz * &l[idx - 1].a
+            } else {
+                &l[idx].dz * x
+            };
 
-            current = &self.layers[k];
+            l[idx].db = l[idx].dz.clone();
+
+            idx -= 1;
         }
+
+        /*
+                let mut dJ = inputs - labels;
+
+                for k in (0..idx - 1).rev() {
+                    let t = match &self.layers[k].activation_type {
+                        relu => MLOps::vectorize(&self.layers[k].outs, MLOps::relu_derivative),
+                        sigmoid => MLOps::vectorize(&self.layers[k].outs, MLOps::sigmoid_derivative),
+                        tanh => MLOps::vectorize(&self.layers[k].outs, MLOps::tanh_derivative),
+                        soft_max => MLOps::soft_max_derivative(&self.layers[k].outs),
+                    };
+
+                    dJ = (&self.layers[k].weights * dJ).component_mul(&t);
+
+                    current = &self.layers[k];
+                }
+                */
         unimplemented!()
     }
 }
@@ -86,7 +118,7 @@ impl Optimizer for StochasticGradientDescent {
             let z_i = MLOps::hypothesis(&w, &features, b);
 
             match activation_type {
-                ActivationType::sigmoid => MLOps::sigmoid(z_i),
+                ActivationType::Sigmoid => MLOps::sigmoid(z_i),
                 _ => MLOps::sigmoid(z_i)
             }
         }
@@ -127,7 +159,7 @@ impl Optimizer for StochasticGradientDescent {
             for i in 0..num_examples {
                 let x_i = data.column(i);
 
-                let y_hat_i = forward_prop(&x_i, &w, b, ActivationType::sigmoid);
+                let y_hat_i = forward_prop(&x_i, &w, b, ActivationType::Sigmoid);
 
                 cost += MLOps::loss_from_pred(y[i], y_hat_i);
 
@@ -155,3 +187,5 @@ impl Optimizer for StochasticGradientDescent {
         unimplemented!()
     }
 }
+
+

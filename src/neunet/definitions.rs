@@ -1,5 +1,3 @@
-use std::f64::EPSILON;
-
 use nalgebra::{DMatrix, DVector, DVectorSlice};
 
 pub struct MLOps;
@@ -66,24 +64,29 @@ impl MLOps {
 }
 
 pub enum OptimizationType {
-    stochastic_gradient_descent,
-    batch_gradient_descent,
-    adam,
+    StochasticGradientDescent,
+    BatchGradientDescent,
+    Adam,
 }
 
 pub enum ActivationType {
-    sigmoid,
-    relu,
-    tanh,
-    soft_max,
+    Sigmoid,
+    Relu,
+    Tanh,
+    SoftMax,
 }
 
 
 pub struct Layer {
     pub intercepts: DVector<f64>,
     pub weights: DMatrix<f64>,
-    pub outs: DVector<f64>,
     pub activation_type: ActivationType,
+
+    pub z: DVector<f64>,
+    pub a: DVector<f64>,
+    pub dz: DVector<f64>,
+    pub dw: DVector<f64>,
+    pub db: DVector<f64>
 }
 
 pub struct NeuralNetwork {
