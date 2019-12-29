@@ -28,7 +28,7 @@ struct Layer {
     // activation(z)
     a: DVector<f64>,
     dz: DVector<f64>,
-    dw: DVector<f64>,
+    dw: DMatrix<f64>,
     db: DVector<f64>,
 }
 
@@ -80,13 +80,12 @@ impl BackProp for NeuralNetwork {
     fn back_prop(&mut self,
                  example_idx: usize,
                  y_hat: &DVector<f64>,
-                 y: &DVector<f64>,
-    ) -> &Self {
+                 y: &DVector<f64>) -> &Self {
         let l = &mut self.layers;
         let mut idx = l.len() - 1;
 
         l[idx].dz = y_hat - y;
-        l[idx].dw = &l[idx].dz * &l[idx - 1].a;
+        l[idx].dw = &l[idx].dz * &l[idx - 1].a.transpose();
         l[idx].db = l[idx].dz.clone();
 
         idx -= 1;
@@ -99,7 +98,7 @@ impl BackProp for NeuralNetwork {
             };
 
             l[idx].dz = (&l[idx + 1].dz * &l[idx + 1].weights).component_mul(&t);
-            l[idx].dw = &l[idx].dw + &l[idx].dz * &l[idx - 1].a;
+            l[idx].dw = &l[idx].dw + &l[idx].dz * &l[idx - 1].a.transpose();
             l[idx].db = &l[idx].db + l[idx].dz.clone();
 
             idx -= 1;
@@ -120,17 +119,33 @@ impl Optimizer for StochasticGradientDescent {
                 nn: &mut NeuralNetwork,
                 data: &DMatrix<f64>,
                 y: &DVector<f64>) -> () {
-        let (num_features, num_examples) = data.shape();
-
-        for i in 0..num_examples {
-            let x = data.column(i).into();
-
-            nn.layers[1].a = x;
-
-            let y_hat = nn.forward_prop();
-            nn.back_prop(i, &y_hat, &y);
+        fn update_weights(learning_rate: f64, nn: &mut NeuralNetwork) {
+            for mut l in nn.layers.iter_mut() {
+                l.weights = &l.weights - learning_rate * &l.dw;
+                l.intercepts = &l.intercepts - learning_rate * &l.db;
+            }
         }
 
+        let (num_features, num_examples) = data.shape();
+        let mut converged = false;
+
+        while !converged {
+            for i in 0..num_examples {
+                let x = data.column(i).into();
+
+                nn.layers[1].a = x;
+
+                let y_hat = nn.forward_prop();
+                nn.back_prop(i, &y_hat, &y);
+            }
+
+            for mut l in nn.layers.iter_mut() {
+                l.dw = &l.dw / num_examples as f64;
+                l.db = &l.db / num_examples as f64;
+            }
+
+            update_weights(self.learning_rate, nn);
+        }
         unimplemented!()
     }
 }

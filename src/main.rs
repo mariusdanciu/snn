@@ -57,6 +57,6 @@ fn main() {
     MatrixUtil::set_row(&mut w, 2, &b);
     println!("w {}", w);
 
-
+    println!("mul {}", &x * &x.transpose());
 
 }
