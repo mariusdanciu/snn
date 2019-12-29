@@ -9,7 +9,8 @@ use rand::{Rng, SeedableRng};
 use crate::neunet::definitions::MLOps;
 use crate::neunet::files::idx::IdxFile;
 use crate::neunet::loader::DataLoader;
-
+use crate::neunet::utils::matrix::MatrixUtil;
+use std::ops::IndexMut;
 mod neunet;
 
 fn main() {
@@ -45,15 +46,17 @@ fn main() {
     println!("Label {}", label);
 
 
-    let b = DVector::from_vec(vec![1, 2]);
+    let b = DVector::from_vec(vec![11.0, 12.0, 13.0]);
     let x = DVector::from_vec(vec![1, 2, 3]);
-    let w = DMatrix::from_vec(2, 3, vec![1, 2, 3, 4, 5, 6]);
-    println!("w {}", w);
-    println!("x {}", x);
-    println!("b {}", b);
 
-    println!("z {:.5}", (w * x + b).map(|e| {
-        MLOps::sigmoid(e as f64)
-    }));
+    let mut w = DMatrix::from_vec(3, 3, vec![1.0, 2.0, 3.0, 4., 5.0, 6.0, 7., 8., 9.]);
+
+
+    println!("w {}", w);
+
+    MatrixUtil::set_row(&mut w, 2, &b);
+    println!("w {}", w);
+
+
 
 }

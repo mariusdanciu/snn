@@ -76,20 +76,19 @@ pub enum ActivationType {
     SoftMax,
 }
 
-
-pub struct Layer {
+pub struct NNLayer {
     pub intercepts: DVector<f64>,
     pub weights: DMatrix<f64>,
-    pub activation_type: ActivationType,
-
-    pub z: DVector<f64>,
-    pub a: DVector<f64>,
-    pub dz: DVector<f64>,
-    pub dw: DVector<f64>,
-    pub db: DVector<f64>
+    pub activation_type: ActivationType
 }
 
-pub struct NeuralNetwork {
-    pub layers: Vec<Layer>
+pub struct NNModel {
+    pub layers: Vec<NNLayer>
 }
+
+pub struct NeuralNetworkDefinition {
+    pub layers_dimensions: Vec<usize>,
+    pub activation_type: ActivationType
+}
+
 
