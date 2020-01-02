@@ -9,7 +9,11 @@ trait Optimizer {
                 labels: &DVector<f64>) -> ();
 }
 
-struct StochasticGradientDescent {
+struct GradientDescent {
+    pub momentum_beta: f64,
+    pub rms_prop_beta: f64,
+    pub epsilon_correction: f64,
+    pub mini_batch_size: usize,
     pub learning_rate: f64,
     // 0.0001
     pub stop_cost_quota: f64,
@@ -30,6 +34,9 @@ struct Layer {
     dz: DVector<f64>,
     dw: DMatrix<f64>,
     db: DVector<f64>,
+
+    momentum_dw: DMatrix<f64>,
+    momentum_db: DVector<f64>,
 }
 
 struct NeuralNetwork {
@@ -114,37 +121,57 @@ impl NeuralNetwork {
     }
 }
 
-impl Optimizer for StochasticGradientDescent {
+impl GradientDescent {
     fn optimize(&self,
                 nn: &mut NeuralNetwork,
                 data: &DMatrix<f64>,
                 y: &DVector<f64>) -> () {
+
         fn update_weights(learning_rate: f64, nn: &mut NeuralNetwork) {
             for mut l in nn.layers.iter_mut() {
-                l.weights = &l.weights - learning_rate * &l.dw;
-                l.intercepts = &l.intercepts - learning_rate * &l.db;
+                l.weights = &l.weights - learning_rate * &l.momentum_dw;
+                l.intercepts = &l.intercepts - learning_rate * &l.momentum_db;
             }
         }
 
         let (num_features, num_examples) = data.shape();
         let mut converged = false;
 
+        let mut iteration = 0;
+
         while !converged {
-            for i in 0..num_examples {
-                let x = data.column(i).into();
+            for k in (0..num_examples).step_by(self.mini_batch_size) {
+                for j in 0..self.mini_batch_size {
+                    let i = k + j; // partition
+                    let x = data.column(i).into();
 
-                nn.layers[1].a = x;
+                    nn.layers[1].a = x;
 
-                let y_hat = nn.forward_prop();
-                nn.back_prop(i, &y_hat, &y);
+                    let y_hat = nn.forward_prop();
+                    nn.back_prop(i, &y_hat, &y);
+                }
+
+
+                for mut l in nn.layers.iter_mut() {
+                    l.dw = &l.dw / self.mini_batch_size as f64;
+                    l.db = &l.db / self.mini_batch_size as f64;
+                }
+
+                if iteration > 0 {
+                    for mut l in nn.layers.iter_mut() {
+                        l.momentum_dw = self.momentum_beta * &l.momentum_dw + (1. - self.momentum_beta) * &l.dw;
+                        l.momentum_db = self.momentum_beta * &l.momentum_db + (1. - self.momentum_beta) * &l.db;
+                    }
+                } else {
+                    for mut l in nn.layers.iter_mut() {
+                        l.momentum_dw = l.dw.clone();
+                        l.momentum_db = l.db.clone();
+                    }
+                }
+
+                update_weights(self.learning_rate, nn);
+                iteration += 1;
             }
-
-            for mut l in nn.layers.iter_mut() {
-                l.dw = &l.dw / num_examples as f64;
-                l.db = &l.db / num_examples as f64;
-            }
-
-            update_weights(self.learning_rate, nn);
         }
         unimplemented!()
     }
