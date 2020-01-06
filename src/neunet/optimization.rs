@@ -40,8 +40,25 @@ struct Layer {
     momentum_db: DVector<f64>,
 }
 
-struct NeuralNetwork {
+
+impl std::fmt::Debug for Layer {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "\n\tLayer {{");
+        write!(f, "\n\t\tnum_activations : {:?}", self.num_activations);
+        write!(f, "\n\t\tweights : {:?}", self.weights.shape());
+        write!(f, "\n\t\tactivation_type : {:?}", self.activation_type);
+        write!(f, "\n\t}}")
+    }
+}
+
+pub struct NeuralNetwork {
     layers: Vec<Layer>
+}
+
+impl std::fmt::Debug for NeuralNetwork {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?}", self.layers)
+    }
 }
 
 trait ForwardProp {
@@ -117,12 +134,14 @@ impl BackProp for NeuralNetwork {
 }
 
 impl NeuralNetwork {
-    fn build(nd: &NeuralNetworkDefinition, rng: &mut rand_pcg::Pcg32) -> NeuralNetwork {
+    pub fn build(nd: &NeuralNetworkDefinition, rng: &mut rand_pcg::Pcg32) -> NeuralNetwork {
         let layers = &nd.layers_dimensions;
 
         let mut num_inputs = nd.num_features;
+        let mut initted = Vec::<Layer>::with_capacity(layers.len());
         for l in layers {
-            Layer {
+            println!("AT {:?}", nd.activation_type.clone());
+            initted.push(Layer {
                 num_activations: *l,
                 intercepts: DVector::from_vec(vec![0.0_f64; *l]),
                 weights: MatrixUtil::rand_matrix(*l, num_inputs, nd.rand_init_epsilon, rng),
@@ -136,13 +155,15 @@ impl NeuralNetwork {
                 db: DVector::from_vec(vec![0.0_f64; *l]),
                 momentum_dw: DMatrix::from_vec(*l, num_inputs, vec![0.0_f64; *l * num_inputs]),
                 momentum_db: DVector::from_vec(vec![0.0_f64; *l]),
-            };
+            });
 
             num_inputs = *l;
         }
 
 
-        unimplemented!()
+        NeuralNetwork {
+            layers: initted
+        }
     }
 }
 

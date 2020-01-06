@@ -73,16 +73,28 @@ pub enum ActivationType {
     Sigmoid,
     Relu,
     Tanh,
-    SoftMax,
+    SoftMax
 }
+
+impl std::fmt::Debug for ActivationType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            ActivationType::Sigmoid => write!(f, "Sigmoid"),
+            ActivationType::Relu => write!(f, "Relu"),
+            ActivationType::Tanh => write!(f, "Tanh"),
+            ActivationType::SoftMax => write!(f, "SoftMax"),
+        }
+    }
+}
+
 
 impl Clone for ActivationType {
     fn clone(&self) -> ActivationType {
         match self {
-            Sigmoid => ActivationType::Sigmoid,
-            Relu => ActivationType::Relu,
-            Tanh => ActivationType::Tanh,
-            SoftMax => ActivationType::SoftMax
+            ActivationType::Sigmoid => ActivationType::Sigmoid,
+            ActivationType::Relu => ActivationType::Relu,
+            ActivationType::Tanh => ActivationType::Tanh,
+            ActivationType::SoftMax => ActivationType::SoftMax
         }
     }
 }

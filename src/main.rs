@@ -7,9 +7,10 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use nalgebra::*;
 use rand_pcg::Pcg32;
 
-use crate::neunet::definitions::MLOps;
+use crate::neunet::definitions::{ActivationType, MLOps, NeuralNetworkDefinition};
 use crate::neunet::files::idx::IdxFile;
 use crate::neunet::loader::DataLoader;
+use crate::neunet::optimization::*;
 use crate::neunet::utils::matrix::MatrixUtil;
 
 mod neunet;
@@ -38,5 +39,12 @@ fn main() {
     println!("Img {}", DMatrix::from_row_slice(28, 28, r.as_slice()));
     println!("Label {}", label);
 
+    let nn = NeuralNetwork::build(&NeuralNetworkDefinition {
+        rand_init_epsilon: 0.03_f64,
+        num_features: 784,
+        layers_dimensions: vec![64, 32, 10],
+        activation_type: ActivationType::Relu,
+    }, &mut rng);
 
+    println!("NeuralNetwork {:?}", nn);
 }
