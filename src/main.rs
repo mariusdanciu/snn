@@ -1,31 +1,24 @@
 extern crate rand;
-extern crate rand_chacha;
+extern crate rand_pcg;
 
+use std::ops::IndexMut;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use nalgebra::*;
-use rand::{Rng, SeedableRng};
+use rand_pcg::Pcg32;
 
 use crate::neunet::definitions::MLOps;
 use crate::neunet::files::idx::IdxFile;
 use crate::neunet::loader::DataLoader;
 use crate::neunet::utils::matrix::MatrixUtil;
-use std::ops::IndexMut;
+
 mod neunet;
 
 fn main() {
-    let mut rng = rand_chacha::ChaCha8Rng::seed_from_u64(10);
-    let vec = DVector::<f64>::from_fn(5, |_, _| rng.gen::<f64>());
-
-    println!("{}", vec);
-
-    println!("Random f32: {}", rng.gen::<f64>());
+    const INC: u64 = 11634580027462260723;
+    let mut rng = rand_pcg::Pcg32::new(213424234, INC);
 
     let rand_epsilon = 0.03_f64;
-
-    let m = DMatrix::<f64>::from_fn(4, 4, |_, _| rng.gen::<f64>() * 2. * rand_epsilon - rand_epsilon);
-
-    println!("{}", m);
 
     let start = SystemTime::now().duration_since(UNIX_EPOCH)
         .expect("Time went backwards");
@@ -45,18 +38,5 @@ fn main() {
     println!("Img {}", DMatrix::from_row_slice(28, 28, r.as_slice()));
     println!("Label {}", label);
 
-
-    let b = DVector::from_vec(vec![11.0, 12.0, 13.0]);
-    let x = DVector::from_vec(vec![1, 2, 3]);
-
-    let mut w = DMatrix::from_vec(3, 3, vec![1.0, 2.0, 3.0, 4., 5.0, 6.0, 7., 8., 9.]);
-
-
-    println!("w {}", w);
-
-    MatrixUtil::set_row(&mut w, 2, &b);
-    println!("w {}", w);
-
-    println!("mul {}", &x * &x.transpose());
 
 }

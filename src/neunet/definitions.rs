@@ -76,10 +76,21 @@ pub enum ActivationType {
     SoftMax,
 }
 
+impl Clone for ActivationType {
+    fn clone(&self) -> ActivationType {
+        match self {
+            Sigmoid => ActivationType::Sigmoid,
+            Relu => ActivationType::Relu,
+            Tanh => ActivationType::Tanh,
+            SoftMax => ActivationType::SoftMax
+        }
+    }
+}
+
 pub struct NNLayer {
     pub intercepts: DVector<f64>,
     pub weights: DMatrix<f64>,
-    pub activation_type: ActivationType
+    pub activation_type: ActivationType,
 }
 
 pub struct NNModel {
@@ -87,8 +98,10 @@ pub struct NNModel {
 }
 
 pub struct NeuralNetworkDefinition {
+    pub rand_init_epsilon: f64,
+    pub num_features: usize,
     pub layers_dimensions: Vec<usize>,
-    pub activation_type: ActivationType
+    pub activation_type: ActivationType,
 }
 
 

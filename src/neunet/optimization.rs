@@ -1,6 +1,7 @@
 use nalgebra::*;
 
 use crate::neunet::definitions::{ActivationType, MLOps, NeuralNetworkDefinition, NNModel};
+use crate::neunet::utils::matrix::MatrixUtil;
 
 trait Optimizer {
     fn optimize(&self,
@@ -116,7 +117,31 @@ impl BackProp for NeuralNetwork {
 }
 
 impl NeuralNetwork {
-    fn build(nd: NeuralNetworkDefinition) -> NeuralNetwork {
+    fn build(nd: &NeuralNetworkDefinition, rng: &mut rand_pcg::Pcg32) -> NeuralNetwork {
+        let layers = &nd.layers_dimensions;
+
+        let mut num_inputs = nd.num_features;
+        for l in layers {
+            Layer {
+                num_activations: *l,
+                intercepts: DVector::from_vec(vec![0.0_f64; *l]),
+                weights: MatrixUtil::rand_matrix(*l, num_inputs, nd.rand_init_epsilon, rng),
+                activation_type: nd.activation_type.clone(),
+
+                // Dummy inits
+                z: DVector::from_vec(vec![0.0_f64; *l]),
+                a: DVector::from_vec(vec![0.0_f64; *l]),
+                dz: DVector::from_vec(vec![0.0_f64; *l]),
+                dw: DMatrix::from_vec(*l, num_inputs, vec![0.0_f64; *l * num_inputs]),
+                db: DVector::from_vec(vec![0.0_f64; *l]),
+                momentum_dw: DMatrix::from_vec(*l, num_inputs, vec![0.0_f64; *l * num_inputs]),
+                momentum_db: DVector::from_vec(vec![0.0_f64; *l]),
+            };
+
+            num_inputs = *l;
+        }
+
+
         unimplemented!()
     }
 }
@@ -126,7 +151,6 @@ impl GradientDescent {
                 nn: &mut NeuralNetwork,
                 data: &DMatrix<f64>,
                 y: &DVector<f64>) -> () {
-
         fn update_weights(learning_rate: f64, nn: &mut NeuralNetwork) {
             for mut l in nn.layers.iter_mut() {
                 l.weights = &l.weights - learning_rate * &l.momentum_dw;
