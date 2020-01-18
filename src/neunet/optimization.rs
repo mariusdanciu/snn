@@ -43,11 +43,11 @@ struct Layer {
 
 impl std::fmt::Debug for Layer {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "\n\tLayer {{");
-        write!(f, "\n\t\tnum_activations : {:?}", self.num_activations);
-        write!(f, "\n\t\tweights : {:?}", self.weights.shape());
-        write!(f, "\n\t\tactivation_type : {:?}", self.activation_type);
-        write!(f, "\n\t}}")
+        write!(f, "\n\tLayer {{
+        \t\tnum_activations : {:?}
+        \t\tweights : {:?}
+        \t\tactivation_type : {:?}
+    }}", self.num_activations, self.weights.shape(), self.activation_type)
     }
 }
 
@@ -135,29 +135,28 @@ impl BackProp for NeuralNetwork {
 
 impl NeuralNetwork {
     pub fn build(nd: &NeuralNetworkDefinition, rng: &mut rand_pcg::Pcg32) -> NeuralNetwork {
-        let layers = &nd.layers_dimensions;
+        let layers = &nd.layers;
 
         let mut num_inputs = nd.num_features;
         let mut initted = Vec::<Layer>::with_capacity(layers.len());
         for l in layers {
-            println!("AT {:?}", nd.activation_type.clone());
             initted.push(Layer {
-                num_activations: *l,
-                intercepts: DVector::from_vec(vec![0.0_f64; *l]),
-                weights: MatrixUtil::rand_matrix(*l, num_inputs, nd.rand_init_epsilon, rng),
-                activation_type: nd.activation_type.clone(),
+                num_activations: l.num_activations,
+                intercepts: DVector::from_vec(vec![0.0_f64; l.num_activations]),
+                weights: MatrixUtil::rand_matrix(l.num_activations, num_inputs, l.rand_init_epsilon, rng),
+                activation_type: l.activation_type.clone(),
 
                 // Dummy inits
-                z: DVector::from_vec(vec![0.0_f64; *l]),
-                a: DVector::from_vec(vec![0.0_f64; *l]),
-                dz: DVector::from_vec(vec![0.0_f64; *l]),
-                dw: DMatrix::from_vec(*l, num_inputs, vec![0.0_f64; *l * num_inputs]),
-                db: DVector::from_vec(vec![0.0_f64; *l]),
-                momentum_dw: DMatrix::from_vec(*l, num_inputs, vec![0.0_f64; *l * num_inputs]),
-                momentum_db: DVector::from_vec(vec![0.0_f64; *l]),
+                z: DVector::from_vec(vec![0.0_f64; l.num_activations]),
+                a: DVector::from_vec(vec![0.0_f64; l.num_activations]),
+                dz: DVector::from_vec(vec![0.0_f64; l.num_activations]),
+                dw: DMatrix::from_vec(l.num_activations, num_inputs, vec![0.0_f64; l.num_activations * num_inputs]),
+                db: DVector::from_vec(vec![0.0_f64; l.num_activations]),
+                momentum_dw: DMatrix::from_vec(l.num_activations, num_inputs, vec![0.0_f64; l.num_activations * num_inputs]),
+                momentum_db: DVector::from_vec(vec![0.0_f64; l.num_activations]),
             });
 
-            num_inputs = *l;
+            num_inputs = l.num_activations;
         }
 
 
@@ -168,10 +167,10 @@ impl NeuralNetwork {
 }
 
 impl GradientDescent {
-    fn optimize(&self,
-                nn: &mut NeuralNetwork,
-                data: &DMatrix<f64>,
-                y: &DVector<f64>) -> () {
+    fn optimize<'a>(&self,
+                    nn: &'a mut NeuralNetwork,
+                    data: &DMatrix<f64>,
+                    y: &DVector<f64>) -> &'a NeuralNetwork {
         fn update_weights(learning_rate: f64, nn: &mut NeuralNetwork) {
             for mut l in nn.layers.iter_mut() {
                 l.weights = &l.weights - learning_rate * &l.momentum_dw;
@@ -186,6 +185,8 @@ impl GradientDescent {
 
         while !converged {
             for k in (0..num_examples).step_by(self.mini_batch_size) {
+                println!("Running iteration {}", iteration);
+
                 for j in 0..self.mini_batch_size {
                     let i = k + j; // partition
                     let x = data.column(i).into();
@@ -203,14 +204,16 @@ impl GradientDescent {
                 }
 
                 if iteration > 0 {
+                    // Apply  weighted moving averages
                     for mut l in nn.layers.iter_mut() {
                         l.momentum_dw = self.momentum_beta * &l.momentum_dw + (1. - self.momentum_beta) * &l.dw;
                         l.momentum_db = self.momentum_beta * &l.momentum_db + (1. - self.momentum_beta) * &l.db;
                     }
                 } else {
                     for mut l in nn.layers.iter_mut() {
-                        l.momentum_dw = l.dw.clone();
-                        l.momentum_db = l.db.clone();
+                        let (r, c) = l.dw.shape();
+                        l.momentum_dw = DMatrix::from_fn(r, c, |a, b| 0.0);
+                        l.momentum_db = DVector::from_vec(vec![0.0; c]);
                     }
                 }
 
@@ -218,7 +221,7 @@ impl GradientDescent {
                 iteration += 1;
             }
         }
-        unimplemented!()
+        nn
     }
 }
 

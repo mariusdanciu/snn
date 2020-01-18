@@ -7,7 +7,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use nalgebra::*;
 use rand_pcg::Pcg32;
 
-use crate::neunet::definitions::{ActivationType, MLOps, NeuralNetworkDefinition};
+use crate::neunet::definitions::{ActivationType, LayerDefinition, MLOps, NeuralNetworkDefinition};
 use crate::neunet::files::idx::IdxFile;
 use crate::neunet::loader::DataLoader;
 use crate::neunet::optimization::*;
@@ -40,10 +40,23 @@ fn main() {
     println!("Label {}", label);
 
     let nn = NeuralNetwork::build(&NeuralNetworkDefinition {
-        rand_init_epsilon: 0.03_f64,
         num_features: 784,
-        layers_dimensions: vec![64, 32, 10],
-        activation_type: ActivationType::Relu,
+        layers: vec![
+            LayerDefinition {
+                activation_type: ActivationType::Relu,
+                num_activations: 80,
+                rand_init_epsilon: 0.03_f64,
+            },
+            LayerDefinition {
+                activation_type: ActivationType::Relu,
+                num_activations: 40,
+                rand_init_epsilon: 0.03_f64,
+            },
+            LayerDefinition {
+                activation_type: ActivationType::SoftMax,
+                num_activations: 10,
+                rand_init_epsilon: 0.03_f64,
+            }],
     }, &mut rng);
 
     println!("NeuralNetwork {:?}", nn);

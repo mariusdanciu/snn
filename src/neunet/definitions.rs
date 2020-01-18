@@ -109,11 +109,14 @@ pub struct NNModel {
     pub layers: Vec<NNLayer>
 }
 
-pub struct NeuralNetworkDefinition {
-    pub rand_init_epsilon: f64,
-    pub num_features: usize,
-    pub layers_dimensions: Vec<usize>,
+pub struct LayerDefinition {
     pub activation_type: ActivationType,
+    pub num_activations: usize,
+    pub rand_init_epsilon: f64
+}
+pub struct NeuralNetworkDefinition {
+    pub num_features: usize,
+    pub layers: Vec<LayerDefinition>
 }
 
 
