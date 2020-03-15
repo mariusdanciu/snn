@@ -9,7 +9,7 @@ use rand_pcg::Pcg32;
 
 use crate::neunet::definitions::{ActivationType, LayerDefinition, MLOps, NeuralNetworkDefinition};
 use crate::neunet::files::idx::IdxFile;
-use crate::neunet::loader::DataLoader;
+use crate::neunet::loader::{DataLoader, DataUtils};
 use crate::neunet::optimization::*;
 use crate::neunet::utils::matrix::MatrixUtil;
 
@@ -29,7 +29,7 @@ fn main() {
 
 
     println!("Data read in {} ms", (end - start).as_millis());
-    let (img, labels) = res.unwrap();
+    let (img, mut labels) = res.unwrap();
 
     println!("Shapes {:?}", img.shape());
     let r = img.column(30);
@@ -39,7 +39,7 @@ fn main() {
     println!("Img {}", DMatrix::from_row_slice(28, 28, r.as_slice()));
     println!("Label {}", label);
 
-    let nn = NeuralNetwork::build(&NeuralNetworkDefinition {
+    let mut nn = NeuralNetwork::build(&NeuralNetworkDefinition {
         num_features: 784,
         layers: vec![
             LayerDefinition {
@@ -59,5 +59,25 @@ fn main() {
             }],
     }, &mut rng);
 
+    let gd = GradientDescent {
+        momentum_beta: 0.9_f64,
+        rms_prop_beta: 0.9_f64,
+        epsilon_correction: 0.9_f64,
+        mini_batch_size: 1000,
+        learning_rate: 0.001_f64,
+        stop_cost_quota: 0.0001_f64,
+    };
+
+    let one_hot = DataUtils::one_hot(&labels);
+    gd.optimize(&mut nn, &img, &one_hot);
+
+
+
     println!("NeuralNetwork {:?}", nn);
+
+
+
+    println!("OneHot {}", one_hot);
+
+
 }

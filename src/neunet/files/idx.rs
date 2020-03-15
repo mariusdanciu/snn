@@ -64,9 +64,11 @@ impl IdxFile {
 
 
 impl DataLoader for IdxFile {
+
+
     fn load_data(self, data_path: String, labels_path: String) -> Result<(DMatrix<u8>, DVector<u8>)> {
         let data = IdxFile::read_data(data_path)?;
-        let labels = IdxFile::read_labels(labels_path)?;
+        let labels: DVector<u8> = IdxFile::read_labels(labels_path)?;
         Ok((data, labels))
     }
 }

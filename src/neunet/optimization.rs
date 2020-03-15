@@ -7,10 +7,10 @@ trait Optimizer {
     fn optimize(&self,
                 nn: &mut NeuralNetwork,
                 data: &DMatrix<f64>,
-                labels: &DVector<f64>) -> ();
+                labels: &DMatrix<f64>) -> ();
 }
 
-struct GradientDescent {
+pub struct GradientDescent {
     pub momentum_beta: f64,
     pub rms_prop_beta: f64,
     pub epsilon_correction: f64,
@@ -19,7 +19,6 @@ struct GradientDescent {
     // 0.0001
     pub stop_cost_quota: f64,
     // 10 ^ -4
-    pub network: NeuralNetwork,
 }
 
 struct Layer {
@@ -67,7 +66,7 @@ trait ForwardProp {
 
 
 trait BackProp {
-    fn back_prop(&mut self, example_idx: usize, y_hat: &DVector<f64>, y: &DVector<f64>) -> &Self;
+    fn back_prop(&mut self, example_idx: usize, y_hat: &DVector<f64>, y: &DVectorSlice<f64>) -> &Self;
 }
 
 impl ForwardProp for NeuralNetwork {
@@ -84,11 +83,11 @@ impl ForwardProp for NeuralNetwork {
             let mut z = &l.weights * current + &l.intercepts;
             t = match &l.activation_type {
                 ActivationType::Sigmoid =>
-                    MLOps::vectorize(&z, MLOps::sigmoid),
+                    MLOps::apply(&z, MLOps::sigmoid),
                 ActivationType::Relu =>
-                    MLOps::vectorize(&z, MLOps::relu),
+                    MLOps::apply(&z, MLOps::relu),
                 ActivationType::Tanh =>
-                    MLOps::vectorize(&z, MLOps::tanh),
+                    MLOps::apply(&z, MLOps::tanh),
                 ActivationType::SoftMax =>
                     MLOps::soft_max(&z)
             };
@@ -105,7 +104,7 @@ impl BackProp for NeuralNetwork {
     fn back_prop(&mut self,
                  example_idx: usize,
                  y_hat: &DVector<f64>,
-                 y: &DVector<f64>) -> &Self {
+                 y: &DVectorSlice<f64>) -> &Self {
         let l = &mut self.layers;
         let mut idx = l.len() - 1;
 
@@ -116,9 +115,9 @@ impl BackProp for NeuralNetwork {
         idx -= 1;
         while idx > 0 {
             let t = match &l[idx].activation_type {
-                ActivationType::Relu => MLOps::vectorize(&l[idx].z, MLOps::relu_derivative),
-                ActivationType::Sigmoid => MLOps::vectorize(&l[idx].z, MLOps::sigmoid_derivative),
-                ActivationType::Tanh => MLOps::vectorize(&l[idx].z, MLOps::tanh_derivative),
+                ActivationType::Relu => MLOps::apply(&l[idx].z, MLOps::relu_derivative),
+                ActivationType::Sigmoid => MLOps::apply(&l[idx].z, MLOps::sigmoid_derivative),
+                ActivationType::Tanh => MLOps::apply(&l[idx].z, MLOps::tanh_derivative),
                 ActivationType::SoftMax => MLOps::soft_max_derivative(&l[idx].z),
             };
 
@@ -167,10 +166,10 @@ impl NeuralNetwork {
 }
 
 impl GradientDescent {
-    fn optimize<'a>(&self,
+    pub fn optimize<'a>(&self,
                     nn: &'a mut NeuralNetwork,
                     data: &DMatrix<f64>,
-                    y: &DVector<f64>) -> &'a NeuralNetwork {
+                    y: &DMatrix<f64>) -> &'a NeuralNetwork {
         fn update_weights(learning_rate: f64, nn: &mut NeuralNetwork) {
             for mut l in nn.layers.iter_mut() {
                 l.weights = &l.weights - learning_rate * &l.momentum_dw;
@@ -191,10 +190,10 @@ impl GradientDescent {
                     let i = k + j; // partition
                     let x = data.column(i).into();
 
-                    nn.layers[1].a = x;
+                    nn.layers[0].a = x;
 
                     let y_hat = nn.forward_prop();
-                    nn.back_prop(i, &y_hat, &y);
+                    nn.back_prop(i, &y_hat, &y.column(i));
                 }
 
 

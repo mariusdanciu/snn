@@ -7,7 +7,7 @@ impl MLOps {
         w.dot(x) + b
     }
 
-    pub fn vectorize(v: &DVector<f64>, f: fn(f64) -> f64) -> DVector<f64> {
+    pub fn apply(v: &DVector<f64>, f: fn(f64) -> f64) -> DVector<f64> {
         v.map(|e| f(e))
     }
 
