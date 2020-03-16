@@ -9,7 +9,7 @@ use rand_pcg::Pcg32;
 
 use crate::neunet::definitions::{ActivationType, LayerDefinition, MLOps, NeuralNetworkDefinition};
 use crate::neunet::files::idx::IdxFile;
-use crate::neunet::loader::{DataLoader, DataUtils};
+use crate::neunet::loader::{DataLoader};
 use crate::neunet::optimization::*;
 use crate::neunet::utils::matrix::MatrixUtil;
 
@@ -68,8 +68,8 @@ fn main() {
         stop_cost_quota: 0.0001_f64,
     };
 
-    let one_hot = DataUtils::one_hot(&labels);
-    gd.optimize(&mut nn, &img, &one_hot);
+    let one_hot = MatrixUtil::one_hot(&labels);
+    //gd.optimize(&mut nn, &img, &one_hot);
 
 
 
