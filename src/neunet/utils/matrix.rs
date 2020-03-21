@@ -29,15 +29,12 @@ impl MatrixUtil {
 
         let mut v = vec![0.0_f64; (dim + 1) * size];
 
-        println!("v = {:?}", v);
-
         let mut pos = 0;
         for j in 0..size {
             let e = y[j] as usize;
             v[pos + e] = 1.0_f64;
             pos += dim + 1;
         }
-        println!("v = {:?}", v);
         DMatrix::from_vec(dim + 1, size, v)
     }
 }

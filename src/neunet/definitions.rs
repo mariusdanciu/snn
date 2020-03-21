@@ -44,7 +44,7 @@ impl MLOps {
             sum += e.exp();
         }
 
-        v / sum
+        DVector::from_vec(v.data.as_vec().iter().map(|e| e.exp()).collect()) / sum
     }
 
     pub fn soft_max_derivative(v: &DVector<f64>) -> DVector<f64> {
@@ -59,7 +59,16 @@ impl MLOps {
     }
 
     pub fn loss_from_pred(y: f64, y_hat: f64) -> f64 {
-        -(y * y_hat.ln() + (1. - y) * (1. - y_hat).ln())
+        let loss = -(y * y_hat.ln() + (1. - y) * (1. - y_hat).ln());
+        loss
+    }
+
+    pub fn loss_one_hot(y_v: &DVectorSlice<f64>, y_hat_v: &Vec<f64>) -> f64 {
+        let mut sum = 0.0_f64;
+        for e in 0..y_v.len() {
+            sum += MLOps::loss_from_pred(y_v[e], y_hat_v[e]);
+        }
+        sum
     }
 }
 

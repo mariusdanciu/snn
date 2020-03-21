@@ -16,7 +16,7 @@ impl IdxFile {
         Ok(BinaryOps::to_u32(&buf[4..8]))
     }
 
-    fn read_data(data_path: String) -> Result<DMatrix<u8>> {
+    fn read_data(data_path: String) -> Result<DMatrix<f64>> {
         let f = File::open(data_path)?;
         let mut buf: [u8; 8] = [0; 8];
         let mut data_reader = BufReader::new(f);
@@ -39,8 +39,10 @@ impl IdxFile {
 
         let read_bytes = data_reader.read_to_end(&mut out)?;
 
+        let out_f64: Vec<f64> = out.iter().map(|b| *b as f64).collect::<Vec<f64>>();
+
         println!("read_bytes {}", read_bytes);
-        let r = DMatrix::from_vec(img_size, num, out);
+        let r = DMatrix::from_vec(img_size, num, out_f64);
         Ok(r)
     }
 
@@ -66,7 +68,7 @@ impl IdxFile {
 impl DataLoader for IdxFile {
 
 
-    fn load_data(self, data_path: String, labels_path: String) -> Result<(DMatrix<u8>, DVector<u8>)> {
+    fn load_data(self, data_path: String, labels_path: String) -> Result<(DMatrix<f64>, DVector<u8>)> {
         let data = IdxFile::read_data(data_path)?;
         let labels: DVector<u8> = IdxFile::read_labels(labels_path)?;
         Ok((data, labels))

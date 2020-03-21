@@ -68,16 +68,17 @@ fn main() {
         stop_cost_quota: 0.0001_f64,
     };
 
-    let one_hot = MatrixUtil::one_hot(&labels);
-    //gd.optimize(&mut nn, &img, &one_hot);
-
-
-
     println!("NeuralNetwork {:?}", nn);
 
+    let one_hot = MatrixUtil::one_hot(&labels);
+    gd.optimize(&mut nn, &img, &one_hot);
 
 
-    println!("OneHot {}", one_hot);
+
+
+
+
+
 
 
 }

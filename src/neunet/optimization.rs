@@ -61,7 +61,7 @@ impl std::fmt::Debug for NeuralNetwork {
 }
 
 trait ForwardProp {
-    fn forward_prop(&mut self) -> DVector<f64>;
+    fn forward_prop(&mut self, x: &DVector<f64>) -> DVector<f64>;
 }
 
 
@@ -70,14 +70,14 @@ trait BackProp {
 }
 
 impl ForwardProp for NeuralNetwork {
-    fn forward_prop(&mut self) -> DVector<f64> {
-        let mut current = &self.layers[0].a;
+    fn forward_prop(&mut self, x: &DVector<f64>) -> DVector<f64> {
+        let mut current = x;
         let mut t;
 
 
         let size = self.layers.len();
 
-        for i in 1..size {
+        for i in 0..size {
             let l = &self.layers[i];
 
             let mut z = &l.weights * current + &l.intercepts;
@@ -88,8 +88,10 @@ impl ForwardProp for NeuralNetwork {
                     MLOps::apply(&z, MLOps::relu),
                 ActivationType::Tanh =>
                     MLOps::apply(&z, MLOps::tanh),
-                ActivationType::SoftMax =>
-                    MLOps::soft_max(&z)
+                ActivationType::SoftMax => {
+                    let sm = MLOps::soft_max(&z);
+                    sm
+                }
             };
             self.layers[i].z = z;
             self.layers[i].a = t.clone();
@@ -121,7 +123,7 @@ impl BackProp for NeuralNetwork {
                 ActivationType::SoftMax => MLOps::soft_max_derivative(&l[idx].z),
             };
 
-            l[idx].dz = (&l[idx + 1].dz * &l[idx + 1].weights).component_mul(&t);
+            l[idx].dz = ((&l[idx + 1].weights).transpose() * &l[idx + 1].dz).component_mul(&t);
             l[idx].dw = &l[idx].dw + &l[idx].dz * &l[idx - 1].a.transpose();
             l[idx].db = &l[idx].db + l[idx].dz.clone();
 
@@ -167,9 +169,9 @@ impl NeuralNetwork {
 
 impl GradientDescent {
     pub fn optimize<'a>(&self,
-                    nn: &'a mut NeuralNetwork,
-                    data: &DMatrix<f64>,
-                    y: &DMatrix<f64>) -> &'a NeuralNetwork {
+                        nn: &'a mut NeuralNetwork,
+                        data: &DMatrix<f64>,
+                        y: &DMatrix<f64>) -> &'a NeuralNetwork {
         fn update_weights(learning_rate: f64, nn: &mut NeuralNetwork) {
             for mut l in nn.layers.iter_mut() {
                 l.weights = &l.weights - learning_rate * &l.momentum_dw;
@@ -181,21 +183,26 @@ impl GradientDescent {
         let mut converged = false;
 
         let mut iteration = 0;
+        let mut epoch = 0;
 
-        while !converged {
+        while !converged || epoch > 10 {
+            println!("Running epoch {}", epoch);
             for k in (0..num_examples).step_by(self.mini_batch_size) {
                 println!("Running iteration {}", iteration);
+                println!("Mini batch start {}", k);
+
+                let mut batch_loss = 0.0_f64;
 
                 for j in 0..self.mini_batch_size {
                     let i = k + j; // partition
                     let x = data.column(i).into();
 
-                    nn.layers[0].a = x;
-
-                    let y_hat = nn.forward_prop();
+                    let y_hat = nn.forward_prop(&x);
                     nn.back_prop(i, &y_hat, &y.column(i));
+                    batch_loss += MLOps::loss_one_hot(&y.column(i), y_hat.data.as_vec());
                 }
 
+                println!("Loss for batch {} is {}", k, batch_loss / self.mini_batch_size as f64);
 
                 for mut l in nn.layers.iter_mut() {
                     l.dw = &l.dw / self.mini_batch_size as f64;
@@ -212,13 +219,14 @@ impl GradientDescent {
                     for mut l in nn.layers.iter_mut() {
                         let (r, c) = l.dw.shape();
                         l.momentum_dw = DMatrix::from_fn(r, c, |a, b| 0.0);
-                        l.momentum_db = DVector::from_vec(vec![0.0; c]);
+                        l.momentum_db = DVector::from_vec(vec![0.0; r]);
                     }
                 }
 
                 update_weights(self.learning_rate, nn);
                 iteration += 1;
             }
+            epoch += 1
         }
         nn
     }
