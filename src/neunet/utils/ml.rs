@@ -1,6 +1,11 @@
+extern crate rand_pcg;
+
 use nalgebra::{DMatrix, DVector, DVectorSlice};
+use nalgebra::*;
+use rand::Rng;
 
 pub struct MLOps;
+
 
 impl MLOps {
     pub fn hypothesis(w: &DVector<f64>, x: &DVectorSlice<f64>, b: f64) -> f64 {
@@ -53,11 +58,6 @@ impl MLOps {
         sm.map(|e| e * (1. - e))
     }
 
-    pub fn loss(y: f64, w: &DVector<f64>, x: &DVectorSlice<f64>, b: f64) -> f64 {
-        let y_hat = MLOps::sigmoid(MLOps::hypothesis(w, x, b));
-        -(y * y_hat.ln() + (1. - y) * (1. - y_hat).ln())
-    }
-
     pub fn loss_from_pred(y: f64, y_hat: f64) -> f64 {
         let loss = -(y * y_hat.ln() + (1. - y) * (1. - y_hat).ln());
         loss
@@ -71,61 +71,3 @@ impl MLOps {
         sum
     }
 }
-
-pub enum OptimizationType {
-    StochasticGradientDescent,
-    BatchGradientDescent,
-    Adam,
-}
-
-pub enum ActivationType {
-    Sigmoid,
-    Relu,
-    Tanh,
-    SoftMax
-}
-
-impl std::fmt::Debug for ActivationType {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            ActivationType::Sigmoid => write!(f, "Sigmoid"),
-            ActivationType::Relu => write!(f, "Relu"),
-            ActivationType::Tanh => write!(f, "Tanh"),
-            ActivationType::SoftMax => write!(f, "SoftMax"),
-        }
-    }
-}
-
-
-impl Clone for ActivationType {
-    fn clone(&self) -> ActivationType {
-        match self {
-            ActivationType::Sigmoid => ActivationType::Sigmoid,
-            ActivationType::Relu => ActivationType::Relu,
-            ActivationType::Tanh => ActivationType::Tanh,
-            ActivationType::SoftMax => ActivationType::SoftMax
-        }
-    }
-}
-
-pub struct NNLayer {
-    pub intercepts: DVector<f64>,
-    pub weights: DMatrix<f64>,
-    pub activation_type: ActivationType,
-}
-
-pub struct NNModel {
-    pub layers: Vec<NNLayer>
-}
-
-pub struct LayerDefinition {
-    pub activation_type: ActivationType,
-    pub num_activations: usize,
-    pub rand_init_epsilon: f64
-}
-pub struct NeuralNetworkDefinition {
-    pub num_features: usize,
-    pub layers: Vec<LayerDefinition>
-}
-
-

@@ -18,8 +18,10 @@ impl MatrixUtil {
         mat
     }
 
-    pub fn rand_matrix(r: usize, c: usize, e: f64, rng: &mut rand_pcg::Pcg32) -> DMatrix<f64> {
-        let v: Vec<f64> = (0..(r * c)).map(|_| rng.gen_range(-e, e)).collect();
+    pub fn rand_matrix(r: usize, c: usize, rng: &mut rand_pcg::Pcg32) -> DMatrix<f64> {
+        let factor = (2f64 / c as f64).sqrt();
+
+        let v: Vec<f64> = (0..(r * c)).map(|_| rng.gen_range(-0.05, 0.05) * factor).collect();
         DMatrix::from_vec(r, c, v.clone())
     }
 
@@ -36,5 +38,25 @@ impl MatrixUtil {
             pos += dim + 1;
         }
         DMatrix::from_vec(dim + 1, size, v)
+    }
+}
+
+pub struct VectorUtil;
+
+impl VectorUtil {
+    pub fn max_index(v: &DVector<f64>) -> usize {
+        let (mut i, mut max_idx) = (0, 0);
+
+        let mut max = 0.0f64;
+
+        for p in v.data.as_vec() {
+            if *p > max {
+                max = *p;
+                max_idx = i;
+            }
+            i += 1;
+        }
+
+        max_idx
     }
 }
