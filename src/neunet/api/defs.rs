@@ -2,6 +2,8 @@ use nalgebra::{DMatrix, DVector, DVectorSlice};
 use nalgebra::*;
 use rand::Rng;
 
+use crate::neunet::utils::ml::MLOps;
+
 pub enum OptimizationType {
     StochasticGradientDescent,
     BatchGradientDescent,
@@ -15,24 +17,74 @@ pub enum ActivationType {
     SoftMax,
 }
 
+pub struct NNModel {
+    pub num_features: usize,
+    pub num_classes: usize,
+    pub layers: Vec<Layer>,
+}
 
-pub struct NNLayer {
+pub struct HyperParams {
+    pub momentum_beta: f64,
+    pub mini_batch_size: usize,
+    pub learning_rate: f64,
+    pub regularization_type: RegularizationType,
+    pub lambda_regularization: f64,
+}
+
+pub struct LabeledData {
+    pub features: DMatrix<f64>,
+    pub labels: DMatrix<f64>,
+}
+
+pub trait Train {
+    fn train(&mut self,
+             hp: HyperParams,
+             train_data: LabeledData,
+             test_data: LabeledData) -> &NNModel;
+}
+
+pub trait Prediction {
+    fn predict(&mut self, data: &DMatrix<f64>) -> DMatrix<f64>;
+}
+
+
+#[derive(Debug)]
+pub struct EvalData {
+    pub probabilities: DMatrix<f64>,
+    pub truth_one_hot: DMatrix<f64>,
+}
+
+pub struct Layer {
+    pub num_activations: usize,
     pub intercepts: DVector<f64>,
     pub weights: DMatrix<f64>,
     pub activation_type: ActivationType,
+
+    // W * X + B
+    pub z: DVector<f64>,
+    // activation(z)
+    pub a: DVector<f64>,
+    pub dz: DVector<f64>,
+    pub dw: DMatrix<f64>,
+    pub db: DVector<f64>,
+
+    pub DW: DMatrix<f64>,
+    pub DB: DVector<f64>,
+
+    pub momentum_dw: DMatrix<f64>,
+    pub momentum_db: DVector<f64>,
 }
 
-pub struct NNModel {
-    pub layers: Vec<NNLayer>
-}
-
+#[derive(Debug)]
 pub struct LayerDefinition {
     pub activation_type: ActivationType,
     pub num_activations: usize,
 }
 
-pub struct NeuralNetworkDefinition<R: RandomInitializer> {
+#[derive(Debug)]
+pub struct NeuralNetworkArchitecture<R: RandomInitializer> {
     pub num_features: usize,
+    pub num_classes: usize,
     pub layers: Vec<LayerDefinition>,
     pub rand_initializer: R,
 }
@@ -40,6 +92,11 @@ pub struct NeuralNetworkDefinition<R: RandomInitializer> {
 pub struct Metric {
     pub name: String,
     pub value: f64,
+}
+
+pub enum RegularizationType {
+    No_Regularization,
+    L2,
 }
 
 pub trait ConfusionMatrix {}
@@ -55,6 +112,7 @@ pub trait RandomInitializer {
     fn weights(self, r: usize, c: usize, rng: &mut rand_pcg::Pcg32) -> DMatrix<f64>;
 }
 
+#[derive(Debug)]
 pub struct GlorotUniform;
 
 impl RandomInitializer for GlorotUniform {
@@ -67,9 +125,10 @@ impl RandomInitializer for GlorotUniform {
 }
 
 impl Copy for GlorotUniform {}
+
 impl Clone for GlorotUniform {
     fn clone(&self) -> Self {
-        GlorotUniform{}
+        GlorotUniform {}
     }
 }
 
@@ -93,5 +152,16 @@ impl Clone for ActivationType {
             ActivationType::Tanh => ActivationType::Tanh,
             ActivationType::SoftMax => ActivationType::SoftMax
         }
+    }
+}
+
+
+impl std::fmt::Debug for Layer {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "\n\tLayer {{
+        \t\tnum_activations : {:?}
+        \t\tweights : {:?}
+        \t\tactivation_type : {:?}
+    }}", self.num_activations, self.weights.shape(), self.activation_type)
     }
 }

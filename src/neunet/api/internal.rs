@@ -1,83 +1,20 @@
 use nalgebra::*;
+use nalgebra::base::storage::Storage;
 
-use crate::neunet::api::defs::{ActivationType, Metric, NeuralNetworkDefinition, NNModel, RandomInitializer};
+use crate::neunet::api::defs::*;
 use crate::neunet::utils::matrix::MatrixUtil;
 use crate::neunet::utils::ml::MLOps;
 
-trait Optimizer {
-    fn optimize(&self,
-                nn: &mut NeuralNetwork,
-                data: &DMatrix<f64>,
-                labels: &DMatrix<f64>) -> ();
-}
-
-pub enum RegularizationType {
-    No_Regularization,
-    L2,
-}
-
-pub struct GradientDescent {
-    pub momentum_beta: f64,
-    pub mini_batch_size: usize,
-    pub learning_rate: f64,
-    pub regularization_type: RegularizationType,
-    pub lambda_regularization: f64,
-    pub test_func: fn(&DVector<f64>) -> Vec<Metric>,
-}
-
-struct Layer {
-    num_activations: usize,
-    intercepts: DVector<f64>,
-    weights: DMatrix<f64>,
-    activation_type: ActivationType,
-
-    // W * X + B
-    z: DVector<f64>,
-    // activation(z)
-    a: DVector<f64>,
-    dz: DVector<f64>,
-    dw: DMatrix<f64>,
-    db: DVector<f64>,
-
-    DW: DMatrix<f64>,
-    DB: DVector<f64>,
-
-    momentum_dw: DMatrix<f64>,
-    momentum_db: DVector<f64>,
-}
-
-
-impl std::fmt::Debug for Layer {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "\n\tLayer {{
-        \t\tnum_activations : {:?}
-        \t\tweights : {:?}
-        \t\tactivation_type : {:?}
-    }}", self.num_activations, self.weights.shape(), self.activation_type)
-    }
-}
-
-pub struct NeuralNetwork {
-    num_features: usize,
-    layers: Vec<Layer>,
-}
-
-impl std::fmt::Debug for NeuralNetwork {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{:?}", self.layers)
-    }
-}
-
-trait ForwardProp {
+pub trait ForwardProp {
     fn forward_prop(&mut self, x: &DVector<f64>) -> DVector<f64>;
 }
 
 
-trait BackProp {
+pub trait BackProp {
     fn back_prop(&mut self, x: &DVector<f64>, y_hat: &DVector<f64>, y: &DVectorSlice<f64>) -> &Self;
 }
 
-impl ForwardProp for NeuralNetwork {
+impl ForwardProp for NNModel {
     fn forward_prop(&mut self, x: &DVector<f64>) -> DVector<f64> {
         let mut current = x;
         let mut t;
@@ -111,7 +48,7 @@ impl ForwardProp for NeuralNetwork {
     }
 }
 
-impl BackProp for NeuralNetwork {
+impl BackProp for NNModel {
     fn back_prop(&mut self,
                  x: &DVector<f64>,
                  y_hat: &DVector<f64>,
@@ -155,8 +92,8 @@ impl BackProp for NeuralNetwork {
     }
 }
 
-impl NeuralNetwork {
-    pub fn build<R: RandomInitializer + Copy>(nd: NeuralNetworkDefinition<R>, rng: &mut rand_pcg::Pcg32) -> NeuralNetwork {
+impl NNModel {
+    pub fn build<R: RandomInitializer + Copy>(nd: NeuralNetworkArchitecture<R>, rng: &mut rand_pcg::Pcg32) -> NNModel {
         let layers = &nd.layers;
 
         let mut num_inputs = nd.num_features;
@@ -195,23 +132,37 @@ impl NeuralNetwork {
         }
 
 
-        NeuralNetwork {
+        NNModel {
             num_features: nd.num_features,
+            num_classes: nd.num_classes,
             layers: initted,
         }
     }
 }
 
-impl GradientDescent {
-    pub fn optimize<'a>(&self,
-                        nn: &'a mut NeuralNetwork,
-                        data: &DMatrix<f64>,
-                        y: &DMatrix<f64>) -> &'a NeuralNetwork {
+impl Prediction for NNModel {
+    fn predict(&mut self, data: &DMatrix<f64>) -> DMatrix<f64> {
+        let (rows, cols) = data.shape();
+        let mut preds: Vec<f64> = Vec::with_capacity(self.num_classes * cols);
 
-        fn reset_gradients(nn: &mut NeuralNetwork) {
-            let mut num_inputs = nn.num_features;
+        for c in data.column_iter() {
+            let score = self.forward_prop(&DVector::from_column_slice(c.as_slice()));
+            preds.extend(score.data.as_vec());
+        }
+
+        DMatrix::from_vec(self.num_classes, cols, preds)
+    }
+}
+
+impl Train for NNModel {
+    fn train(&mut self,
+             hp: HyperParams,
+             train_data: LabeledData,
+             test_data: LabeledData) -> &NNModel {
+        fn reset_gradients(model: &mut NNModel) {
+            let mut num_inputs = model.num_features;
             let mut i = 0;
-            for mut l in nn.layers.iter_mut() {
+            for mut l in model.layers.iter_mut() {
                 l.dw = DMatrix::from_vec(l.num_activations, num_inputs, vec![0.0_f64; l.num_activations * num_inputs]);
                 l.db = DVector::from_vec(vec![0.0_f64; l.num_activations]);
                 num_inputs = l.num_activations;
@@ -219,14 +170,14 @@ impl GradientDescent {
             }
         }
 
-        fn update_weights(learning_rate: f64, nn: &mut NeuralNetwork) {
+        fn update_weights(learning_rate: f64, nn: &mut NNModel) {
             for mut l in nn.layers.iter_mut() {
                 l.weights = &l.weights - learning_rate * &l.momentum_dw;
                 l.intercepts = &l.intercepts - learning_rate * &l.momentum_db;
             }
         }
 
-        fn l2_reg(nn: &NeuralNetwork) -> f64 {
+        fn l2_reg(nn: &NNModel) -> f64 {
             let mut sum = 0.0;
             for l in &nn.layers {
                 sum += l.weights.data.as_vec().into_iter().map(|e| (*e) * (*e)).sum::<f64>();
@@ -235,7 +186,7 @@ impl GradientDescent {
         }
 
 
-        let (num_features, num_examples) = data.shape();
+        let (num_features, num_examples) = train_data.features.shape();
         let mut converged = false;
 
         let mut iteration = 0;
@@ -244,29 +195,30 @@ impl GradientDescent {
         while !converged {
             println!("Running epoch {}", epoch);
 
-            for k in (0..num_examples).step_by(self.mini_batch_size) {
+            for k in (0..num_examples).step_by(hp.mini_batch_size) {
                 println!("Running iteration {}", iteration);
                 println!("Mini batch start {}", k);
 
                 let mut batch_loss = 0.0_f64;
 
-                reset_gradients(nn);
+                reset_gradients(self);
 
-                for j in 0..self.mini_batch_size {
+                for j in 0..hp.mini_batch_size {
                     let i = k + j; // partition
-                    let x = data.column(i).into();
+                    let x = train_data.features.column(i).into();
 
-                    let y_hat = nn.forward_prop(&x);
-                    batch_loss += MLOps::loss_one_hot(&y.column(i), y_hat.data.as_vec());
-                    nn.back_prop(&x, &y_hat, &y.column(i));
+                    let y_hat = self.forward_prop(&x);
+                    batch_loss += MLOps::loss_one_hot(&train_data.labels.column(i), y_hat.data.as_vec());
+                    self.back_prop(&x, &y_hat, &train_data.labels.column(i));
                 }
 
-                batch_loss = batch_loss / self.mini_batch_size as f64;
 
-                batch_loss += match self.regularization_type {
+                batch_loss = batch_loss / hp.mini_batch_size as f64;
+
+                batch_loss += match hp.regularization_type {
                     RegularizationType::No_Regularization => 0.0,
                     RegularizationType::L2 => {
-                        let r = (self.lambda_regularization / (2.0f64 * self.mini_batch_size as f64)) * l2_reg(&nn);
+                        let r = (hp.lambda_regularization / (2.0f64 * hp.mini_batch_size as f64)) * l2_reg(self);
                         println!("L2 reg {}", r);
                         r
                     }
@@ -276,13 +228,13 @@ impl GradientDescent {
                 println!("Loss for batch {} is {}", k, batch_loss);
 
                 let mut i = 0;
-                for mut l in nn.layers.iter_mut() {
-                    l.dw = &l.dw / self.mini_batch_size as f64;
-                    l.db = &l.db / self.mini_batch_size as f64;
-                    match self.regularization_type {
+                for mut l in self.layers.iter_mut() {
+                    l.dw = &l.dw / hp.mini_batch_size as f64;
+                    l.db = &l.db / hp.mini_batch_size as f64;
+                    match hp.regularization_type {
                         RegularizationType::No_Regularization => (),
                         RegularizationType::L2 =>
-                            l.dw = &l.dw + self.lambda_regularization * &l.weights
+                            l.dw = &l.dw + hp.lambda_regularization * &l.weights
                     };
                     // println!("  After back-prop Layer {} grads {}", i, l.dw);
                     i += 1;
@@ -290,25 +242,24 @@ impl GradientDescent {
 
                 if iteration > 0 {
                     // Apply  weighted moving averages
-                    for mut l in nn.layers.iter_mut() {
-                        l.momentum_dw = self.momentum_beta * &l.momentum_dw + (1. - self.momentum_beta) * &l.dw;
-                        l.momentum_db = self.momentum_beta * &l.momentum_db + (1. - self.momentum_beta) * &l.db;
+                    for mut l in self.layers.iter_mut() {
+                        l.momentum_dw = hp.momentum_beta * &l.momentum_dw + (1. - hp.momentum_beta) * &l.dw;
+                        l.momentum_db = hp.momentum_beta * &l.momentum_db + (1. - hp.momentum_beta) * &l.db;
                     }
                 } else {
-                    for mut l in nn.layers.iter_mut() {
+                    for mut l in self.layers.iter_mut() {
                         let (r, c) = l.dw.shape();
                         l.momentum_dw = DMatrix::from_fn(r, c, |a, b| 0.0);
                         l.momentum_db = DVector::from_vec(vec![0.0; r]);
                     }
                 }
 
-                update_weights(self.learning_rate, nn);
+                update_weights(hp.learning_rate, self);
                 iteration += 1;
             }
             epoch += 1
         }
-        nn
+
+        self
     }
 }
-
-
