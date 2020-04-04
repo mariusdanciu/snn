@@ -55,6 +55,7 @@ impl BackProp for NNModel {
                  x: &DVector<f64>,
                  y_hat: &DVector<f64>,
                  y: &DVectorSlice<f64>) -> &Self {
+
         let l = &mut self.layers;
         let mut idx = l.len() - 1;
 
@@ -186,36 +187,42 @@ impl Train for NNModel {
         fn test(model: &mut NNModel, features: &DMatrixSlice<f64>, labels: &DMatrixSlice<f64>) -> f64 {
             let mut confusion = DMatrix::<usize>::zeros(model.num_classes, model.num_classes);
 
+            let mut corrects = 0;
+            let mut incorrects = 0;
             for c in 0..features.shape().1 {
                 let predicted = model.forward_prop(&DVector::from_column_slice(features.column(c).as_slice()));
                 let actual = labels.column(c);
 
-                let predicted_class = VectorUtil::max_index(&predicted.data.as_vec());
-                let actual_class = VectorUtil::max_index(&actual.as_slice().to_vec());
+                let predicted_class = predicted.argmax().0;
+                let actual_class = actual.argmax().0;
 
-                confusion[(predicted_class, actual_class)] += 1;
+                confusion[(actual_class, predicted_class)] += 1;
+
+                if predicted_class == actual_class {
+                    corrects += 1;
+                } else {
+                    incorrects += 1;
+                }
             }
             println!("\t\tConfusion matrix {}", confusion);
 
             let total: usize = confusion.data.as_vec().iter().sum();
 
-
-            let mut tp_sum = 0;
             for c in 0..model.num_classes {
                 let col_sum: usize = confusion.column(c).iter().sum();
                 let row_sum: usize = confusion.row(c).iter().sum();
 
                 let t_p: usize = confusion[(c, c)];
-                tp_sum += t_p;
-                let t_n: usize = total - (col_sum - t_p  + row_sum - t_p);
+                let f_p: usize = col_sum - t_p;
+                let f_n: usize = row_sum - t_p;
 
-                let f_n: usize = col_sum - t_p;
-                let f_p: usize = row_sum - t_p;
+                let t_n: usize = total - t_p - f_p - f_n;
+
                 let accuracy: f64 = (t_p + t_n) as f64 / (t_p + t_n + f_p + f_n) as f64;
 
-                //println!("Accuracy for class {} = {}", c, accuracy);
+                println!("\t\tAccuracy for class {} = {}", c, accuracy);
             }
-            tp_sum as f64 / total as f64
+            corrects as f64 / (corrects as f64 + incorrects as f64)
         }
 
 
@@ -300,8 +307,8 @@ impl Train for NNModel {
                 update_weights(hp.learning_rate, self);
 
                 let train_accuracy = test(self,
-                     &train_data.features.slice((0, k), (self.num_features, batch_size)),
-                     &train_data.labels.slice((0, k), (self.num_classes, batch_size)));
+                                          &train_data.features.slice((0, k), (self.num_features, batch_size)),
+                                          &train_data.labels.slice((0, k), (self.num_classes, batch_size)));
 
                 let test_accuracy = test(self, &test_data.features, &test_data.labels);
 

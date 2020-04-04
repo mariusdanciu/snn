@@ -72,6 +72,7 @@ fn main() {
     let mut confusion = DMatrix::<usize>::zeros(nn.num_features, nn.num_features);
 
     Normalizer::min_max(&mut train_data);
+    Normalizer::min_max(&mut test_data);
 
     let labels_one_hot = MatrixUtil::one_hot(&train_labels);
 
@@ -82,8 +83,8 @@ fn main() {
     nn.train(
         HyperParams {
             momentum_beta: 0.9_f64,
-            mini_batch_size: 300,
-            learning_rate: 0.02_f64,
+            mini_batch_size: 200,
+            learning_rate: 0.05_f64,
             l2_regularization: None,
         },
         LabeledData {
@@ -91,7 +92,7 @@ fn main() {
             labels: labels_one_hot.slice((0, 0), (nn.num_classes, training_examples)),
         },
         LabeledData {
-            features: test_data.slice((0, 0), (nn.num_features, 100)),
-            labels: test_labels_one_hot.slice((0, 0), (nn.num_classes, 100)),
+            features: test_data.slice((0, 0), (nn.num_features, 200)),
+            labels: test_labels_one_hot.slice((0, 0), (nn.num_classes, 200)),
         });
 }
