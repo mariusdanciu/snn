@@ -49,24 +49,28 @@ impl MLOps {
             sum += e.exp();
         }
 
-        DVector::from_vec(v.data.as_vec().iter().map(|e| e.exp()).collect()) / sum
+        DVector::from_vec(v.data.as_vec().iter().map(|e| e.exp() / sum).collect())
     }
 
     pub fn soft_max_derivative(v: &DVector<f64>) -> DVector<f64> {
         let sm = MLOps::soft_max(&v);
 
-        sm.map(|e| e * (1. - e))
+        sm.map(|e| e * (1.0f64 - e))
     }
 
-    pub fn loss_from_pred(y: f64, y_hat: f64) -> f64 {
-        let loss = -(y * y_hat.ln() + (1. - y) * (1. - y_hat).ln());
-        loss
+
+    pub fn binary_cross_entropy(y: f64, y_hat: f64) -> f64 {
+        -(y * y_hat.ln() + (1. - y) * (1. - y_hat).ln())
     }
 
-    pub fn loss_one_hot(y_v: &DVectorSlice<f64>, y_hat_v: &Vec<f64>) -> f64 {
+    pub fn cross_entropy(y: f64, y_hat: f64) -> f64 {
+        -(y * (y_hat).ln())
+    }
+
+    pub fn cross_entropy_one_hot(y_v: &DVectorSlice<f64>, y_hat_v: &Vec<f64>) -> f64 {
         let mut sum = 0.0_f64;
         for e in 0..y_v.len() {
-            sum += MLOps::loss_from_pred(y_v[e], y_hat_v[e]);
+            sum += MLOps::cross_entropy(y_v[e], y_hat_v[e]);
         }
         sum
     }

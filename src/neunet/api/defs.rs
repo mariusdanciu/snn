@@ -1,5 +1,6 @@
 use nalgebra::{DMatrix, DVector, DVectorSlice};
 use nalgebra::*;
+use rand::distributions::{Distribution, Normal};
 use rand::Rng;
 
 use crate::neunet::utils::ml::MLOps;
@@ -17,6 +18,14 @@ pub enum ActivationType {
     SoftMax,
 }
 
+pub enum Metric {
+    accuracy,
+    precision,
+    recall,
+    f1_score,
+    au_roc,
+}
+
 pub struct NNModel {
     pub num_features: usize,
     pub num_classes: usize,
@@ -27,13 +36,18 @@ pub struct HyperParams {
     pub momentum_beta: f64,
     pub mini_batch_size: usize,
     pub learning_rate: f64,
-    pub regularization_type: RegularizationType,
-    pub lambda_regularization: f64,
+    pub l2_regularization: Option<f64>,
 }
 
-pub struct LabeledData {
-    pub features: DMatrix<f64>,
-    pub labels: DMatrix<f64>,
+#[derive(Debug)]
+pub struct LabeledData<'a> {
+    pub features: DMatrixSlice<'a, f64>,
+    pub labels: DMatrixSlice<'a, f64>,
+}
+
+pub struct Eval<'a> {
+    pub test_data: LabeledData<'a>,
+    pub metrics: Vec<Metric>,
 }
 
 pub trait Train {
@@ -68,9 +82,6 @@ pub struct Layer {
     pub dw: DMatrix<f64>,
     pub db: DVector<f64>,
 
-    pub DW: DMatrix<f64>,
-    pub DB: DVector<f64>,
-
     pub momentum_dw: DMatrix<f64>,
     pub momentum_db: DVector<f64>,
 }
@@ -87,11 +98,6 @@ pub struct NeuralNetworkArchitecture<R: RandomInitializer> {
     pub num_classes: usize,
     pub layers: Vec<LayerDefinition>,
     pub rand_initializer: R,
-}
-
-pub struct Metric {
-    pub name: String,
-    pub value: f64,
 }
 
 pub enum RegularizationType {
@@ -113,22 +119,30 @@ pub trait RandomInitializer {
 }
 
 #[derive(Debug)]
-pub struct GlorotUniform;
+pub struct HeUniform;
 
-impl RandomInitializer for GlorotUniform {
+
+impl RandomInitializer for HeUniform {
     fn weights(self, r: usize, c: usize, rng: &mut rand_pcg::Pcg32) -> DMatrix<f64> {
-        let factor = (6f64 / (r + c) as f64).sqrt();
+        let normal = Normal::new(0.0, 1.0);
 
-        let v: Vec<f64> = (0..(r * c)).map(|_| rng.gen_range(-factor, factor)).collect();
-        DMatrix::from_vec(r, c, v)
+        let factor = (2.0 / c as f64).sqrt();
+
+        let v: Vec<f64> = (0..(r * c)).map(|_| {
+            let r = normal.sample(rng);
+            r * factor
+        }).collect();
+        let m = DMatrix::from_vec(r, c, v);
+        // println!("W {}", m);
+        m
     }
 }
 
-impl Copy for GlorotUniform {}
+impl Copy for HeUniform {}
 
-impl Clone for GlorotUniform {
+impl Clone for HeUniform {
     fn clone(&self) -> Self {
-        GlorotUniform {}
+        HeUniform {}
     }
 }
 

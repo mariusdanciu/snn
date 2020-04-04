@@ -33,26 +33,30 @@ fn main() {
     let test = IdxFile.load_data(String::from("./t10k-images-idx3-ubyte"), String::from("./t10k-labels-idx1-ubyte"));
 
     println!("Data read in {} ms", (end - start).as_millis());
-    let (mut img, mut labels) = train.unwrap();
+    let (mut train_data, mut train_labels) = train.unwrap();
     let (mut test_data, mut test_labels) = test.unwrap();
 
-    println!("Shapes {:?}", img.shape());
-    let r = img.column(30);
-    let label = labels[30];
+    println!("Shapes {:?}", train_data.shape());
+    let r = train_data.column(30);
+    let label = train_labels[30];
 
 
-    println!("Img {}", DMatrix::from_row_slice(28, 28, r.as_slice()));
-    println!("Label {}", label);
+    //println!("Img {}", DMatrix::from_row_slice(28, 28, r.as_slice()));
+    //println!("Label {}", label);
 
 
-    let arch = NeuralNetworkArchitecture::<GlorotUniform> {
+    let arch = NeuralNetworkArchitecture::<HeUniform> {
         num_features: 784,
         num_classes: 10,
-        rand_initializer: GlorotUniform {},
+        rand_initializer: HeUniform {},
         layers: vec![
             LayerDefinition {
                 activation_type: ActivationType::Relu,
-                num_activations: 128,
+                num_activations: 50,
+            },
+            LayerDefinition {
+                activation_type: ActivationType::Relu,
+                num_activations: 50,
             },
             LayerDefinition {
                 activation_type: ActivationType::SoftMax,
@@ -62,31 +66,32 @@ fn main() {
 
     println!("NeuralNetwork {:?}", arch);
 
-    let mut nn = NNModel::build(arch, &mut rng);
 
+    let mut nn = NNModel::build(arch, &mut rng);
 
     let mut confusion = DMatrix::<usize>::zeros(nn.num_features, nn.num_features);
 
-    Normalizer::min_max(&mut img);
+    Normalizer::min_max(&mut train_data);
 
-    let one_hot = MatrixUtil::one_hot(&labels);
+    let labels_one_hot = MatrixUtil::one_hot(&train_labels);
 
-    let test_one_hot = MatrixUtil::one_hot(&test_labels);
+    let test_labels_one_hot = MatrixUtil::one_hot(&test_labels);
+
+    let training_examples = train_data.shape().1;
 
     nn.train(
         HyperParams {
             momentum_beta: 0.9_f64,
-            mini_batch_size: 500,
-            learning_rate: 0.1_f64,
-            regularization_type: RegularizationType::No_Regularization,
-            lambda_regularization: 10.0,
+            mini_batch_size: 300,
+            learning_rate: 0.02_f64,
+            l2_regularization: None,
         },
         LabeledData {
-            features: img,
-            labels: one_hot,
+            features: train_data.slice((0, 0), (nn.num_features, training_examples)),
+            labels: labels_one_hot.slice((0, 0), (nn.num_classes, training_examples)),
         },
         LabeledData {
-            features: test_data,
-            labels: test_one_hot,
+            features: test_data.slice((0, 0), (nn.num_features, 100)),
+            labels: test_labels_one_hot.slice((0, 0), (nn.num_classes, 100)),
         });
 }

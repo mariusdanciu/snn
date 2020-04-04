@@ -30,10 +30,6 @@ impl IdxFile {
         let img_size = (x_size * y_size) as usize;
 
 
-        println!("Num images: {}", num);
-        println!("X size: {}", x_size);
-        println!("Y size: {}", y_size);
-        println!("Img size {}", img_size);
 
         let mut out: Vec<u8> = vec![0; 0];
 
@@ -41,7 +37,6 @@ impl IdxFile {
 
         let out_f64: Vec<f64> = out.iter().map(|b| *b as f64).collect::<Vec<f64>>();
 
-        println!("read_bytes {}", read_bytes);
         let r = DMatrix::from_vec(img_size, num, out_f64);
         Ok(r)
     }

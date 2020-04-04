@@ -1,8 +1,10 @@
+use std::slice;
+
 use nalgebra::*;
 use nalgebra::base::storage::Storage;
 
 use crate::neunet::api::defs::*;
-use crate::neunet::utils::matrix::MatrixUtil;
+use crate::neunet::utils::matrix::*;
 use crate::neunet::utils::ml::MLOps;
 
 pub trait ForwardProp {
@@ -57,8 +59,8 @@ impl BackProp for NNModel {
         let mut idx = l.len() - 1;
 
         l[idx].dz = y_hat - y;
-        l[idx].dw = &l[idx].dz * &l[idx - 1].a.transpose();
-        l[idx].db = l[idx].dz.clone();
+        l[idx].dw = &l[idx].dw + &l[idx].dz * &l[idx - 1].a.transpose();
+        l[idx].db = &l[idx].db + &l[idx].dz;
 
         idx -= 1;
         let mut done = false;
@@ -80,7 +82,6 @@ impl BackProp for NNModel {
             }
 
             l[idx].db = &l[idx].db + l[idx].dz.clone();
-
             if idx == 0 {
                 done = true;
             } else {
@@ -121,9 +122,6 @@ impl NNModel {
                 dw: dwl.clone(),
                 db: dbl.clone(),
 
-                DW: dwl.clone(),
-                DB: dbl.clone(),
-
                 momentum_dw: dwl.clone(),
                 momentum_db: dbl.clone(),
             });
@@ -160,24 +158,24 @@ impl Train for NNModel {
              train_data: LabeledData,
              test_data: LabeledData) -> &NNModel {
         fn reset_gradients(model: &mut NNModel) {
-            let mut num_inputs = model.num_features;
-            let mut i = 0;
             for mut l in model.layers.iter_mut() {
-                l.dw = DMatrix::from_vec(l.num_activations, num_inputs, vec![0.0_f64; l.num_activations * num_inputs]);
-                l.db = DVector::from_vec(vec![0.0_f64; l.num_activations]);
-                num_inputs = l.num_activations;
-                i += 1;
+                for mut e in l.dw.iter_mut() {
+                    *e = 0.0f64;
+                }
+                for mut e in l.db.iter_mut() {
+                    *e = 0.0f64;
+                }
             }
         }
 
         fn update_weights(learning_rate: f64, nn: &mut NNModel) {
             for mut l in nn.layers.iter_mut() {
-                l.weights = &l.weights - learning_rate * &l.momentum_dw;
-                l.intercepts = &l.intercepts - learning_rate * &l.momentum_db;
+                l.weights = &l.weights - learning_rate * &l.dw;
+                l.intercepts = &l.intercepts - learning_rate * &l.db;
             }
         }
 
-        fn l2_reg(nn: &NNModel) -> f64 {
+        fn norm(nn: &NNModel) -> f64 {
             let mut sum = 0.0;
             for l in &nn.layers {
                 sum += l.weights.data.as_vec().into_iter().map(|e| (*e) * (*e)).sum::<f64>();
@@ -185,8 +183,45 @@ impl Train for NNModel {
             sum
         }
 
+        fn test(model: &mut NNModel, features: &DMatrixSlice<f64>, labels: &DMatrixSlice<f64>) -> f64 {
+            let mut confusion = DMatrix::<usize>::zeros(model.num_classes, model.num_classes);
+
+            for c in 0..features.shape().1 {
+                let predicted = model.forward_prop(&DVector::from_column_slice(features.column(c).as_slice()));
+                let actual = labels.column(c);
+
+                let predicted_class = VectorUtil::max_index(&predicted.data.as_vec());
+                let actual_class = VectorUtil::max_index(&actual.as_slice().to_vec());
+
+                confusion[(predicted_class, actual_class)] += 1;
+            }
+            println!("\t\tConfusion matrix {}", confusion);
+
+            let total: usize = confusion.data.as_vec().iter().sum();
+
+
+            let mut tp_sum = 0;
+            for c in 0..model.num_classes {
+                let col_sum: usize = confusion.column(c).iter().sum();
+                let row_sum: usize = confusion.row(c).iter().sum();
+
+                let t_p: usize = confusion[(c, c)];
+                tp_sum += t_p;
+                let t_n: usize = total - (col_sum - t_p  + row_sum - t_p);
+
+                let f_n: usize = col_sum - t_p;
+                let f_p: usize = row_sum - t_p;
+                let accuracy: f64 = (t_p + t_n) as f64 / (t_p + t_n + f_p + f_n) as f64;
+
+                //println!("Accuracy for class {} = {}", c, accuracy);
+            }
+            tp_sum as f64 / total as f64
+        }
+
 
         let (num_features, num_examples) = train_data.features.shape();
+        println!("Train data features {} examples {}", num_features, num_examples);
+
         let mut converged = false;
 
         let mut iteration = 0;
@@ -196,48 +231,56 @@ impl Train for NNModel {
             println!("Running epoch {}", epoch);
 
             for k in (0..num_examples).step_by(hp.mini_batch_size) {
-                println!("Running iteration {}", iteration);
-                println!("Mini batch start {}", k);
+                println!("\tRunning iteration {}", iteration);
+                println!("\t\tMini batch start {}", k);
 
                 let mut batch_loss = 0.0_f64;
 
                 reset_gradients(self);
 
-                for j in 0..hp.mini_batch_size {
+                let batch_size = if k + hp.mini_batch_size > num_examples {
+                    num_examples - k
+                } else {
+                    hp.mini_batch_size
+                };
+
+                let mean_fact = 1.0f64 / batch_size as f64;
+
+                let cost_reg = match hp.l2_regularization {
+                    None =>
+                        0.0f64,
+                    Some(reg) =>
+                        0.5f64 * (reg * norm(self))
+                };
+
+                println!("\t\tRegularization {}", cost_reg);
+
+                for j in 0..batch_size {
                     let i = k + j; // partition
                     let x = train_data.features.column(i).into();
 
                     let y_hat = self.forward_prop(&x);
-                    batch_loss += MLOps::loss_one_hot(&train_data.labels.column(i), y_hat.data.as_vec());
+                    batch_loss += MLOps::cross_entropy_one_hot(&train_data.labels.column(i), y_hat.data.as_vec());
+
                     self.back_prop(&x, &y_hat, &train_data.labels.column(i));
                 }
 
 
-                batch_loss = batch_loss / hp.mini_batch_size as f64;
-
-                batch_loss += match hp.regularization_type {
-                    RegularizationType::No_Regularization => 0.0,
-                    RegularizationType::L2 => {
-                        let r = (hp.lambda_regularization / (2.0f64 * hp.mini_batch_size as f64)) * l2_reg(self);
-                        println!("L2 reg {}", r);
-                        r
-                    }
-                };
+                batch_loss = mean_fact * (batch_loss + cost_reg);
 
 
-                println!("Loss for batch {} is {}", k, batch_loss);
+                println!("\t\tLoss for batch {} is {}", k, batch_loss);
 
-                let mut i = 0;
+
                 for mut l in self.layers.iter_mut() {
-                    l.dw = &l.dw / hp.mini_batch_size as f64;
-                    l.db = &l.db / hp.mini_batch_size as f64;
-                    match hp.regularization_type {
-                        RegularizationType::No_Regularization => (),
-                        RegularizationType::L2 =>
-                            l.dw = &l.dw + hp.lambda_regularization * &l.weights
+                    match hp.l2_regularization {
+                        None =>
+                            l.dw = mean_fact * &l.dw,
+                        Some(reg) =>
+                            l.dw = mean_fact * (&l.dw + reg * &l.weights),
                     };
-                    // println!("  After back-prop Layer {} grads {}", i, l.dw);
-                    i += 1;
+
+                    l.db = mean_fact * &l.db;
                 }
 
                 if iteration > 0 {
@@ -255,6 +298,14 @@ impl Train for NNModel {
                 }
 
                 update_weights(hp.learning_rate, self);
+
+                let train_accuracy = test(self,
+                     &train_data.features.slice((0, k), (self.num_features, batch_size)),
+                     &train_data.labels.slice((0, k), (self.num_classes, batch_size)));
+
+                let test_accuracy = test(self, &test_data.features, &test_data.labels);
+
+                println!("\t\t--------> Train accuracy {} Test accuracy {}", train_accuracy, test_accuracy);
                 iteration += 1;
             }
             epoch += 1
