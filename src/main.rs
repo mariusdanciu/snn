@@ -92,7 +92,7 @@ fn main() {
             labels: labels_one_hot.slice((0, 0), (nn.num_classes, training_examples)),
         },
         LabeledData {
-            features: test_data.slice((0, 0), (nn.num_features, 200)),
-            labels: test_labels_one_hot.slice((0, 0), (nn.num_classes, 200)),
+            features: test_data.slice((0, 0), (nn.num_features, 1000)),
+            labels: test_labels_one_hot.slice((0, 0), (nn.num_classes, 1000)),
         });
 }

@@ -4,6 +4,7 @@ use nalgebra::*;
 use nalgebra::base::storage::Storage;
 
 use crate::neunet::api::defs::*;
+use crate::neunet::graphics::plotter::*;
 use crate::neunet::utils::matrix::*;
 use crate::neunet::utils::ml::MLOps;
 
@@ -55,7 +56,6 @@ impl BackProp for NNModel {
                  x: &DVector<f64>,
                  y_hat: &DVector<f64>,
                  y: &DVectorSlice<f64>) -> &Self {
-
         let l = &mut self.layers;
         let mut idx = l.len() - 1;
 
@@ -234,6 +234,9 @@ impl Train for NNModel {
         let mut iteration = 0;
         let mut epoch = 0;
 
+        let mut train_acc_his = Vec::new();
+        let mut test_acc_his = Vec::new();
+
         while !converged {
             println!("Running epoch {}", epoch);
 
@@ -311,6 +314,12 @@ impl Train for NNModel {
                                           &train_data.labels.slice((0, k), (self.num_classes, batch_size)));
 
                 let test_accuracy = test(self, &test_data.features, &test_data.labels);
+
+
+                train_acc_his.push(train_accuracy as f32);
+                test_acc_his.push(test_accuracy as f32);
+
+                plot_data(String::from("./train.png"), &train_acc_his, &test_acc_his);
 
                 println!("\t\t--------> Train accuracy {} Test accuracy {}", train_accuracy, test_accuracy);
                 iteration += 1;
