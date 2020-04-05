@@ -5,6 +5,7 @@ A Neural Network library written in Rust. Training on MNIST data set with follow
 2. Softmax classifier
 3. Minibatch size 200
 4. Learning rate 0.05
+5. No regularization
 
 
 After 2 epochs ~ 93 % accuracy using 1000 examples from the test data-set. The train-test accuracy curve is this :
@@ -15,3 +16,4 @@ The library supports:
 1. L2 regularization
 2. Momentum optimizer (RMSProp and Adam will follow)
 3. Only Dense layers so far.
+4. No GPU acceleration yet
