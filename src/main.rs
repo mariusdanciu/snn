@@ -21,7 +21,7 @@ fn main() {
     const INC: u64 = 11634580027462260723;
     let mut rng = rand_pcg::Pcg32::new(213424234, INC);
 
-    let rand_epsilon = 0.03_f64;
+    let rand_epsilon = 0.03_f32;
 
     let start = SystemTime::now().duration_since(UNIX_EPOCH)
         .expect("Time went backwards");
@@ -82,9 +82,9 @@ fn main() {
 
     nn.train(
         HyperParams {
-            momentum_beta: 0.9_f64,
+            momentum_beta: 0.9_f32,
             mini_batch_size: 200,
-            learning_rate: 0.05_f64,
+            learning_rate: 0.05_f32,
             l2_regularization: None,
         },
         LabeledData {
@@ -92,7 +92,7 @@ fn main() {
             labels: labels_one_hot.slice((0, 0), (nn.num_classes, training_examples)),
         },
         LabeledData {
-            features: test_data.slice((0, 0), (nn.num_features, 1000)),
-            labels: test_labels_one_hot.slice((0, 0), (nn.num_classes, 1000)),
+            features: test_data.slice((0, 0), (nn.num_features, 10000)),
+            labels: test_labels_one_hot.slice((0, 0), (nn.num_classes, 10000)),
         });
 }

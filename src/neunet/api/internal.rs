@@ -9,16 +9,16 @@ use crate::neunet::utils::matrix::*;
 use crate::neunet::utils::ml::MLOps;
 
 pub trait ForwardProp {
-    fn forward_prop(&mut self, x: &DVector<f64>) -> DVector<f64>;
+    fn forward_prop(&mut self, x: &DVector<f32>) -> DVector<f32>;
 }
 
 
 pub trait BackProp {
-    fn back_prop(&mut self, x: &DVector<f64>, y_hat: &DVector<f64>, y: &DVectorSlice<f64>) -> &Self;
+    fn back_prop(&mut self, x: &DVector<f32>, y_hat: &DVector<f32>, y: &DVectorSlice<f32>) -> &Self;
 }
 
 impl ForwardProp for NNModel {
-    fn forward_prop(&mut self, x: &DVector<f64>) -> DVector<f64> {
+    fn forward_prop(&mut self, x: &DVector<f32>) -> DVector<f32> {
         let mut current = x;
         let mut t;
 
@@ -53,9 +53,9 @@ impl ForwardProp for NNModel {
 
 impl BackProp for NNModel {
     fn back_prop(&mut self,
-                 x: &DVector<f64>,
-                 y_hat: &DVector<f64>,
-                 y: &DVectorSlice<f64>) -> &Self {
+                 x: &DVector<f32>,
+                 y_hat: &DVector<f32>,
+                 y: &DVectorSlice<f32>) -> &Self {
         let l = &mut self.layers;
         let mut idx = l.len() - 1;
 
@@ -106,19 +106,19 @@ impl NNModel {
             let w = initializer.weights(l.num_activations,
                                         num_inputs,
                                         rng);
-            let dwl = DMatrix::from_vec(l.num_activations, num_inputs, vec![0.0_f64; l.num_activations * num_inputs]);
-            let dbl = DVector::from_vec(vec![0.0_f64; l.num_activations]);
+            let dwl = DMatrix::from_vec(l.num_activations, num_inputs, vec![0.0_f32; l.num_activations * num_inputs]);
+            let dbl = DVector::from_vec(vec![0.0_f32; l.num_activations]);
 
             initted.push(Layer {
                 num_activations: l.num_activations,
-                intercepts: DVector::from_vec(vec![0.0_f64; l.num_activations]),
+                intercepts: DVector::from_vec(vec![0.0_f32; l.num_activations]),
                 weights: w.clone(),
                 activation_type: l.activation_type.clone(),
 
                 // Dummy inits
-                z: DVector::from_vec(vec![0.0_f64; l.num_activations]),
-                a: DVector::from_vec(vec![0.0_f64; l.num_activations]),
-                dz: DVector::from_vec(vec![0.0_f64; l.num_activations]),
+                z: DVector::from_vec(vec![0.0_f32; l.num_activations]),
+                a: DVector::from_vec(vec![0.0_f32; l.num_activations]),
+                dz: DVector::from_vec(vec![0.0_f32; l.num_activations]),
 
                 dw: dwl.clone(),
                 db: dbl.clone(),
@@ -140,9 +140,9 @@ impl NNModel {
 }
 
 impl Prediction for NNModel {
-    fn predict(&mut self, data: &DMatrix<f64>) -> DMatrix<f64> {
+    fn predict(&mut self, data: &DMatrix<f32>) -> DMatrix<f32> {
         let (rows, cols) = data.shape();
-        let mut preds: Vec<f64> = Vec::with_capacity(self.num_classes * cols);
+        let mut preds: Vec<f32> = Vec::with_capacity(self.num_classes * cols);
 
         for c in data.column_iter() {
             let score = self.forward_prop(&DVector::from_column_slice(c.as_slice()));
@@ -161,30 +161,30 @@ impl Train for NNModel {
         fn reset_gradients(model: &mut NNModel) {
             for mut l in model.layers.iter_mut() {
                 for mut e in l.dw.iter_mut() {
-                    *e = 0.0f64;
+                    *e = 0.0f32;
                 }
                 for mut e in l.db.iter_mut() {
-                    *e = 0.0f64;
+                    *e = 0.0f32;
                 }
             }
         }
 
-        fn update_weights(learning_rate: f64, nn: &mut NNModel) {
+        fn update_weights(learning_rate: f32, nn: &mut NNModel) {
             for mut l in nn.layers.iter_mut() {
                 l.weights = &l.weights - learning_rate * &l.dw;
                 l.intercepts = &l.intercepts - learning_rate * &l.db;
             }
         }
 
-        fn norm(nn: &NNModel) -> f64 {
+        fn norm(nn: &NNModel) -> f32 {
             let mut sum = 0.0;
             for l in &nn.layers {
-                sum += l.weights.data.as_vec().into_iter().map(|e| (*e) * (*e)).sum::<f64>();
+                sum += l.weights.data.as_vec().into_iter().map(|e| (*e) * (*e)).sum::<f32>();
             }
             sum
         }
 
-        fn test(model: &mut NNModel, features: &DMatrixSlice<f64>, labels: &DMatrixSlice<f64>) -> f64 {
+        fn test(model: &mut NNModel, features: &DMatrixSlice<f32>, labels: &DMatrixSlice<f32>) -> f32 {
             let mut confusion = DMatrix::<usize>::zeros(model.num_classes, model.num_classes);
 
             let mut corrects = 0;
@@ -218,11 +218,11 @@ impl Train for NNModel {
 
                 let t_n: usize = total - t_p - f_p - f_n;
 
-                let accuracy: f64 = (t_p + t_n) as f64 / (t_p + t_n + f_p + f_n) as f64;
+                let accuracy: f32 = (t_p + t_n) as f32 / (t_p + t_n + f_p + f_n) as f32;
 
                 println!("\t\tAccuracy for class {} = {}", c, accuracy);
             }
-            corrects as f64 / (corrects as f64 + incorrects as f64)
+            corrects as f32 / (corrects as f32 + incorrects as f32)
         }
 
 
@@ -244,7 +244,7 @@ impl Train for NNModel {
                 println!("\tRunning iteration {}", iteration);
                 println!("\t\tMini batch start {}", k);
 
-                let mut batch_loss = 0.0_f64;
+                let mut batch_loss = 0.0_f32;
 
                 reset_gradients(self);
 
@@ -254,13 +254,13 @@ impl Train for NNModel {
                     hp.mini_batch_size
                 };
 
-                let mean_fact = 1.0f64 / batch_size as f64;
+                let mean_fact = 1.0f32 / batch_size as f32;
 
                 let cost_reg = match hp.l2_regularization {
                     None =>
-                        0.0f64,
+                        0.0f32,
                     Some(reg) =>
-                        0.5f64 * (reg * norm(self))
+                        0.5f32 * (reg * norm(self))
                 };
 
                 println!("\t\tRegularization {}", cost_reg);

@@ -3,7 +3,7 @@ use nalgebra::*;
 pub struct Normalizer;
 
 impl Normalizer {
-    pub fn min_max(features: &mut DMatrix<f64>) {
+    pub fn min_max(features: &mut DMatrix<f32>) {
         let (rows, cols) = features.shape();
 
         for c in 0..cols {

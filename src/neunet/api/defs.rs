@@ -33,16 +33,16 @@ pub struct NNModel {
 }
 
 pub struct HyperParams {
-    pub momentum_beta: f64,
+    pub momentum_beta: f32,
     pub mini_batch_size: usize,
-    pub learning_rate: f64,
-    pub l2_regularization: Option<f64>,
+    pub learning_rate: f32,
+    pub l2_regularization: Option<f32>,
 }
 
 #[derive(Debug)]
 pub struct LabeledData<'a> {
-    pub features: DMatrixSlice<'a, f64>,
-    pub labels: DMatrixSlice<'a, f64>,
+    pub features: DMatrixSlice<'a, f32>,
+    pub labels: DMatrixSlice<'a, f32>,
 }
 
 pub struct Eval<'a> {
@@ -58,32 +58,32 @@ pub trait Train {
 }
 
 pub trait Prediction {
-    fn predict(&mut self, data: &DMatrix<f64>) -> DMatrix<f64>;
+    fn predict(&mut self, data: &DMatrix<f32>) -> DMatrix<f32>;
 }
 
 
 #[derive(Debug)]
 pub struct EvalData {
-    pub probabilities: DMatrix<f64>,
-    pub truth_one_hot: DMatrix<f64>,
+    pub probabilities: DMatrix<f32>,
+    pub truth_one_hot: DMatrix<f32>,
 }
 
 pub struct Layer {
     pub num_activations: usize,
-    pub intercepts: DVector<f64>,
-    pub weights: DMatrix<f64>,
+    pub intercepts: DVector<f32>,
+    pub weights: DMatrix<f32>,
     pub activation_type: ActivationType,
 
     // W * X + B
-    pub z: DVector<f64>,
+    pub z: DVector<f32>,
     // activation(z)
-    pub a: DVector<f64>,
-    pub dz: DVector<f64>,
-    pub dw: DMatrix<f64>,
-    pub db: DVector<f64>,
+    pub a: DVector<f32>,
+    pub dz: DVector<f32>,
+    pub dw: DMatrix<f32>,
+    pub db: DVector<f32>,
 
-    pub momentum_dw: DMatrix<f64>,
-    pub momentum_db: DVector<f64>,
+    pub momentum_dw: DMatrix<f32>,
+    pub momentum_db: DVector<f32>,
 }
 
 #[derive(Debug)]
@@ -115,7 +115,7 @@ impl ConfusionMatrix {
 }
 
 pub trait RandomInitializer {
-    fn weights(self, r: usize, c: usize, rng: &mut rand_pcg::Pcg32) -> DMatrix<f64>;
+    fn weights(self, r: usize, c: usize, rng: &mut rand_pcg::Pcg32) -> DMatrix<f32>;
 }
 
 #[derive(Debug)]
@@ -123,13 +123,13 @@ pub struct HeUniform;
 
 
 impl RandomInitializer for HeUniform {
-    fn weights(self, r: usize, c: usize, rng: &mut rand_pcg::Pcg32) -> DMatrix<f64> {
+    fn weights(self, r: usize, c: usize, rng: &mut rand_pcg::Pcg32) -> DMatrix<f32> {
         let normal = Normal::new(0.0, 1.0);
 
-        let factor = (2.0 / c as f64).sqrt();
+        let factor = (2.0 / c as f32).sqrt();
 
-        let v: Vec<f64> = (0..(r * c)).map(|_| {
-            let r = normal.sample(rng);
+        let v: Vec<f32> = (0..(r * c)).map(|_| {
+            let r = normal.sample(rng) as f32;
             r * factor
         }).collect();
         let m = DMatrix::from_vec(r, c, v);
