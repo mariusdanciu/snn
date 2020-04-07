@@ -1,11 +1,7 @@
-use std::slice;
-
 use nalgebra::*;
-use nalgebra::base::storage::Storage;
 
 use crate::neunet::api::defs::*;
 use crate::neunet::graphics::plotter::*;
-use crate::neunet::utils::matrix::*;
 use crate::neunet::utils::ml::MLOps;
 
 pub trait ForwardProp {
@@ -28,7 +24,7 @@ impl ForwardProp for NNModel {
         for i in 0..size {
             let l = &self.layers[i];
 
-            let mut z = &l.weights * current + &l.intercepts;
+            let z = &l.weights * current + &l.intercepts;
             t = match &l.activation_type {
                 ActivationType::Sigmoid =>
                     MLOps::apply(&z, MLOps::sigmoid),
@@ -141,7 +137,7 @@ impl NNModel {
 
 impl Prediction for NNModel {
     fn predict(&mut self, data: &DMatrix<f32>) -> DMatrix<f32> {
-        let (rows, cols) = data.shape();
+        let (_, cols) = data.shape();
         let mut preds: Vec<f32> = Vec::with_capacity(self.num_classes * cols);
 
         for c in data.column_iter() {
@@ -154,16 +150,17 @@ impl Prediction for NNModel {
 }
 
 impl Train for NNModel {
+
     fn train(&mut self,
              hp: HyperParams,
              train_data: LabeledData,
-             test_data: LabeledData) -> &NNModel {
+             test_data: LabeledData) -> Result<&NNModel, Box<dyn std::error::Error>> {
         fn reset_gradients(model: &mut NNModel) {
-            for mut l in model.layers.iter_mut() {
-                for mut e in l.dw.iter_mut() {
+            for l in model.layers.iter_mut() {
+                for e in l.dw.iter_mut() {
                     *e = 0.0f32;
                 }
-                for mut e in l.db.iter_mut() {
+                for e in l.db.iter_mut() {
                     *e = 0.0f32;
                 }
             }
@@ -175,13 +172,13 @@ impl Train for NNModel {
                     if iteration > 0 {
                         // Apply  weighted moving averages
                         for mut l in nn.layers.iter_mut() {
-                            l.momentum_dw = mb * &l.momentum_dw + (1. -mb) * &l.dw;
+                            l.momentum_dw = mb * &l.momentum_dw + (1. - mb) * &l.dw;
                             l.momentum_db = mb * &l.momentum_db + (1. - mb) * &l.db;
                         }
                     } else {
                         for mut l in nn.layers.iter_mut() {
                             let (r, c) = l.dw.shape();
-                            l.momentum_dw = DMatrix::from_fn(r, c, |a, b| 0.0);
+                            l.momentum_dw = DMatrix::from_fn(r, c, |_, _| 0.0);
                             l.momentum_db = DVector::from_vec(vec![0.0; r]);
                         }
                     }
@@ -197,7 +194,6 @@ impl Train for NNModel {
                         l.intercepts = &l.intercepts - hp.learning_rate * &l.db;
                     }
             }
-
         }
 
         fn norm(nn: &NNModel) -> f32 {
@@ -253,15 +249,16 @@ impl Train for NNModel {
         let (num_features, num_examples) = train_data.features.shape();
         println!("Train data features {} examples {}", num_features, num_examples);
 
-        let mut converged = false;
+        let mut stop = false;
 
         let mut iteration = 0;
         let mut epoch = 0;
 
         let mut train_acc_his = Vec::new();
         let mut test_acc_his = Vec::new();
+        let mut test_accuracy = 0.0f32;
 
-        while !converged {
+        while !stop {
             println!("Running epoch {}", epoch);
 
             for k in (0..num_examples).step_by(hp.mini_batch_size) {
@@ -324,20 +321,23 @@ impl Train for NNModel {
                                           &train_data.features.slice((0, k), (self.num_features, batch_size)),
                                           &train_data.labels.slice((0, k), (self.num_classes, batch_size)));
 
-                let test_accuracy = test(self, &test_data.features, &test_data.labels);
+                test_accuracy = test(self, &test_data.features, &test_data.labels);
 
 
-                train_acc_his.push(train_accuracy as f32);
-                test_acc_his.push(test_accuracy as f32);
+                train_acc_his.push(train_accuracy);
+                test_acc_his.push(test_accuracy);
 
-                plot_data(String::from("./train.png"), &train_acc_his, &test_acc_his);
+                plot_data(String::from("./train.png"), &train_acc_his, &test_acc_his)?;
 
                 println!("\t\t--------> Train accuracy {} Test accuracy {}", train_accuracy, test_accuracy);
                 iteration += 1;
             }
-            epoch += 1
+            epoch += 1;
+
+            stop = epoch > hp.max_epochs ||
+                test_accuracy >= hp.max_accuracy_threshold;
         }
 
-        self
+        Ok(self)
     }
 }

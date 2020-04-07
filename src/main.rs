@@ -1,27 +1,21 @@
 extern crate rand;
 extern crate rand_pcg;
 
-use std::ops::IndexMut;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use nalgebra::*;
-use rand::distributions::{Distribution, Normal};
-use rand_pcg::Pcg32;
 
 use crate::neunet::api::defs::*;
 use crate::neunet::files::idx::IdxFile;
 use crate::neunet::loader::DataLoader;
 use crate::neunet::transforms::normalize::Normalizer;
-use crate::neunet::utils::matrix::{MatrixUtil, VectorUtil};
-use crate::neunet::utils::ml::MLOps;
+use crate::neunet::utils::matrix::MatrixUtil;
 
 mod neunet;
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     const INC: u64 = 11634580027462260723;
     let mut rng = rand_pcg::Pcg32::new(213424234, INC);
-
-    let rand_epsilon = 0.03_f32;
 
     let start = SystemTime::now().duration_since(UNIX_EPOCH)
         .expect("Time went backwards");
@@ -33,16 +27,16 @@ fn main() {
     let test = IdxFile.load_data(String::from("./t10k-images-idx3-ubyte"), String::from("./t10k-labels-idx1-ubyte"));
 
     println!("Data read in {} ms", (end - start).as_millis());
-    let (mut train_data, mut train_labels) = train.unwrap();
-    let (mut test_data, mut test_labels) = test.unwrap();
+    let (mut train_data, train_labels) = train.unwrap();
+    let (mut test_data, test_labels) = test.unwrap();
 
     println!("Shapes {:?}", train_data.shape());
     let r = train_data.column(30);
     let label = train_labels[30];
 
 
-    //println!("Img {}", DMatrix::from_row_slice(28, 28, r.as_slice()));
-    //println!("Label {}", label);
+    println!("Img {}", DMatrix::from_row_slice(28, 28, r.as_slice()));
+    println!("Label {}", label);
 
 
     let arch = NeuralNetworkArchitecture::<HeUniform> {
@@ -69,8 +63,6 @@ fn main() {
 
     let mut nn = NNModel::build(arch, &mut rng);
 
-    let mut confusion = DMatrix::<usize>::zeros(nn.num_features, nn.num_features);
-
     Normalizer::min_max(&mut train_data);
     Normalizer::min_max(&mut test_data);
 
@@ -81,18 +73,15 @@ fn main() {
     let training_examples = train_data.shape().1;
 
     nn.train(
-        HyperParams {
-            momentum_beta: None, // 0.9
-            mini_batch_size: 200,
-            learning_rate: 0.05_f32,
-            l2_regularization: None,
-        },
+        HyperParams::default(),
         LabeledData {
             features: train_data.slice((0, 0), (nn.num_features, training_examples)),
             labels: labels_one_hot.slice((0, 0), (nn.num_classes, training_examples)),
         },
         LabeledData {
-            features: test_data.slice((0, 0), (nn.num_features, 10000)),
-            labels: test_labels_one_hot.slice((0, 0), (nn.num_classes, 10000)),
-        });
+            features: test_data.slice((0, 0), (nn.num_features, 1000)),
+            labels: test_labels_one_hot.slice((0, 0), (nn.num_classes, 1000)),
+        })?;
+
+    Ok(())
 }

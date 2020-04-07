@@ -1,15 +1,7 @@
-use nalgebra::{DMatrix, DVector, DVectorSlice};
+use nalgebra::{DMatrix, DVector};
 use nalgebra::*;
-use rand::distributions::{Distribution, Normal};
-use rand::Rng;
+use rand_distr::{Normal, Distribution};
 
-use crate::neunet::utils::ml::MLOps;
-
-pub enum OptimizationType {
-    StochasticGradientDescent,
-    BatchGradientDescent,
-    Adam,
-}
 
 pub enum ActivationType {
     Sigmoid,
@@ -18,25 +10,34 @@ pub enum ActivationType {
     SoftMax,
 }
 
-pub enum Metric {
-    accuracy,
-    precision,
-    recall,
-    f1_score,
-    au_roc,
-}
-
 pub struct NNModel {
     pub num_features: usize,
     pub num_classes: usize,
     pub layers: Vec<Layer>,
 }
 
+
 pub struct HyperParams {
+    // 0.9 typically
+    pub max_accuracy_threshold: f32,
+    pub max_epochs: u32,
     pub momentum_beta: Option<f32>,
     pub mini_batch_size: usize,
     pub learning_rate: f32,
     pub l2_regularization: Option<f32>,
+}
+
+impl Default for HyperParams {
+    fn default() -> Self {
+        HyperParams {
+            max_accuracy_threshold: 0.95,
+            max_epochs: 3,
+            momentum_beta: None,
+            mini_batch_size: 200,
+            learning_rate: 0.05,
+            l2_regularization: None,
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -45,28 +46,17 @@ pub struct LabeledData<'a> {
     pub labels: DMatrixSlice<'a, f32>,
 }
 
-pub struct Eval<'a> {
-    pub test_data: LabeledData<'a>,
-    pub metrics: Vec<Metric>,
-}
-
 pub trait Train {
     fn train(&mut self,
              hp: HyperParams,
              train_data: LabeledData,
-             test_data: LabeledData) -> &NNModel;
+             test_data: LabeledData) -> Result<&NNModel, Box<dyn std::error::Error>>;
 }
 
 pub trait Prediction {
     fn predict(&mut self, data: &DMatrix<f32>) -> DMatrix<f32>;
 }
 
-
-#[derive(Debug)]
-pub struct EvalData {
-    pub probabilities: DMatrix<f32>,
-    pub truth_one_hot: DMatrix<f32>,
-}
 
 pub struct Layer {
     pub num_activations: usize,
@@ -81,10 +71,10 @@ pub struct Layer {
     pub dz: DVector<f32>,
     pub dw: DMatrix<f32>,
     pub db: DVector<f32>,
-
     pub momentum_dw: DMatrix<f32>,
     pub momentum_db: DVector<f32>,
 }
+
 
 #[derive(Debug)]
 pub struct LayerDefinition {
@@ -100,20 +90,6 @@ pub struct NeuralNetworkArchitecture<R: RandomInitializer> {
     pub rand_initializer: R,
 }
 
-pub enum RegularizationType {
-    No_Regularization,
-    L2,
-}
-
-pub trait ConfusionMatrix {}
-
-impl ConfusionMatrix {
-    pub fn build(num_labels: usize) -> DMatrix<usize> {
-        let v = vec![0; num_labels * num_labels];
-        DMatrix::from_vec(num_labels, num_labels, v)
-    }
-}
-
 pub trait RandomInitializer {
     fn weights(self, r: usize, c: usize, rng: &mut rand_pcg::Pcg32) -> DMatrix<f32>;
 }
@@ -124,7 +100,7 @@ pub struct HeUniform;
 
 impl RandomInitializer for HeUniform {
     fn weights(self, r: usize, c: usize, rng: &mut rand_pcg::Pcg32) -> DMatrix<f32> {
-        let normal = Normal::new(0.0, 1.0);
+        let normal = Normal::new(0.0, 1.0).unwrap();;
 
         let factor = (2.0 / c as f32).sqrt();
 
@@ -133,7 +109,7 @@ impl RandomInitializer for HeUniform {
             r * factor
         }).collect();
         let m = DMatrix::from_vec(r, c, v);
-        // println!("W {}", m);
+// println!("W {}", m);
         m
     }
 }

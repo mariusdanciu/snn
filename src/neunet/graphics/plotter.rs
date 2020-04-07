@@ -51,7 +51,3 @@ pub fn plot_data(file: String, train: &Vec<f32>, test: &Vec<f32>) -> Result<(), 
 
     Ok(())
 }
-
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    plot_data(String::from("./sample.png"), &vec![0.34, 0.48, 0.489, 0.43], &vec![0.43, 0.45, 0.39, 0.63])
-}

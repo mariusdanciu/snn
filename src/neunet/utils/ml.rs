@@ -1,8 +1,6 @@
 extern crate rand_pcg;
 
-use nalgebra::{DMatrix, DVector, DVectorSlice};
-use nalgebra::*;
-use rand::Rng;
+use nalgebra::{DVector, DVectorSlice};
 
 pub struct MLOps;
 

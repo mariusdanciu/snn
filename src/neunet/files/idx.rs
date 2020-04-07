@@ -12,7 +12,8 @@ impl IdxFile {
     fn read_head(reader: &mut BufReader<File>) -> Result<u32> {
         let mut buf: [u8; 8] = [0; 8];
         reader.read(&mut buf)?;
-        let magic = BinaryOps::to_u32(&buf[0..4]);
+        // magic
+        BinaryOps::to_u32(&buf[0..4]);
         Ok(BinaryOps::to_u32(&buf[4..8]))
     }
 
@@ -30,10 +31,9 @@ impl IdxFile {
         let img_size = (x_size * y_size) as usize;
 
 
-
         let mut out: Vec<u8> = vec![0; 0];
 
-        let read_bytes = data_reader.read_to_end(&mut out)?;
+        data_reader.read_to_end(&mut out)?;
 
         let out_f32: Vec<f32> = out.iter().map(|b| *b as f32).collect::<Vec<f32>>();
 
@@ -43,7 +43,6 @@ impl IdxFile {
 
     fn read_labels(labels_path: String) -> Result<DVector<u8>> {
         let f = File::open(labels_path)?;
-        let  buf: [u8; 8] = [0; 8];
         let mut data_reader = BufReader::new(f);
 
         let num = IdxFile::read_head(&mut data_reader).unwrap() as usize;
@@ -52,7 +51,7 @@ impl IdxFile {
 
         let mut out: Vec<u8> = vec![0; 0];
 
-        let read_bytes = data_reader.read_to_end(&mut out)?;
+        data_reader.read_to_end(&mut out)?;
 
         let r = DVector::from_vec(out);
         Ok(r)
@@ -61,8 +60,6 @@ impl IdxFile {
 
 
 impl DataLoader for IdxFile {
-
-
     fn load_data(self, data_path: String, labels_path: String) -> Result<(DMatrix<f32>, DVector<u8>)> {
         let data = IdxFile::read_data(data_path)?;
         let labels: DVector<u8> = IdxFile::read_labels(labels_path)?;
