@@ -82,7 +82,7 @@ fn main() {
 
     nn.train(
         HyperParams {
-            momentum_beta: 0.9_f32,
+            momentum_beta: None, // 0.9
             mini_batch_size: 200,
             learning_rate: 0.05_f32,
             l2_regularization: None,

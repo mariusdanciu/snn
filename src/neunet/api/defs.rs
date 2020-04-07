@@ -33,7 +33,7 @@ pub struct NNModel {
 }
 
 pub struct HyperParams {
-    pub momentum_beta: f32,
+    pub momentum_beta: Option<f32>,
     pub mini_batch_size: usize,
     pub learning_rate: f32,
     pub l2_regularization: Option<f32>,

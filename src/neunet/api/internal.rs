@@ -169,11 +169,35 @@ impl Train for NNModel {
             }
         }
 
-        fn update_weights(learning_rate: f32, nn: &mut NNModel) {
-            for mut l in nn.layers.iter_mut() {
-                l.weights = &l.weights - learning_rate * &l.dw;
-                l.intercepts = &l.intercepts - learning_rate * &l.db;
+        fn update_weights(iteration: usize, hp: &HyperParams, nn: &mut NNModel) {
+            match hp.momentum_beta {
+                Some(mb) => {
+                    if iteration > 0 {
+                        // Apply  weighted moving averages
+                        for mut l in nn.layers.iter_mut() {
+                            l.momentum_dw = mb * &l.momentum_dw + (1. -mb) * &l.dw;
+                            l.momentum_db = mb * &l.momentum_db + (1. - mb) * &l.db;
+                        }
+                    } else {
+                        for mut l in nn.layers.iter_mut() {
+                            let (r, c) = l.dw.shape();
+                            l.momentum_dw = DMatrix::from_fn(r, c, |a, b| 0.0);
+                            l.momentum_db = DVector::from_vec(vec![0.0; r]);
+                        }
+                    }
+
+                    for mut l in nn.layers.iter_mut() {
+                        l.weights = &l.weights - hp.learning_rate * &l.momentum_dw;
+                        l.intercepts = &l.intercepts - hp.learning_rate * &l.momentum_db;
+                    }
+                }
+                None =>
+                    for mut l in nn.layers.iter_mut() {
+                        l.weights = &l.weights - hp.learning_rate * &l.dw;
+                        l.intercepts = &l.intercepts - hp.learning_rate * &l.db;
+                    }
             }
+
         }
 
         fn norm(nn: &NNModel) -> f32 {
@@ -293,21 +317,8 @@ impl Train for NNModel {
                     l.db = mean_fact * &l.db;
                 }
 
-                if iteration > 0 {
-                    // Apply  weighted moving averages
-                    for mut l in self.layers.iter_mut() {
-                        l.momentum_dw = hp.momentum_beta * &l.momentum_dw + (1. - hp.momentum_beta) * &l.dw;
-                        l.momentum_db = hp.momentum_beta * &l.momentum_db + (1. - hp.momentum_beta) * &l.db;
-                    }
-                } else {
-                    for mut l in self.layers.iter_mut() {
-                        let (r, c) = l.dw.shape();
-                        l.momentum_dw = DMatrix::from_fn(r, c, |a, b| 0.0);
-                        l.momentum_db = DVector::from_vec(vec![0.0; r]);
-                    }
-                }
 
-                update_weights(hp.learning_rate, self);
+                update_weights(iteration, &hp, self);
 
                 let train_accuracy = test(self,
                                           &train_data.features.slice((0, k), (self.num_features, batch_size)),
