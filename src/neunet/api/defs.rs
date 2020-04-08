@@ -2,7 +2,7 @@ use nalgebra::{DMatrix, DVector};
 use nalgebra::*;
 use rand_distr::{Normal, Distribution};
 
-
+#[allow(dead_code)]
 pub enum ActivationType {
     Sigmoid,
     Relu,

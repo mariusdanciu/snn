@@ -4,7 +4,7 @@ use std::io::*;
 use nalgebra::*;
 
 use crate::neunet::loader::DataLoader;
-use crate::neunet::utils::binary::BinaryOps;
+use crate::neunet::utils::binary::*;
 
 pub struct IdxFile;
 
@@ -13,8 +13,8 @@ impl IdxFile {
         let mut buf: [u8; 8] = [0; 8];
         reader.read(&mut buf)?;
         // magic
-        BinaryOps::to_u32(&buf[0..4]);
-        Ok(BinaryOps::to_u32(&buf[4..8]))
+        to_u32(&buf[0..4]);
+        Ok(to_u32(&buf[4..8]))
     }
 
     fn read_data(data_path: String) -> Result<DMatrix<f32>> {
@@ -26,8 +26,8 @@ impl IdxFile {
 
         data_reader.read(&mut buf)?;
 
-        let x_size = BinaryOps::to_u32(&buf[0..4]);
-        let y_size = BinaryOps::to_u32(&buf[4..8]);
+        let x_size = to_u32(&buf[0..4]);
+        let y_size = to_u32(&buf[4..8]);
         let img_size = (x_size * y_size) as usize;
 
 

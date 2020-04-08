@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4486381d-42e1-40ef-ad33-70ac30de5440" name="Default Changelist" comment="use f32 instead of f64">
+    <list default="true" id="4486381d-42e1-40ef-ad33-70ac30de5440" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/neunet/api/defs.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/neunet/api/defs.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/neunet/api/internal.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/neunet/api/internal.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/neunet/files/idx.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/neunet/files/idx.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/neunet/graphics/plotter.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/neunet/graphics/plotter.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/neunet/transforms/normalize.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/neunet/transforms/normalize.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/neunet/utils/binary.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/neunet/utils/binary.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/neunet/utils/matrix.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/neunet/utils/matrix.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/neunet/utils/ml.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/neunet/utils/ml.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train.png" beforeDir="false" afterPath="$PROJECT_DIR$/train.png" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -27,8 +24,9 @@
     <session id="-1259895701">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="9" />
+          <entry key="project.closed" value="10" />
           <entry key="project.open.time.1" value="2" />
+          <entry key="project.open.time.12" value="1" />
           <entry key="project.open.time.13" value="1" />
           <entry key="project.open.time.17" value="1" />
           <entry key="project.open.time.2" value="4" />
@@ -36,7 +34,7 @@
           <entry key="project.open.time.3" value="2" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="13" />
+          <entry key="project.opened" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -45,7 +43,7 @@
           <entry key="java" value="1" />
           <entry key="lock" value="2" />
           <entry key="png" value="2" />
-          <entry key="rs" value="241" />
+          <entry key="rs" value="250" />
           <entry key="toml" value="9" />
         </counts>
       </usages-collector>
@@ -54,22 +52,22 @@
           <entry key="IDEA_MODULE" value="1" />
           <entry key="Image" value="2" />
           <entry key="JAVA" value="1" />
-          <entry key="Rust" value="241" />
+          <entry key="Rust" value="250" />
           <entry key="TOML" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="rs" value="39751" />
-          <entry key="toml" value="112" />
-          <entry key="txt" value="364" />
+          <entry key="rs" value="39795" />
+          <entry key="toml" value="115" />
+          <entry key="txt" value="379" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="364" />
-          <entry key="Rust" value="39751" />
-          <entry key="TOML" value="112" />
+          <entry key="PLAIN_TEXT" value="379" />
+          <entry key="Rust" value="39795" />
+          <entry key="TOML" value="115" />
         </counts>
       </usages-collector>
     </session>
@@ -79,8 +77,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="49">
-              <caret line="74" column="10" selection-start-line="74" selection-start-column="10" selection-end-line="74" selection-end-column="10" />
+            <state relative-caret-position="251">
+              <caret line="73" lean-forward="true" selection-start-line="73" selection-end-line="73" />
             </state>
           </provider>
         </entry>
@@ -88,17 +86,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/neunet/files/idx.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="53" column="8" selection-start-line="53" selection-start-column="8" selection-end-line="53" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/neunet/api/internal.rs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4986">
-              <caret line="153" column="7" selection-start-line="153" selection-start-column="7" selection-end-line="153" selection-end-column="7" />
+            <state relative-caret-position="176">
+              <caret line="16" column="11" selection-start-line="16" selection-start-column="11" selection-end-line="16" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -106,48 +95,44 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/neunet/transforms/normalize.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+            <state relative-caret-position="30">
+              <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/neunet/graphics/plotter.rs">
+        <entry file="file://$PROJECT_DIR$/src/neunet/utils/binary.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="53" lean-forward="true" selection-start-line="53" selection-end-line="53" />
+            <state>
+              <caret lean-forward="true" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/neunet/utils/mod.rs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" selection-start-line="3" selection-end-line="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/neunet/api/defs.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="114">
-              <caret line="8" column="4" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
-              <folding>
-                <element signature="e#2672#2673#0" expanded="true" />
-                <element signature="e#2699#2700#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="165">
+              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/rand-0.7.2/src/distributions/normal.rs">
+        <entry file="file://$PROJECT_DIR$/src/neunet/transforms/mod.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1900">
-              <caret line="78" column="11" selection-start-line="78" selection-start-column="11" selection-end-line="78" selection-end-column="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Cargo.toml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
+            <state>
+              <caret column="18" selection-start-column="18" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -155,8 +140,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/neunet/utils/matrix.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+            <state relative-caret-position="285">
+              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/neunet/mod.rs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -164,23 +158,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/neunet/utils/ml.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
+            <state relative-caret-position="226">
+              <caret line="60" column="23" selection-start-line="60" selection-start-column="23" selection-end-line="60" selection-end-column="23" />
               <folding>
-                <element signature="e#216#217#0" expanded="true" />
-                <element signature="e#243#244#0" expanded="true" />
-                <element signature="e#316#317#0" expanded="true" />
-                <element signature="e#346#347#0" expanded="true" />
-                <element signature="e#383#384#0" expanded="true" />
-                <element signature="e#430#431#0" expanded="true" />
-                <element signature="e#579#580#0" expanded="true" />
-                <element signature="e#608#609#0" expanded="true" />
-                <element signature="e#785#786#0" expanded="true" />
-                <element signature="e#808#809#0" expanded="true" />
+                <element signature="e#175#176#0" expanded="true" />
+                <element signature="e#202#203#0" expanded="true" />
+                <element signature="e#811#812#0" expanded="true" />
                 <element signature="e#852#853#0" expanded="true" />
-                <element signature="e#893#894#0" expanded="true" />
-                <element signature="e#1468#1469#0" expanded="true" />
-                <element signature="e#1502#1503#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -197,7 +181,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>weights</find>
       <find>print</find>
       <find>soft_max</find>
       <find>MLOps</find>
@@ -227,6 +210,7 @@
       <find>f64</find>
       <find>momen</find>
       <find>copy</find>
+      <find>max_index</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -243,7 +227,6 @@
         <option value="$PROJECT_DIR$/src/mod.rs" />
         <option value="$PROJECT_DIR$/src/nn/mod.rs" />
         <option value="$PROJECT_DIR$/src/neunet/utils/BinaryOps.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/utils/binary.rs" />
         <option value="$PROJECT_DIR$/src/neunet/api/OptimizationType.java" />
         <option value="$PROJECT_DIR$/src/neunet/definitions.rs" />
         <option value="$PROJECT_DIR$/src/neunet/api/api.rs" />
@@ -257,15 +240,16 @@
         <option value="$PROJECT_DIR$/src/neunet/graphics/mod.rs" />
         <option value="$PROJECT_DIR$/src/neunet/mod.rs" />
         <option value="$PROJECT_DIR$/src/neunet/loader.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/utils/ml.rs" />
-        <option value="$PROJECT_DIR$/Cargo.toml" />
         <option value="$PROJECT_DIR$/src/neunet/graphics/plotter.rs" />
         <option value="$PROJECT_DIR$/src/neunet/api/internal.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/utils/matrix.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/files/idx.rs" />
+        <option value="$PROJECT_DIR$/Cargo.toml" />
         <option value="$PROJECT_DIR$/src/neunet/transforms/normalize.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/api/defs.rs" />
+        <option value="$PROJECT_DIR$/src/neunet/utils/binary.rs" />
+        <option value="$PROJECT_DIR$/src/neunet/files/idx.rs" />
+        <option value="$PROJECT_DIR$/src/neunet/utils/matrix.rs" />
         <option value="$PROJECT_DIR$/src/main.rs" />
+        <option value="$PROJECT_DIR$/src/neunet/utils/ml.rs" />
+        <option value="$PROJECT_DIR$/src/neunet/api/defs.rs" />
       </list>
     </option>
   </component>
@@ -518,9 +502,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="AndroidView" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -574,28 +558,6 @@
               <item name="neunet" type="462c0819:PsiDirectoryNode" />
               <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="rand_distr" type="20ee2d1f:SyntheticLibraryElementNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="rand_distr" type="20ee2d1f:SyntheticLibraryElementNode" />
-              <item name="rand_distr-0.2.2" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="rand_distr" type="20ee2d1f:SyntheticLibraryElementNode" />
-              <item name="rand_distr-0.2.2" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -603,7 +565,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1586278962307" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1586351780302" />
     <property name="org.rust.cargo.project.model.PROJECT_DISCOVERY" value="true" />
     <property name="settings.editor.selected.configurable" value="project.scopes" />
   </component>
@@ -901,7 +863,14 @@
       <option name="project" value="LOCAL" />
       <updated>1586244706908</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="refined design">
+      <created>1586279034437</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1586279034437</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TodoView">
@@ -915,8 +884,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="943" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15970516" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16216215" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -924,7 +894,7 @@
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32876712" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49815726" visible="true" weight="0.5765878" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49815726" visible="true" weight="0.4271482" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -932,7 +902,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32876712" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50184274" side_tool="true" weight="0.30884185" />
-      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.4987715" weight="0.33001244" />
+      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.4987715" weight="0.35740972" />
       <window_info anchor="bottom" id="Messages" order="11" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -972,7 +942,8 @@
     <MESSAGE value="plotting" />
     <MESSAGE value="use f32 instead of f64" />
     <MESSAGE value="optional momentum" />
-    <option name="LAST_COMMIT_MESSAGE" value="optional momentum" />
+    <MESSAGE value="refined design" />
+    <option name="LAST_COMMIT_MESSAGE" value="refined design" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/libcore/ops/function.rs">
@@ -996,24 +967,8 @@
     <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/libcore/iter_private.rs">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/api/OptimizationType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/definitions.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="77" column="1" lean-forward="true" selection-end-line="78" />
-          <folding>
-            <element signature="e#159#160#0" expanded="true" />
-            <element signature="e#186#187#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/neunet/api/OptimizationType.java" />
+    <entry file="file://$PROJECT_DIR$/src/neunet/definitions.rs" />
     <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.19.0/src/base/statistics.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -1073,10 +1028,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="1028" column="11" selection-start-line="1028" selection-start-column="11" selection-end-line="1028" selection-end-column="11" />
-          <folding>
-            <element signature="e#71726#71727#0" expanded="true" />
-            <element signature="e#71755#71756#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1084,10 +1035,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="79" column="7" selection-start-line="79" selection-start-column="7" selection-end-line="79" selection-end-column="7" />
-          <folding>
-            <element signature="e#2936#2937#0" expanded="true" />
-            <element signature="e#2964#2965#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1098,16 +1045,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/optimization.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/internal/mod.rs">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/neunet/optimization.rs" />
+    <entry file="file://$PROJECT_DIR$/src/neunet/internal/mod.rs" />
     <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/libcore/iter/traits/collect.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="331">
@@ -1122,13 +1061,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/utils/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.19.0/src/base/alias_slice.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
@@ -1140,14 +1072,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="296">
           <caret line="422" column="11" selection-start-line="422" selection-start-column="11" selection-end-line="422" selection-end-column="11" />
-          <folding>
-            <element signature="e#10403#10404#0" expanded="true" />
-            <element signature="e#10453#10454#0" expanded="true" />
-            <element signature="e#11255#11256#0" expanded="true" />
-            <element signature="e#11328#11329#0" expanded="true" />
-            <element signature="e#20382#20383#0" expanded="true" />
-            <element signature="e#20426#20427#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1206,13 +1130,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/neunet/graphics/mod.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1224,27 +1141,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
           <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/files/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/transforms/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="18" selection-start-column="18" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/utils/binary.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
     </entry>
@@ -1260,91 +1156,112 @@
     </entry>
     <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/rand-0.7.2/src/distributions/normal.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1900">
+        <state relative-caret-position="1140">
           <caret line="78" column="11" selection-start-line="78" selection-start-column="11" selection-end-line="78" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Cargo.toml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        <state relative-caret-position="255">
+          <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/neunet/api/internal.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4704">
+          <caret line="16" column="66" selection-start-line="16" selection-start-column="66" selection-end-line="16" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/neunet/files/mod.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/neunet/graphics/plotter.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="53" lean-forward="true" selection-start-line="53" selection-end-line="53" />
+        <state relative-caret-position="795">
+          <caret line="53" selection-start-line="53" selection-end-line="53" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/utils/matrix.rs">
+    <entry file="file://$PROJECT_DIR$/src/neunet/mod.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+        <state relative-caret-position="75">
+          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/files/idx.rs">
+    <entry file="file://$PROJECT_DIR$/src/neunet/transforms/mod.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="53" column="8" selection-start-line="53" selection-start-column="8" selection-end-line="53" selection-end-column="8" />
+        <state>
+          <caret column="18" selection-start-column="18" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/neunet/transforms/normalize.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        <state relative-caret-position="30">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/neunet/utils/mod.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/neunet/utils/binary.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret lean-forward="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/neunet/files/idx.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="16" column="11" selection-start-line="16" selection-start-column="11" selection-end-line="16" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/neunet/utils/matrix.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="73" lean-forward="true" selection-start-line="73" selection-end-line="73" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/neunet/utils/ml.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="59" column="4" selection-start-line="59" selection-start-column="4" selection-end-line="59" selection-end-column="4" />
+        <state relative-caret-position="226">
+          <caret line="60" column="23" selection-start-line="60" selection-start-column="23" selection-end-line="60" selection-end-column="23" />
           <folding>
-            <element signature="e#216#217#0" expanded="true" />
-            <element signature="e#243#244#0" expanded="true" />
-            <element signature="e#316#317#0" expanded="true" />
-            <element signature="e#346#347#0" expanded="true" />
-            <element signature="e#383#384#0" expanded="true" />
-            <element signature="e#430#431#0" expanded="true" />
-            <element signature="e#579#580#0" expanded="true" />
-            <element signature="e#608#609#0" expanded="true" />
-            <element signature="e#785#786#0" expanded="true" />
-            <element signature="e#808#809#0" expanded="true" />
+            <element signature="e#175#176#0" expanded="true" />
+            <element signature="e#202#203#0" expanded="true" />
+            <element signature="e#811#812#0" expanded="true" />
             <element signature="e#852#853#0" expanded="true" />
-            <element signature="e#893#894#0" expanded="true" />
-            <element signature="e#1468#1469#0" expanded="true" />
-            <element signature="e#1502#1503#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/neunet/api/defs.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="8" column="4" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="4" />
-          <folding>
-            <element signature="e#2672#2673#0" expanded="true" />
-            <element signature="e#2699#2700#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="49">
-          <caret line="74" column="10" selection-start-line="74" selection-start-column="10" selection-end-line="74" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/api/internal.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4986">
-          <caret line="153" column="7" selection-start-line="153" selection-start-column="7" selection-end-line="153" selection-end-column="7" />
+        <state relative-caret-position="165">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
     </entry>

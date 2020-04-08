@@ -8,8 +8,8 @@ use nalgebra::*;
 use crate::neunet::api::defs::*;
 use crate::neunet::files::idx::IdxFile;
 use crate::neunet::loader::DataLoader;
-use crate::neunet::transforms::normalize::Normalizer;
-use crate::neunet::utils::matrix::MatrixUtil;
+use crate::neunet::transforms::normalize::*;
+use crate::neunet::utils::matrix::*;
 
 mod neunet;
 
@@ -63,12 +63,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut nn = NNModel::build(arch, &mut rng);
 
-    Normalizer::min_max(&mut train_data);
-    Normalizer::min_max(&mut test_data);
+    min_max_normalization(&mut train_data);
+    min_max_normalization(&mut test_data);
 
-    let labels_one_hot = MatrixUtil::one_hot(&train_labels);
+    let labels_one_hot = one_hot(&train_labels);
 
-    let test_labels_one_hot = MatrixUtil::one_hot(&test_labels);
+    let test_labels_one_hot = one_hot(&test_labels);
 
     let training_examples = train_data.shape().1;
 

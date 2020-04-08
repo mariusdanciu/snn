@@ -1,10 +1,12 @@
+#[allow(dead_code)]
+
 extern crate rand_pcg;
 
 use nalgebra::{DVector, DVectorSlice};
 
 pub struct MLOps;
 
-
+#[allow(dead_code)]
 impl MLOps {
     pub fn hypothesis(w: &DVector<f32>, x: &DVectorSlice<f32>, b: f32) -> f32 {
         w.dot(x) + b
@@ -55,7 +57,6 @@ impl MLOps {
 
         sm.map(|e| e * (1.0f32 - e))
     }
-
 
     pub fn binary_cross_entropy(y: f32, y_hat: f32) -> f32 {
         -(y * y_hat.ln() + (1. - y) * (1. - y_hat).ln())
