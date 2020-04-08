@@ -2,7 +2,7 @@ use nalgebra::*;
 
 use crate::neunet::api::defs::*;
 use crate::neunet::graphics::plotter::*;
-use crate::neunet::utils::ml::MLOps;
+use crate::neunet::utils::ml::*;
 
 pub trait ForwardProp {
     fn forward_prop(&mut self, x: &DVector<f32>) -> DVector<f32>;
@@ -27,13 +27,13 @@ impl ForwardProp for NNModel {
             let z = &l.weights * current + &l.intercepts;
             t = match &l.activation_type {
                 ActivationType::Sigmoid =>
-                    MLOps::apply(&z, MLOps::sigmoid),
+                    apply_to_vec(&z, sigmoid),
                 ActivationType::Relu =>
-                    MLOps::apply(&z, MLOps::relu),
+                    apply_to_vec(&z, relu),
                 ActivationType::Tanh =>
-                    MLOps::apply(&z, MLOps::tanh),
+                    apply_to_vec(&z, tanh),
                 ActivationType::SoftMax => {
-                    let sm = MLOps::soft_max(&z);
+                    let sm = soft_max(&z);
                     sm
                 }
             };
@@ -63,10 +63,10 @@ impl BackProp for NNModel {
         let mut done = false;
         while !done {
             let t = match &l[idx].activation_type {
-                ActivationType::Relu => MLOps::apply(&l[idx].z, MLOps::relu_derivative),
-                ActivationType::Sigmoid => MLOps::apply(&l[idx].z, MLOps::sigmoid_derivative),
-                ActivationType::Tanh => MLOps::apply(&l[idx].z, MLOps::tanh_derivative),
-                ActivationType::SoftMax => MLOps::soft_max_derivative(&l[idx].z),
+                ActivationType::Relu => apply_to_vec(&l[idx].z, relu_derivative),
+                ActivationType::Sigmoid => apply_to_vec(&l[idx].z, sigmoid_derivative),
+                ActivationType::Tanh => apply_to_vec(&l[idx].z, tanh_derivative),
+                ActivationType::SoftMax => soft_max_derivative(&l[idx].z),
             };
 
 
@@ -291,7 +291,7 @@ impl Train for NNModel {
                     let x = train_data.features.column(i).into();
 
                     let y_hat = self.forward_prop(&x);
-                    batch_loss += MLOps::cross_entropy_one_hot(&train_data.labels.column(i), y_hat.data.as_vec());
+                    batch_loss += cross_entropy_one_hot(&train_data.labels.column(i), y_hat.data.as_vec());
 
                     self.back_prop(&x, &y_hat, &train_data.labels.column(i));
                 }
