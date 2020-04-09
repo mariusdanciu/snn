@@ -65,7 +65,7 @@ pub fn cross_entropy(y: f32, y_hat: f32) -> f32 {
     -(y * (y_hat).ln())
 }
 
-pub fn cross_entropy_one_hot(y_v: &DVectorSlice<f32>, y_hat_v: &Vec<f32>) -> f32 {
+pub fn cross_entropy_one_hot(y_v: &DVectorSlice<f32>, y_hat_v: &DVector<f32>) -> f32 {
     let mut sum = 0.0_f32;
     for e in 0..y_v.len() {
         sum += cross_entropy(y_v[e], y_hat_v[e]);

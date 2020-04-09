@@ -291,7 +291,7 @@ impl Train for NNModel {
                     let x = train_data.features.column(i).into();
 
                     let y_hat = self.forward_prop(&x);
-                    batch_loss += cross_entropy_one_hot(&train_data.labels.column(i), y_hat.data.as_vec());
+                    batch_loss += cross_entropy_one_hot(&train_data.labels.column(i), &y_hat);
 
                     self.back_prop(&x, &y_hat, &train_data.labels.column(i));
                 }
