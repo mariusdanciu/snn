@@ -1,8 +1,10 @@
+#![allow(dead_code)]
+
 use nalgebra::{DMatrix, DVector};
 use nalgebra::*;
 use rand_distr::{Normal, Distribution};
 
-#[allow(dead_code)]
+
 pub enum ActivationType {
     Sigmoid,
     Relu,
@@ -17,13 +19,21 @@ pub struct NNModel {
 }
 
 
+pub enum OptimizationType {
+    MBGD,
+    Momentum,
+    RMSProp,
+    Adam
+}
+
 pub struct HyperParams {
-    // 0.9 typically
     pub max_accuracy_threshold: f32,
     pub max_epochs: u32,
-    pub momentum_beta: Option<f32>,
+    pub momentum_beta: f32,
+    pub rms_prop_beta: f32,
     pub mini_batch_size: usize,
     pub learning_rate: f32,
+    pub optimization_type: OptimizationType,
     pub l2_regularization: Option<f32>,
 }
 
@@ -32,9 +42,11 @@ impl Default for HyperParams {
         HyperParams {
             max_accuracy_threshold: 0.95,
             max_epochs: 3,
-            momentum_beta: None,
+            momentum_beta: 0.9,
+            rms_prop_beta: 0.999,
             mini_batch_size: 200,
             learning_rate: 0.05,
+            optimization_type: OptimizationType::MBGD,
             l2_regularization: None,
         }
     }
@@ -73,6 +85,9 @@ pub struct Layer {
     pub db: DVector<f32>,
     pub momentum_dw: DMatrix<f32>,
     pub momentum_db: DVector<f32>,
+    pub rmsp_dw: DMatrix<f32>,
+    pub rmsp_db: DVector<f32>,
+
 }
 
 

@@ -121,6 +121,8 @@ impl NNModel {
 
                 momentum_dw: dwl.clone(),
                 momentum_db: dbl.clone(),
+                rmsp_dw: dwl.clone(),
+                rmsp_db: dbl.clone(),
             });
 
             num_inputs = l.num_activations;
@@ -150,7 +152,6 @@ impl Prediction for NNModel {
 }
 
 impl Train for NNModel {
-
     fn train(&mut self,
              hp: HyperParams,
              train_data: LabeledData,
@@ -167,13 +168,13 @@ impl Train for NNModel {
         }
 
         fn update_weights(iteration: usize, hp: &HyperParams, nn: &mut NNModel) {
-            match hp.momentum_beta {
-                Some(mb) => {
+            match hp.optimization_type {
+                OptimizationType::Momentum => {
                     if iteration > 0 {
                         // Apply  weighted moving averages
                         for mut l in nn.layers.iter_mut() {
-                            l.momentum_dw = mb * &l.momentum_dw + (1. - mb) * &l.dw;
-                            l.momentum_db = mb * &l.momentum_db + (1. - mb) * &l.db;
+                            l.momentum_dw = hp.momentum_beta * &l.momentum_dw + (1. - hp.momentum_beta) * &l.dw;
+                            l.momentum_db = hp.momentum_beta * &l.momentum_db + (1. - hp.momentum_beta) * &l.db;
                         }
                     } else {
                         for mut l in nn.layers.iter_mut() {
@@ -188,7 +189,29 @@ impl Train for NNModel {
                         l.intercepts = &l.intercepts - hp.learning_rate * &l.momentum_db;
                     }
                 }
-                None =>
+                OptimizationType::RMSProp => {
+                    if iteration > 0 {
+                        // Apply  weighted moving averages
+                        for mut l in nn.layers.iter_mut() {
+                            l.rmsp_dw = hp.rms_prop_beta * &l.rmsp_dw + (1. - hp.rms_prop_beta) * (&l.dw.component_mul(&l.dw));
+                            l.rmsp_db = hp.rms_prop_beta * &l.rmsp_db + (1. - hp.rms_prop_beta) * (&l.db.component_mul(&l.db));
+                        }
+                    } else {
+                        for mut l in nn.layers.iter_mut() {
+                            let (r, c) = l.dw.shape();
+                            l.rmsp_dw = DMatrix::from_fn(r, c, |_, _| 0.0);
+                            l.rmsp_db = DVector::from_vec(vec![0.0; r]);
+                        }
+                    }
+
+                    let rmsprop_div: fn(f32) -> f32 = |e| (e + 1e-8).sqrt();
+
+                    for mut l in nn.layers.iter_mut() {
+                        l.weights = &l.weights - hp.learning_rate * &l.dw.component_div(&apply_to_mat(&l.rmsp_dw, rmsprop_div));
+                        l.intercepts = &l.intercepts - hp.learning_rate * &l.db.component_div(&apply_to_vec(&l.rmsp_db, rmsprop_div));
+                    }
+                }
+                _ =>
                     for mut l in nn.layers.iter_mut() {
                         l.weights = &l.weights - hp.learning_rate * &l.dw;
                         l.intercepts = &l.intercepts - hp.learning_rate * &l.db;

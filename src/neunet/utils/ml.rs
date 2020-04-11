@@ -2,7 +2,7 @@
 
 extern crate rand_pcg;
 
-use nalgebra::{DVector, DVectorSlice};
+use nalgebra::{DVector, DMatrix, DVectorSlice};
 
 
 pub fn hypothesis(w: &DVector<f32>, x: &DVectorSlice<f32>, b: f32) -> f32 {
@@ -10,6 +10,10 @@ pub fn hypothesis(w: &DVector<f32>, x: &DVectorSlice<f32>, b: f32) -> f32 {
 }
 
 pub fn apply_to_vec(v: &DVector<f32>, f: fn(f32) -> f32) -> DVector<f32> {
+    v.map(|e| f(e))
+}
+
+pub fn apply_to_mat(v: &DMatrix<f32>, f: fn(f32) -> f32) -> DMatrix<f32> {
     v.map(|e| f(e))
 }
 
