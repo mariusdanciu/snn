@@ -2,8 +2,7 @@
 
 use nalgebra::{DMatrix, DVector};
 use nalgebra::*;
-use rand_distr::{Normal, Distribution};
-
+use rand_distr::{Distribution, Normal};
 
 pub enum ActivationType {
     Sigmoid,
@@ -23,7 +22,7 @@ pub enum OptimizationType {
     MBGD,
     Momentum,
     RMSProp,
-    Adam
+    Adam,
 }
 
 pub struct HyperParams {
@@ -45,8 +44,8 @@ impl Default for HyperParams {
             momentum_beta: 0.9,
             rms_prop_beta: 0.999,
             mini_batch_size: 200,
-            learning_rate: 0.05,
-            optimization_type: OptimizationType::MBGD,
+            learning_rate: 0.01,
+            optimization_type: OptimizationType::Adam,
             l2_regularization: None,
         }
     }
@@ -112,10 +111,13 @@ pub trait RandomInitializer {
 #[derive(Debug)]
 pub struct HeUniform;
 
+#[derive(Debug)]
+pub struct GlorothUniform;
+
 
 impl RandomInitializer for HeUniform {
     fn weights(self, r: usize, c: usize, rng: &mut rand_pcg::Pcg32) -> DMatrix<f32> {
-        let normal = Normal::new(0.0, 1.0).unwrap();;
+        let normal = Normal::new(0.0, 1.0).unwrap();
 
         let factor = (2.0 / c as f32).sqrt();
 
@@ -124,10 +126,25 @@ impl RandomInitializer for HeUniform {
             r * factor
         }).collect();
         let m = DMatrix::from_vec(r, c, v);
-// println!("W {}", m);
         m
     }
 }
+
+impl RandomInitializer for GlorothUniform {
+    fn weights(self, r: usize, c: usize, rng: &mut rand_pcg::Pcg32) -> DMatrix<f32> {
+        let normal = Normal::new(0.0, 1.0).unwrap();
+
+        let factor = (6.0 / r as f32 + c as f32).sqrt();
+
+        let v: Vec<f32> = (0..(r * c)).map(|_| {
+            let r = normal.sample(rng) as f32;
+            r * factor
+        }).collect();
+        let m = DMatrix::from_vec(r, c, v);
+        m
+    }
+}
+
 
 impl Copy for HeUniform {}
 

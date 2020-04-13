@@ -18,3 +18,8 @@ pub fn one_hot(y: &DVector<u8>) -> DMatrix<f32> {
     DMatrix::from_vec(num_classes + 1, size, v)
 }
 
+pub fn panic_nan(s: String, v: &DVector<f32>) {
+    if v[0].is_nan() {
+        panic!(s);
+    }
+}
