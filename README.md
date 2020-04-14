@@ -24,7 +24,11 @@ Training on MNIST data set with following configuration:
 
 ![train-test curve](https://github.com/mariusdanciu/rust_nn/blob/master/train_adam.png)
 
-**With Adam after 360 iterations ~95% accuracy whereas without Adam after ~ 1200 iterations got ~ 93% accuracy. Thus training with Adam was in this case 3.4 times faster and leading slightly to better accuracy.**
+**Test results
+1 With Adam optimizer we see ~95% accuracy on ~360 iterations
+2. Without Adam we see ~ 93% accuracy after 1200 iteration.
+
+**Thus with Adam optimizer we observe a reach to a slightly higher accuracy ~3.4 times faster.
 
 The library supports:
 1. L2 regularization
