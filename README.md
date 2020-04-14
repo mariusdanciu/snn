@@ -1,4 +1,4 @@
-# rust_nn
+# SNN - Simple Neural Network
 
 A Neural Network library written in Rust.
 
@@ -24,11 +24,11 @@ Training on MNIST data set with following configuration:
 
 ![train-test curve](https://github.com/mariusdanciu/rust_nn/blob/master/train_adam.png)
 
-**Test results
-1 With Adam optimizer we see ~95% accuracy on ~360 iterations
-2. Without Adam we see ~ 93% accuracy after 1200 iteration.
+**Test results**
+* With Adam optimizer we see ~95% accuracy on ~385 iterations
+* Without Adam we see ~ 93% accuracy after 1200 iteration.
 
-**Thus with Adam optimizer we observe a reach to a slightly higher accuracy ~3.4 times faster.
+**Thus with Adam optimizer we observe a reach to a slightly higher accuracy ~3.1 times faster.**
 
 The library supports:
 1. L2 regularization
