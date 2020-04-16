@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 extern crate rand;
 extern crate rand_pcg;
 

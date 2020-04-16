@@ -1,9 +1,10 @@
+use std::time::{SystemTime, UNIX_EPOCH};
+
 use nalgebra::*;
 
 use crate::neunet::api::defs::*;
 use crate::neunet::graphics::plotter::*;
 use crate::neunet::utils::ml::*;
-use crate::neunet::utils::matrix::*;
 
 pub trait ForwardProp {
     fn forward_prop(&mut self, x: &DVector<f32>) -> DVector<f32>;
@@ -16,7 +17,6 @@ pub trait BackProp {
 
 impl ForwardProp for NNModel {
     fn forward_prop(&mut self, x: &DVector<f32>) -> DVector<f32> {
-
         let mut current = x;
         let mut t;
 
@@ -34,10 +34,8 @@ impl ForwardProp for NNModel {
                     apply_to_vec(&z, relu),
                 ActivationType::Tanh =>
                     apply_to_vec(&z, tanh),
-                ActivationType::SoftMax => {
-                    let sm = soft_max(&z);
-                    sm
-                }
+                ActivationType::SoftMax =>
+                    soft_max(&z),
             };
 
             self.layers[i].z = z;
@@ -54,7 +52,6 @@ impl BackProp for NNModel {
                  x: &DVector<f32>,
                  y_hat: &DVector<f32>,
                  y: &DVectorSlice<f32>) -> &Self {
-
         let l = &mut self.layers;
         let mut idx = l.len() - 1;
 
@@ -143,7 +140,7 @@ impl NNModel {
 impl Prediction for NNModel {
     fn predict(&mut self, data: &DMatrix<f32>) -> DMatrix<f32> {
         let (_, cols) = data.shape();
-        let mut preds: Vec<f32> = Vec::with_capacity(self.num_classes * cols);
+        let mut preds: Vec<f32> = Vec::new();
 
         for c in data.column_iter() {
             let score = self.forward_prop(&DVector::from_column_slice(c.as_slice()));
@@ -224,7 +221,6 @@ impl Train for NNModel {
 
                         l.rmsp_dw = hp.rms_prop_beta * &l.rmsp_dw + (1. - hp.rms_prop_beta) * (&l.dw.component_mul(&l.dw));
                         l.rmsp_db = hp.rms_prop_beta * &l.rmsp_db + (1. - hp.rms_prop_beta) * (&l.db.component_mul(&l.db));
-
                     }
                 } else {
                     for mut l in nn.layers.iter_mut() {

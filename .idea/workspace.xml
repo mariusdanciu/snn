@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4486381d-42e1-40ef-ad33-70ac30de5440" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/neunet/api/defs.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/neunet/api/defs.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/neunet/api/internal.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/neunet/api/internal.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/neunet/utils/matrix.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/neunet/utils/matrix.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train.png" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -38,31 +37,31 @@
           <entry key="iml" value="1" />
           <entry key="java" value="1" />
           <entry key="lock" value="2" />
-          <entry key="png" value="2" />
-          <entry key="rs" value="269" />
+          <entry key="png" value="5" />
+          <entry key="rs" value="271" />
           <entry key="toml" value="10" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="IDEA_MODULE" value="1" />
-          <entry key="Image" value="2" />
+          <entry key="Image" value="5" />
           <entry key="JAVA" value="1" />
-          <entry key="Rust" value="269" />
+          <entry key="Rust" value="271" />
           <entry key="TOML" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="rs" value="42333" />
+          <entry key="rs" value="42562" />
           <entry key="toml" value="115" />
-          <entry key="txt" value="469" />
+          <entry key="txt" value="479" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="469" />
-          <entry key="Rust" value="42333" />
+          <entry key="PLAIN_TEXT" value="479" />
+          <entry key="Rust" value="42562" />
           <entry key="TOML" value="115" />
         </counts>
       </usages-collector>
@@ -73,17 +72,35 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="81" column="10" lean-forward="true" selection-start-line="81" selection-start-column="10" selection-end-line="81" selection-end-column="10" />
+            <state relative-caret-position="45">
+              <caret line="3" selection-start-line="3" selection-end-line="3" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/neunet/api/internal.rs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="100">
+              <caret line="19" selection-start-line="19" selection-end-line="19" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/neunet/api/internal.rs">
+        <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/liballoc/vec.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="236" column="21" lean-forward="true" selection-start-line="236" selection-start-column="21" selection-end-line="236" selection-end-column="21" />
+            <state relative-caret-position="167">
+              <caret line="1795" selection-start-line="1795" selection-end-line="1795" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/libcore/iter/traits/collect.rs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="414">
+              <caret line="340" column="7" selection-start-line="340" selection-start-column="7" selection-end-line="340" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -101,20 +118,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Cargo.toml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.19.0/src/base/iter.rs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="97" selection-start-line="97" selection-end-line="97" />
+            <state relative-caret-position="300">
+              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
             </state>
           </provider>
         </entry>
@@ -122,25 +130,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/neunet/utils/matrix.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="20" selection-start-line="20" selection-end-line="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.19.0/src/base/matrix.rs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="173">
-              <caret line="628" column="11" selection-start-line="628" selection-start-column="11" selection-end-line="628" selection-end-column="11" />
-              <folding>
-                <element signature="e#8559#8560#0" expanded="true" />
-                <element signature="e#8592#8593#0" expanded="true" />
-                <element signature="e#19954#19955#0" expanded="true" />
-                <element signature="e#20003#20004#0" expanded="true" />
-                <element signature="e#28547#28548#0" expanded="true" />
-                <element signature="e#28582#28583#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="15">
+              <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
             </state>
           </provider>
         </entry>
@@ -148,8 +139,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/neunet/utils/ml.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="15" column="7" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
+            <state>
+              <caret selection-end-column="20" />
               <folding>
                 <element signature="e#363#364#0" expanded="true" />
                 <element signature="e#385#386#0" expanded="true" />
@@ -161,8 +152,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/neunet/api/defs.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="118">
-              <caret line="87" column="8" selection-start-line="87" selection-start-column="8" selection-end-line="87" selection-end-column="8" />
+            <state relative-caret-position="167">
+              <caret line="74" column="8" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="8" />
               <folding>
                 <element signature="e#2969#2970#0" expanded="true" />
                 <element signature="e#2996#2997#0" expanded="true" />
@@ -256,8 +247,8 @@
         <option value="$PROJECT_DIR$/src/neunet/utils/binary.rs" />
         <option value="$PROJECT_DIR$/src/neunet/files/idx.rs" />
         <option value="$PROJECT_DIR$/src/neunet/utils/ml.rs" />
-        <option value="$PROJECT_DIR$/src/main.rs" />
         <option value="$PROJECT_DIR$/src/neunet/api/defs.rs" />
+        <option value="$PROJECT_DIR$/src/main.rs" />
         <option value="$PROJECT_DIR$/src/neunet/utils/matrix.rs" />
         <option value="$PROJECT_DIR$/src/neunet/api/internal.rs" />
       </list>
@@ -523,69 +514,69 @@
             </path>
             <path>
               <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="core" type="20ee2d1f:SyntheticLibraryElementNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="core" type="20ee2d1f:SyntheticLibraryElementNode" />
-              <item name="libcore" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="core" type="20ee2d1f:SyntheticLibraryElementNode" />
-              <item name="libcore" type="462c0819:PsiDirectoryNode" />
-              <item name="num" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="core" type="20ee2d1f:SyntheticLibraryElementNode" />
-              <item name="libcore" type="462c0819:PsiDirectoryNode" />
-              <item name="slice" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="nalgebra" type="20ee2d1f:SyntheticLibraryElementNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="nalgebra" type="20ee2d1f:SyntheticLibraryElementNode" />
-              <item name="nalgebra-0.19.0" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="nalgebra" type="20ee2d1f:SyntheticLibraryElementNode" />
-              <item name="nalgebra-0.19.0" type="462c0819:PsiDirectoryNode" />
+              <item name="nn" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="nalgebra" type="20ee2d1f:SyntheticLibraryElementNode" />
-              <item name="nalgebra-0.19.0" type="462c0819:PsiDirectoryNode" />
+              <item name="nn" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="base" type="462c0819:PsiDirectoryNode" />
+              <item name="neunet" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nn" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="neunet" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="nn" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="neunet" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="nn" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="std" type="20ee2d1f:SyntheticLibraryElementNode" />
             </path>
             <path>
               <item name="nn" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="std" type="20ee2d1f:SyntheticLibraryElementNode" />
-              <item name="libstd" type="462c0819:PsiDirectoryNode" />
+              <item name="alloc" type="20ee2d1f:SyntheticLibraryElementNode" />
+            </path>
+            <path>
+              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="alloc" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="liballoc" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="core" type="20ee2d1f:SyntheticLibraryElementNode" />
+            </path>
+            <path>
+              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="core" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="libcore" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="core" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="libcore" type="462c0819:PsiDirectoryNode" />
+              <item name="iter" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="core" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="libcore" type="462c0819:PsiDirectoryNode" />
+              <item name="iter" type="462c0819:PsiDirectoryNode" />
+              <item name="traits" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -595,7 +586,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1586803146881" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587040754868" />
     <property name="org.rust.cargo.project.model.PROJECT_DISCOVERY" value="true" />
     <property name="settings.editor.selected.configurable" value="project.scopes" />
   </component>
@@ -935,7 +926,14 @@
       <option name="project" value="LOCAL" />
       <updated>1586625976029</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="added adam">
+      <created>1586803199244</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1586803199244</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TodoView">
@@ -949,6 +947,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="943" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17506142" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -958,7 +957,7 @@
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32876712" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49815726" weight="0.5068493" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49815726" weight="0.31506848" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -966,7 +965,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32876712" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50184274" side_tool="true" weight="0.30884185" />
-      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.4987715" visible="true" weight="0.32627645" />
+      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.4987715" visible="true" weight="0.21295144" />
       <window_info anchor="bottom" id="Messages" order="11" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -982,7 +981,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="use nalgebra" />
     <MESSAGE value="read labels" />
     <MESSAGE value="updated" />
     <MESSAGE value="backprop progress" />
@@ -1007,24 +1005,10 @@
     <MESSAGE value="refactor" />
     <MESSAGE value="binary cross entropy one hot" />
     <MESSAGE value="rms_prop" />
-    <option name="LAST_COMMIT_MESSAGE" value="rms_prop" />
+    <MESSAGE value="added adam" />
+    <option name="LAST_COMMIT_MESSAGE" value="added adam" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/neunet/definitions.rs" />
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.19.0/src/base/statistics.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="210" column="11" selection-start-line="210" selection-start-column="11" selection-end-line="210" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.19.0/src/base/edition.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="184" column="11" selection-start-line="184" selection-start-column="11" selection-end-line="184" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.19.0/src/base/indexing.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
@@ -1046,13 +1030,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/liballoc/vec.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1028" column="11" selection-start-line="1028" selection-start-column="11" selection-end-line="1028" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/liballoc/str.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -1069,13 +1046,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/neunet/optimization.rs" />
     <entry file="file://$PROJECT_DIR$/src/neunet/internal/mod.rs" />
-    <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/libcore/iter/traits/collect.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="340" column="7" selection-start-line="340" selection-start-column="7" selection-end-line="340" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/libcore/option.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="122">
@@ -1282,17 +1252,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/utils/ml.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="15" column="7" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
-          <folding>
-            <element signature="e#363#364#0" expanded="true" />
-            <element signature="e#385#386#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/libcore/num/f32.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="139">
@@ -1304,10 +1263,51 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/train_adam.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/result.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sample.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Cargo.toml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="3" selection-end-line="3" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/neunet/utils/ml.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-column="20" />
+          <folding>
+            <element signature="e#363#364#0" expanded="true" />
+            <element signature="e#385#386#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/neunet/utils/matrix.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/neunet/api/defs.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="87" column="8" selection-start-line="87" selection-start-column="8" selection-end-line="87" selection-end-column="8" />
+        <state relative-caret-position="167">
+          <caret line="74" column="8" selection-start-line="74" selection-start-column="8" selection-end-line="74" selection-end-column="8" />
           <folding>
             <element signature="e#2969#2970#0" expanded="true" />
             <element signature="e#2996#2997#0" expanded="true" />
@@ -1315,31 +1315,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/utils/matrix.rs">
+    <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/liballoc/vec.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        <state relative-caret-position="167">
+          <caret line="1795" selection-start-line="1795" selection-end-line="1795" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/libcore/iter/traits/collect.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="340" column="7" selection-start-line="340" selection-start-column="7" selection-end-line="340" selection-end-column="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/neunet/api/internal.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="236" column="21" lean-forward="true" selection-start-line="236" selection-start-column="21" selection-end-line="236" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="81" column="10" lean-forward="true" selection-start-line="81" selection-start-column="10" selection-end-line="81" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Cargo.toml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+        <state relative-caret-position="100">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
         </state>
       </provider>
     </entry>
