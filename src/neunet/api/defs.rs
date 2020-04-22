@@ -3,6 +3,7 @@
 use nalgebra::{DMatrix, DVector};
 use nalgebra::*;
 use rand_distr::{Distribution, Normal};
+use serde_json::json;
 
 pub enum ActivationType {
     Sigmoid,
@@ -11,10 +12,19 @@ pub enum ActivationType {
     SoftMax,
 }
 
+
+pub struct TrainingInfo {
+    pub hyper_params: HyperParams,
+    pub num_epochs_used: u32,
+    pub num_iterations_used: u32,
+    pub loss: f32,
+}
+
 pub struct NNModel {
     pub num_features: usize,
     pub num_classes: usize,
     pub layers: Vec<Layer>,
+    pub training_info: Option<TrainingInfo>,
 }
 
 
@@ -57,11 +67,115 @@ pub struct LabeledData<'a> {
     pub labels: DMatrixSlice<'a, f32>,
 }
 
+pub trait Json {
+    fn to_json(&self, pretty: bool) -> String;
+}
+
+#[derive(Debug)]
+pub struct TrainingEval {
+    pub confusion_matrix_dim: usize,
+    pub confusion_matrix: DMatrix<usize>,
+    pub labels_accuracies: Vec<f32>,
+    pub accuracy: f32,
+}
+
+#[derive(Debug)]
+pub struct Metrics {
+    pub loss: f32,
+    pub train_eval: TrainingEval,
+    pub test_eval: TrainingEval,
+}
+
+#[derive(Debug)]
+pub struct TrainingMessage {
+    pub message: String,
+    pub iteration: u32,
+    pub epoch: u32,
+    pub batch_start: u32,
+    pub metrics: Option<Metrics>,
+}
+
+impl Json for TrainingMessage {
+    fn to_json(&self, pretty: bool) -> String {
+        let mut v = json!({
+          "message": self.message,
+          "epoch" : self.epoch,
+          "iteration": self.iteration,
+          "batch_start": self.batch_start
+        });
+
+        let map = v.as_object_mut().unwrap();
+
+        match &self.metrics {
+            Some(metrics) => {
+                map.insert("loss".to_string(), json!(metrics.loss));
+                map.insert("train_eval".to_string(),
+                           json!({
+                                  "confusion_matrix_dim" : json!(metrics.train_eval.confusion_matrix_dim),
+                                  "confusion_matrix" : json!(metrics.train_eval.confusion_matrix.data.as_vec()),
+                                  "label_accuracies" : json!(metrics.train_eval.labels_accuracies),
+                                  "accuracy" : json!(metrics.train_eval.accuracy),
+                                  }));
+                map.insert("test_eval".to_string(),
+                           json!({
+                                   "confusion_matrix_dim" : json!(metrics.test_eval.confusion_matrix_dim),
+                                   "confusion_matrix" : json!(metrics.test_eval.confusion_matrix.data.as_vec()),
+                                   "label_accuracies" : json!(metrics.test_eval.labels_accuracies),
+                                   "accuracy" : json!(metrics.test_eval.accuracy),
+                                  }));
+            }
+            _ => (),
+        }
+
+
+        if pretty {
+            serde_json::to_string_pretty(&v).unwrap()
+        } else {
+            v.to_string()
+        }
+    }
+}
+
+
+impl Default for TrainingMessage {
+    fn default() -> Self {
+        TrainingMessage {
+            message: "".to_string(),
+            iteration: 0,
+            epoch: 0,
+            batch_start: 0,
+            metrics: None,
+        }
+    }
+}
+
+
+pub trait TrainingObserver {
+    fn emit(&self, msg: TrainingMessage);
+}
+
+pub struct ConsoleObserver;
+
+impl TrainingObserver for ConsoleObserver {
+    fn emit(&self, msg: TrainingMessage) {
+        println!("{}", msg.to_json(false));
+        match msg.metrics {
+            Some(m) => {
+                println!("\t loss {}", m.loss);
+                println!("\t train accuracy {}", m.train_eval.accuracy);
+                println!("\t test accuracy {}", m.test_eval.accuracy);
+            }
+            _ => ()
+        }
+    }
+}
+
 pub trait Train {
     fn train(&mut self,
              hp: HyperParams,
+             observer: &dyn TrainingObserver,
              train_data: LabeledData,
-             test_data: LabeledData) -> Result<&NNModel, Box<dyn std::error::Error>>;
+             test_data: LabeledData) -> Result<NNModel, Box<dyn std::error::Error>>;
 }
 
 pub trait Prediction {
@@ -69,6 +183,7 @@ pub trait Prediction {
 }
 
 
+#[derive(Clone)]
 pub struct Layer {
     pub num_activations: usize,
     pub intercepts: DVector<f32>,

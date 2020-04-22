@@ -72,10 +72,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let training_examples = train_data.shape().1;
 
+
+
     nn.train(
         HyperParams {
             ..Default::default()
         },
+        &ConsoleObserver{},
         LabeledData {
             features: train_data.slice((0, 0), (nn.num_features, training_examples)),
             labels: labels_one_hot.slice((0, 0), (nn.num_classes, training_examples)),

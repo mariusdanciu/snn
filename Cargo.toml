@@ -12,6 +12,8 @@ rand_pcg = "0.2.1"
 rand_distr = "0.2.2"
 nalgebra = "0.19.0"
 plotters = "^0.2.12"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 
 #[[bin]]
 #name = "plotter"

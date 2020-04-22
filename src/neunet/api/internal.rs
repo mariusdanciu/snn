@@ -1,4 +1,4 @@
-use std::time::{SystemTime, UNIX_EPOCH};
+#![allow(dead_code)]
 
 use nalgebra::*;
 
@@ -133,6 +133,7 @@ impl NNModel {
             num_features: nd.num_features,
             num_classes: nd.num_classes,
             layers: initted,
+            training_info: None,
         }
     }
 }
@@ -151,11 +152,13 @@ impl Prediction for NNModel {
     }
 }
 
+
 impl Train for NNModel {
     fn train(&mut self,
              hp: HyperParams,
+             observer: &dyn TrainingObserver,
              train_data: LabeledData,
-             test_data: LabeledData) -> Result<&NNModel, Box<dyn std::error::Error>> {
+             test_data: LabeledData) -> Result<NNModel, Box<dyn std::error::Error>> {
         fn reset_gradients(model: &mut NNModel) {
             for l in model.layers.iter_mut() {
                 for e in l.dw.iter_mut() {
@@ -167,8 +170,8 @@ impl Train for NNModel {
             }
         }
 
-        fn update_weights(iteration: usize, hp: &HyperParams, nn: &mut NNModel) {
-            fn momentum(iteration: usize, hp: &HyperParams, nn: &mut NNModel) {
+        fn update_weights(iteration: u32, hp: &HyperParams, nn: &mut NNModel) {
+            fn momentum(iteration: u32, hp: &HyperParams, nn: &mut NNModel) {
                 if iteration > 0 {
                     // Apply  weighted moving averages
                     for mut l in nn.layers.iter_mut() {
@@ -189,7 +192,7 @@ impl Train for NNModel {
                 }
             }
 
-            fn rms_prop(iteration: usize, hp: &HyperParams, nn: &mut NNModel) {
+            fn rms_prop(iteration: u32, hp: &HyperParams, nn: &mut NNModel) {
                 if iteration > 0 {
                     // Apply  weighted moving averages
                     for mut l in nn.layers.iter_mut() {
@@ -212,7 +215,7 @@ impl Train for NNModel {
                 }
             }
 
-            fn adam(iteration: usize, hp: &HyperParams, nn: &mut NNModel) {
+            fn adam(iteration: u32, hp: &HyperParams, nn: &mut NNModel) {
                 if iteration > 0 {
                     // Apply  weighted moving averages
                     for mut l in nn.layers.iter_mut() {
@@ -276,7 +279,7 @@ impl Train for NNModel {
             sum
         }
 
-        fn test(model: &mut NNModel, features: &DMatrixSlice<f32>, labels: &DMatrixSlice<f32>) -> f32 {
+        fn test(model: &mut NNModel, features: &DMatrixSlice<f32>, labels: &DMatrixSlice<f32>) -> (DMatrix<usize>, Vec<f32>, f32) {
             let mut confusion = DMatrix::<usize>::zeros(model.num_classes, model.num_classes);
 
             let mut corrects = 0;
@@ -296,10 +299,10 @@ impl Train for NNModel {
                     incorrects += 1;
                 }
             }
-            println!("\t\tConfusion matrix {}", confusion);
 
             let total: usize = confusion.data.as_vec().iter().sum();
 
+            let mut l_acc: Vec<f32> = vec![0.0; 0];
             for c in 0..model.num_classes {
                 let col_sum: usize = confusion.column(c).iter().sum();
                 let row_sum: usize = confusion.row(c).iter().sum();
@@ -312,32 +315,42 @@ impl Train for NNModel {
 
                 let accuracy: f32 = (t_p + t_n) as f32 / (t_p + t_n + f_p + f_n) as f32;
 
-                println!("\t\tAccuracy for class {} = {}", c, accuracy);
+                l_acc.push(accuracy);
             }
-            corrects as f32 / (corrects as f32 + incorrects as f32)
+            (confusion, l_acc, corrects as f32 / (corrects as f32 + incorrects as f32))
         }
 
-
-        let (num_features, num_examples) = train_data.features.shape();
-        println!("Train data features {} examples {}", num_features, num_examples);
+        let (_num_features, num_examples) = train_data.features.shape();
+        let (num_labels, _) = train_data.labels.shape();
 
         let mut stop = false;
 
-        let mut iteration = 0;
-        let mut epoch = 0;
+        let mut iteration: u32 = 0;
+        let mut epoch: u32 = 0;
 
         let mut train_acc_his = Vec::new();
         let mut test_acc_his = Vec::new();
-        let mut test_accuracy = 0.0f32;
+        let mut batch_loss = 0.0_f32;
+        let mut test_accuracy = 0.0_f32;
 
         while !stop {
-            println!("Running epoch {}", epoch);
+            observer.emit(TrainingMessage {
+                message: format!("Start epoch"),
+                iteration: iteration,
+                epoch: epoch,
+                ..Default::default()
+            });
 
             for k in (0..num_examples).step_by(hp.mini_batch_size) {
-                println!("\tRunning iteration {}", iteration);
-                println!("\t\tMini batch start {}", k);
+                observer.emit(TrainingMessage {
+                    message: format!("Start iteration"),
+                    iteration: iteration,
+                    epoch: epoch,
+                    batch_start: k as u32,
+                    ..Default::default()
+                });
 
-                let mut batch_loss = 0.0_f32;
+                batch_loss = 0.0_f32;
 
                 reset_gradients(self);
 
@@ -356,8 +369,6 @@ impl Train for NNModel {
                         0.5f32 * (reg * norm(self))
                 };
 
-                println!("\t\tRegularization {}", cost_reg);
-
                 for j in 0..batch_size {
                     let i = k + j; // partition
                     let x = train_data.features.column(i).into();
@@ -370,9 +381,6 @@ impl Train for NNModel {
 
 
                 batch_loss = mean_fact * (batch_loss + cost_reg);
-
-
-                println!("\t\tLoss for batch {} is {}", k, batch_loss);
 
 
                 for mut l in self.layers.iter_mut() {
@@ -389,27 +397,59 @@ impl Train for NNModel {
 
                 update_weights(iteration, &hp, self);
 
-                let train_accuracy = test(self,
-                                          &train_data.features.slice((0, k), (self.num_features, batch_size)),
-                                          &train_data.labels.slice((0, k), (self.num_classes, batch_size)));
+                let (train_cm, train_lacc, train_acc) = test(self,
+                                                             &train_data.features.slice((0, k), (self.num_features, batch_size)),
+                                                             &train_data.labels.slice((0, k), (self.num_classes, batch_size)));
 
-                test_accuracy = test(self, &test_data.features, &test_data.labels);
+                let (test_cm, test_lacc, test_acc) = test(self, &test_data.features, &test_data.labels);
 
+                test_accuracy = test_acc;
 
-                train_acc_his.push(train_accuracy);
-                test_acc_his.push(test_accuracy);
+                train_acc_his.push(train_acc);
+                test_acc_his.push(test_acc);
 
                 plot_data(String::from("./train.png"), &train_acc_his, &test_acc_his)?;
 
-                println!("\t\t--------> Train accuracy {} Test accuracy {}", train_accuracy, test_accuracy);
+                observer.emit(TrainingMessage {
+                    message: format!("Train metrics"),
+                    iteration: iteration,
+                    epoch: epoch,
+                    batch_start: k as u32,
+                    metrics: Some(Metrics {
+                        loss: batch_loss,
+                        train_eval: TrainingEval {
+                            confusion_matrix_dim: num_labels,
+                            confusion_matrix: train_cm,
+                            labels_accuracies: train_lacc,
+                            accuracy: train_acc,
+                        },
+                        test_eval: TrainingEval {
+                            confusion_matrix_dim: num_labels,
+                            confusion_matrix: test_cm,
+                            labels_accuracies: test_lacc,
+                            accuracy: test_acc,
+                        },
+                    }),
+                });
+
                 iteration += 1;
             }
             epoch += 1;
 
-            stop = epoch > hp.max_epochs ||
-                test_accuracy >= hp.max_accuracy_threshold;
+            stop = epoch > hp.max_epochs || test_accuracy >= hp.max_accuracy_threshold;
         }
 
-        Ok(self)
+        Ok(NNModel {
+            num_features: self.num_features,
+            num_classes: self.num_classes,
+            layers: self.layers.clone(),
+            training_info: Some(TrainingInfo {
+                hyper_params: hp,
+                num_epochs_used: epoch,
+                num_iterations_used: iteration,
+                loss: batch_loss,
+            }),
+
+        })
     }
 }
