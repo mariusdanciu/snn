@@ -111,16 +111,24 @@ impl Json for TrainingMessage {
                 map.insert("loss".to_string(), json!(metrics.loss));
                 map.insert("train_eval".to_string(),
                            json!({
-                                  "confusion_matrix_dim" : json!(metrics.train_eval.confusion_matrix_dim),
-                                  "confusion_matrix" : json!(metrics.train_eval.confusion_matrix.data.as_vec()),
+                                  "confusion_matrix" : json!({
+                                     "data": json!(metrics.train_eval.confusion_matrix.data.as_vec()),
+                                     "predictions_on_cols" : json!(true),
+                                     "data_orientation_per_col" : json!(true),
+                                     "dimension" : json!(metrics.train_eval.confusion_matrix_dim)
+                                  }),
                                   "label_accuracies" : json!(metrics.train_eval.labels_accuracies),
                                   "accuracy" : json!(metrics.train_eval.accuracy),
                                   }));
                 map.insert("test_eval".to_string(),
                            json!({
-                                   "confusion_matrix_dim" : json!(metrics.test_eval.confusion_matrix_dim),
-                                   "confusion_matrix" : json!(metrics.test_eval.confusion_matrix.data.as_vec()),
-                                   "label_accuracies" : json!(metrics.test_eval.labels_accuracies),
+                                  "confusion_matrix" : json!({
+                                     "data": json!(metrics.test_eval.confusion_matrix.data.as_vec()),
+                                     "predictions_on_cols" : json!(true),
+                                     "data_orientation_per_col" : json!(true),
+                                     "dimension" : json!(metrics.test_eval.confusion_matrix_dim)
+                                  }),
+                                  "label_accuracies" : json!(metrics.test_eval.labels_accuracies),
                                    "accuracy" : json!(metrics.test_eval.accuracy),
                                   }));
             }
