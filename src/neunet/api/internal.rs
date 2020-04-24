@@ -1,6 +1,9 @@
 #![allow(dead_code)]
+#![allow(unused)]
 
+use chrono::Utc;
 use nalgebra::*;
+use serde_json::json;
 
 use crate::neunet::api::defs::*;
 use crate::neunet::graphics::plotter::*;
@@ -156,7 +159,7 @@ impl Prediction for NNModel {
 impl Train for NNModel {
     fn train(&mut self,
              hp: HyperParams,
-             observer: &dyn TrainingObserver,
+             observer: &mut TrainingObserver,
              train_data: LabeledData,
              test_data: LabeledData) -> Result<NNModel, Box<dyn std::error::Error>> {
         fn reset_gradients(model: &mut NNModel) {
@@ -328,28 +331,16 @@ impl Train for NNModel {
         let mut iteration: u32 = 0;
         let mut epoch: u32 = 0;
 
-        let mut train_acc_his = Vec::new();
-        let mut test_acc_his = Vec::new();
         let mut batch_loss = 0.0_f32;
         let mut test_accuracy = 0.0_f32;
 
+
+        observer.emit(TrainMessage::Started {
+            time: Utc::now()
+        });
+
         while !stop {
-            observer.emit(TrainingMessage {
-                message: format!("Start epoch"),
-                iteration: iteration,
-                epoch: epoch,
-                ..Default::default()
-            });
-
             for k in (0..num_examples).step_by(hp.mini_batch_size) {
-                observer.emit(TrainingMessage {
-                    message: format!("Start iteration"),
-                    iteration: iteration,
-                    epoch: epoch,
-                    batch_start: k as u32,
-                    ..Default::default()
-                });
-
                 batch_loss = 0.0_f32;
 
                 reset_gradients(self);
@@ -405,17 +396,12 @@ impl Train for NNModel {
 
                 test_accuracy = test_acc;
 
-                train_acc_his.push(train_acc);
-                test_acc_his.push(test_acc);
-
-                plot_data(String::from("./train.png"), &train_acc_his, &test_acc_his)?;
-
-                observer.emit(TrainingMessage {
-                    message: format!("Train metrics"),
+                observer.emit(TrainMessage::Running {
+                    time: Utc::now(),
                     iteration: iteration,
                     epoch: epoch,
                     batch_start: k as u32,
-                    metrics: Some(Metrics {
+                    metrics: Metrics {
                         loss: batch_loss,
                         train_eval: TrainingEval {
                             confusion_matrix_dim: num_labels,
@@ -429,7 +415,7 @@ impl Train for NNModel {
                             labels_accuracies: test_lacc,
                             accuracy: test_acc,
                         },
-                    }),
+                    },
                 });
 
                 iteration += 1;
@@ -438,6 +424,10 @@ impl Train for NNModel {
 
             stop = epoch > hp.max_epochs || test_accuracy >= hp.max_accuracy_threshold;
         }
+
+        observer.emit(TrainMessage::Success {
+            time: Utc::now()
+        });
 
         Ok(NNModel {
             num_features: self.num_features,
@@ -451,5 +441,99 @@ impl Train for NNModel {
             }),
 
         })
+    }
+}
+
+impl Json for TrainMessage {
+    fn to_json(&self, pretty: bool) -> String {
+        let js = match self {
+            TrainMessage::Started { time } => json!({
+                    "started" : json!({
+                        "time": json!(time.format("%Y%m%dT%H%M%SZ").to_string()),
+                    })
+                }),
+            TrainMessage::Running { time, iteration, epoch, batch_start, metrics } => {
+                let mut v = json!({
+                    "epoch" : epoch,
+                    "iteration": iteration,
+                    "batch_start": batch_start
+                });
+
+                let map = v.as_object_mut().unwrap();
+
+                map.insert("loss".to_string(), json!(metrics.loss));
+                map.insert("train_eval".to_string(),
+                           json!({
+                                  "confusion_matrix" : json!({
+                                     "data": json!(metrics.train_eval.confusion_matrix.data.as_vec()),
+                                     "predictions_on_cols" : json!(true),
+                                     "data_orientation_per_col" : json!(true),
+                                     "dimension" : json!(metrics.train_eval.confusion_matrix_dim)
+                                  }),
+                                  "label_accuracies" : json!(metrics.train_eval.labels_accuracies),
+                                  "accuracy" : json!(metrics.train_eval.accuracy),
+                                  }));
+                map.insert("test_eval".to_string(),
+                           json!({
+                                  "confusion_matrix" : json!({
+                                     "data": json!(metrics.test_eval.confusion_matrix.data.as_vec()),
+                                     "predictions_on_cols" : json!(true),
+                                     "data_orientation_per_col" : json!(true),
+                                     "dimension" : json!(metrics.test_eval.confusion_matrix_dim)
+                                  }),
+                                  "label_accuracies" : json!(metrics.test_eval.labels_accuracies),
+                                   "accuracy" : json!(metrics.test_eval.accuracy),
+                                  }));
+                json!({
+                    "running" : v
+                })
+            }
+            TrainMessage::Success { time } => json!({
+                    "success" : json!({
+                        "time": json!(format!("{}", time.format("%Y%m%dT%H%M%SZ"))),
+                    })
+                }),
+            TrainMessage::Error { time, reason } => json!({
+                    "error" : json!({
+                        "time": json!(format!("{}", time.format("%Y%m%dT%H%M%SZ"))),
+                        "reason" : json!(reason)
+                    })
+                }),
+        };
+
+
+        if pretty {
+            serde_json::to_string_pretty(&js).unwrap()
+        } else {
+            js.to_string()
+        }
+    }
+}
+
+impl TrainingObserver for ConsoleObserver {
+    fn emit(&mut self, msg: TrainMessage) {
+        println!("{}", msg.to_json(false));
+        match msg {
+            TrainMessage::Started { time } => {
+                self.start_time = Some(time)
+            }
+
+            TrainMessage::Running { time, iteration, epoch, batch_start, metrics } => {
+                self.train_accuracy_his.push(metrics.train_eval.accuracy);
+                self.test_accuracy_his.push(metrics.test_eval.accuracy);
+
+                println!("\t loss {}", metrics.loss);
+                println!("\t train accuracy {}", metrics.train_eval.accuracy);
+                println!("\t test accuracy {}", metrics.test_eval.accuracy);
+
+                match plot_data(format!("./train_{}.png", self.start_time.unwrap().format("%Y%m%dT%H%M%SZ")),
+                                &self.train_accuracy_his,
+                                &self.test_accuracy_his) {
+                    Ok(_) => (),
+                    Err(e) => println!("\t Cannot draw plot {}", e),
+                }
+            }
+            _ => ()
+        }
     }
 }

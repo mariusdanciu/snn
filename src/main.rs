@@ -78,7 +78,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         HyperParams {
             ..Default::default()
         },
-        &ConsoleObserver{},
+        &mut ConsoleObserver::new(),
         LabeledData {
             features: train_data.slice((0, 0), (nn.num_features, training_examples)),
             labels: labels_one_hot.slice((0, 0), (nn.num_classes, training_examples)),

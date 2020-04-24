@@ -1,9 +1,10 @@
 #![allow(dead_code)]
 
+use chrono::DateTime;
+use chrono::Utc;
 use nalgebra::{DMatrix, DVector};
 use nalgebra::*;
 use rand_distr::{Distribution, Normal};
-use serde_json::json;
 
 pub enum ActivationType {
     Sigmoid,
@@ -87,101 +88,51 @@ pub struct Metrics {
 }
 
 #[derive(Debug)]
-pub struct TrainingMessage {
-    pub message: String,
-    pub iteration: u32,
-    pub epoch: u32,
-    pub batch_start: u32,
-    pub metrics: Option<Metrics>,
+pub enum TrainMessage {
+    Started {
+        time: DateTime<Utc>
+    },
+    Running {
+        time: DateTime<Utc>,
+        iteration: u32,
+        epoch: u32,
+        batch_start: u32,
+        metrics: Metrics,
+    },
+    Success {
+        time: DateTime<Utc>
+    },
+    Error {
+        time: DateTime<Utc>,
+        reason: String
+    },
 }
-
-impl Json for TrainingMessage {
-    fn to_json(&self, pretty: bool) -> String {
-        let mut v = json!({
-          "message": self.message,
-          "epoch" : self.epoch,
-          "iteration": self.iteration,
-          "batch_start": self.batch_start
-        });
-
-        let map = v.as_object_mut().unwrap();
-
-        match &self.metrics {
-            Some(metrics) => {
-                map.insert("loss".to_string(), json!(metrics.loss));
-                map.insert("train_eval".to_string(),
-                           json!({
-                                  "confusion_matrix" : json!({
-                                     "data": json!(metrics.train_eval.confusion_matrix.data.as_vec()),
-                                     "predictions_on_cols" : json!(true),
-                                     "data_orientation_per_col" : json!(true),
-                                     "dimension" : json!(metrics.train_eval.confusion_matrix_dim)
-                                  }),
-                                  "label_accuracies" : json!(metrics.train_eval.labels_accuracies),
-                                  "accuracy" : json!(metrics.train_eval.accuracy),
-                                  }));
-                map.insert("test_eval".to_string(),
-                           json!({
-                                  "confusion_matrix" : json!({
-                                     "data": json!(metrics.test_eval.confusion_matrix.data.as_vec()),
-                                     "predictions_on_cols" : json!(true),
-                                     "data_orientation_per_col" : json!(true),
-                                     "dimension" : json!(metrics.test_eval.confusion_matrix_dim)
-                                  }),
-                                  "label_accuracies" : json!(metrics.test_eval.labels_accuracies),
-                                   "accuracy" : json!(metrics.test_eval.accuracy),
-                                  }));
-            }
-            _ => (),
-        }
-
-
-        if pretty {
-            serde_json::to_string_pretty(&v).unwrap()
-        } else {
-            v.to_string()
-        }
-    }
-}
-
-
-impl Default for TrainingMessage {
-    fn default() -> Self {
-        TrainingMessage {
-            message: "".to_string(),
-            iteration: 0,
-            epoch: 0,
-            batch_start: 0,
-            metrics: None,
-        }
-    }
-}
-
 
 pub trait TrainingObserver {
-    fn emit(&self, msg: TrainingMessage);
+    fn emit(&mut self, msg: TrainMessage);
 }
 
-pub struct ConsoleObserver;
+pub struct ConsoleObserver {
+    pub start_time: Option<DateTime<Utc>>,
+    pub train_accuracy_his: Vec<f32>,
+    pub test_accuracy_his: Vec<f32>,
+}
 
-impl TrainingObserver for ConsoleObserver {
-    fn emit(&self, msg: TrainingMessage) {
-        println!("{}", msg.to_json(false));
-        match msg.metrics {
-            Some(m) => {
-                println!("\t loss {}", m.loss);
-                println!("\t train accuracy {}", m.train_eval.accuracy);
-                println!("\t test accuracy {}", m.test_eval.accuracy);
-            }
-            _ => ()
+impl ConsoleObserver {
+    pub fn new() -> ConsoleObserver {
+        ConsoleObserver {
+            start_time: None,
+            train_accuracy_his: Vec::new(),
+            test_accuracy_his: Vec::new(),
         }
     }
 }
+
 
 pub trait Train {
     fn train(&mut self,
              hp: HyperParams,
-             observer: &dyn TrainingObserver,
+             observer: &mut TrainingObserver,
              train_data: LabeledData,
              test_data: LabeledData) -> Result<NNModel, Box<dyn std::error::Error>>;
 }
