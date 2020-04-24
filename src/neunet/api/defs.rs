@@ -182,10 +182,10 @@ pub trait RandomInitializer {
     fn weights(self, r: usize, c: usize, rng: &mut rand_pcg::Pcg32) -> DMatrix<f32>;
 }
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct HeUniform;
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct GlorothUniform;
 
 
@@ -216,15 +216,6 @@ impl RandomInitializer for GlorothUniform {
         }).collect();
         let m = DMatrix::from_vec(r, c, v);
         m
-    }
-}
-
-
-impl Copy for HeUniform {}
-
-impl Clone for HeUniform {
-    fn clone(&self) -> Self {
-        HeUniform {}
     }
 }
 
