@@ -63,6 +63,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut nn = NNModel::build(arch, &mut rng);
 
+    nn.save("model.json");
+
+    println!("Model saved");
+
     min_max_normalization(&mut train_data);
     min_max_normalization(&mut test_data);
 

@@ -1,9 +1,14 @@
 #![allow(dead_code)]
 #![allow(unused)]
 
+use std::fs::File;
+use std::io;
+use std::io::Write;
+
 use chrono::Utc;
 use nalgebra::*;
 use serde_json::json;
+use serde_json::Value;
 
 use crate::neunet::api::defs::*;
 use crate::neunet::graphics::plotter::*;
@@ -535,5 +540,40 @@ impl TrainingObserver for ConsoleObserver {
             }
             _ => ()
         }
+    }
+}
+
+impl Save for NNModel {
+    fn save(&self, path: &str) -> io::Result<String> {
+
+
+        let mut f: File = File::create(path)?;
+
+
+        let js_layers: Vec<Value> = self.layers.iter().map(|l| {
+            let k: Vec<Value> = l.weights.data.as_vec().iter().map(|e| json!(e)).collect();
+            let i: Vec<Value> = l.intercepts.data.as_vec().iter().map(|e| json!(e)).collect();
+            let shp = l.weights.shape();
+            json!({
+                "rows" : json!(shp.0),
+                "cols" : json!(shp.1),
+                "activations" : json!(shp.0),
+                "activation_type" : json!(format!("{:?}", l.activation_type)),
+                "weights" : json!(k),
+                "intercepts" : json!(i)
+            })
+        }).collect();
+
+        let mut model = json!({
+           "metadata": json!({
+                "num_features" : json!(self.num_features),
+                "num_classes": json!(self.num_classes),
+                "layers": js_layers,
+           })
+        });
+
+        let s = serde_json::to_string_pretty(&model).unwrap();
+        f.write_all(s.as_bytes())?;
+        Ok(path.to_owned())
     }
 }
