@@ -37,12 +37,12 @@
         <counts>
           <entry key="iml" value="1" />
           <entry key="java" value="1" />
-          <entry key="json" value="2" />
+          <entry key="json" value="4" />
           <entry key="lock" value="2" />
           <entry key="md" value="1" />
           <entry key="png" value="6" />
-          <entry key="rs" value="300" />
-          <entry key="toml" value="11" />
+          <entry key="rs" value="305" />
+          <entry key="toml" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
@@ -50,25 +50,25 @@
           <entry key="IDEA_MODULE" value="1" />
           <entry key="Image" value="6" />
           <entry key="JAVA" value="1" />
-          <entry key="JSON" value="2" />
+          <entry key="JSON" value="4" />
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="Rust" value="300" />
-          <entry key="TOML" value="13" />
+          <entry key="Rust" value="305" />
+          <entry key="TOML" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="json" value="338" />
-          <entry key="rs" value="49949" />
+          <entry key="rs" value="50846" />
           <entry key="toml" value="119" />
-          <entry key="txt" value="552" />
+          <entry key="txt" value="562" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="338" />
-          <entry key="PLAIN_TEXT" value="552" />
-          <entry key="Rust" value="49949" />
+          <entry key="PLAIN_TEXT" value="562" />
+          <entry key="Rust" value="50846" />
           <entry key="TOML" value="119" />
         </counts>
       </usages-collector>
@@ -79,8 +79,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="101">
-              <caret line="65" column="9" lean-forward="true" selection-start-line="65" selection-start-column="9" selection-end-line="65" selection-end-column="9" />
+            <state relative-caret-position="88">
+              <caret line="67" column="10" selection-start-line="67" selection-start-column="10" selection-end-line="67" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -95,20 +95,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/train.png">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/model.json">
+        <entry file="file://$PROJECT_DIR$/Cargo.toml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="20" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+            <state relative-caret-position="285">
+              <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -116,8 +106,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/neunet/api/internal.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="561" column="37" selection-start-line="561" selection-start-column="37" selection-end-line="561" selection-end-column="37" />
+            <state relative-caret-position="127">
+              <caret line="582" column="90" selection-start-line="582" selection-start-column="90" selection-end-line="582" selection-end-column="90" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/neunet/transforms/mod.rs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="18" selection-start-column="18" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -125,31 +124,30 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/neunet/api/defs.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="134">
-              <caret line="145" column="8" selection-start-line="145" selection-start-column="8" selection-end-line="145" selection-end-column="8" />
+            <state relative-caret-position="127">
+              <caret line="119" column="7" selection-start-line="119" selection-start-column="7" selection-end-line="119" selection-end-column="7" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.19.0/src/io/mod.rs">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/libstd/io/mod.rs">
+        <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/liballoc/str.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="1205" column="7" selection-start-line="1205" selection-start-column="7" selection-end-line="1205" selection-end-column="7" />
+            <state relative-caret-position="177">
+              <caret line="204" column="7" selection-start-line="204" selection-start-column="7" selection-end-line="204" selection-end-column="7" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_json-1.0.51/src/macros.rs">
+        <entry file="file://$PROJECT_DIR$/src/neunet/utils/ml.rs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="155">
-              <caret line="52" column="13" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="13" />
+            <state>
+              <caret selection-end-column="20" />
+              <folding>
+                <element signature="e#363#364#0" expanded="true" />
+                <element signature="e#385#386#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -165,7 +163,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>mini_batch_size</find>
       <find>Running epoch</find>
       <find>normal</find>
       <find>f64</find>
@@ -195,6 +192,7 @@
       <find>Soft</find>
       <find>json</find>
       <find>save</find>
+      <find>M</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -540,6 +538,21 @@
               <item name="neunet" type="462c0819:PsiDirectoryNode" />
               <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="alloc" type="20ee2d1f:SyntheticLibraryElementNode" />
+            </path>
+            <path>
+              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="alloc" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="liballoc" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -550,7 +563,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587802874613" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587825397809" />
     <property name="org.rust.cargo.project.model.PROJECT_DISCOVERY" value="true" />
     <property name="settings.editor.selected.configurable" value="project.scopes" />
   </component>
@@ -932,7 +945,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587749490023</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="model save">
+      <created>1587802943320</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1587802943320</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TodoView">
@@ -956,7 +976,7 @@
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32876712" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49815726" visible="true" weight="0.3935243" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49815726" visible="true" weight="0.46326277" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -980,7 +1000,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added momentum" />
     <MESSAGE value="init network" />
     <MESSAGE value="Debug impl" />
     <MESSAGE value="initiate momentum to zero" />
@@ -1005,21 +1024,10 @@
     <MESSAGE value="ser" />
     <MESSAGE value="better messaging" />
     <MESSAGE value="cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="cleanup" />
+    <MESSAGE value="model save" />
+    <option name="LAST_COMMIT_MESSAGE" value="model save" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/plotters-0.2.12/src/series/line_series.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-337">
-          <caret line="37" column="43" selection-start-line="37" selection-start-column="38" selection-end-line="37" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/plotters-0.2.12/src/element/dynelem.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-802" />
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/plotters-0.2.12/src/element/points.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1007" />
@@ -1181,31 +1189,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/loader.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/utils/ml.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-column="20" />
-          <folding>
-            <element signature="e#363#364#0" expanded="true" />
-            <element signature="e#385#386#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/neunet/utils/matrix.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1230,13 +1213,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/transforms/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="18" selection-start-column="18" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/neunet/api/mod.rs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -1255,13 +1231,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="109" selection-start-line="2" selection-start-column="109" selection-end-line="2" selection-end-column="109" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Cargo.toml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -1299,15 +1268,40 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/train.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model.json">
+    <entry file="file://$PROJECT_DIR$/src/neunet/loader.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="20" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+        <state relative-caret-position="105">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/neunet/mod.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/neunet/utils/ml.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-column="20" />
+          <folding>
+            <element signature="e#363#364#0" expanded="true" />
+            <element signature="e#385#386#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/neunet/transforms/mod.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="18" selection-start-column="18" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/train.png">
+      <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/neunet/files/idx.rs">
       <provider selected="true" editor-type-id="text-editor">
@@ -1316,24 +1310,64 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/liballoc/str.rs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="204" column="7" selection-start-line="204" selection-start-column="7" selection-end-line="204" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="42343" column="5" selection-start-line="42343" selection-start-column="5" selection-end-line="42343" selection-end-column="5" />
+          <folding>
+            <element signature="e#14#1263556#0" />
+            <element signature="e#119#777#0" />
+            <element signature="e#814#1174399#0" />
+            <element signature="e#1174509#1175167#0" />
+            <element signature="e#1175204#1248576#0" />
+            <element signature="e#1248689#1248827#0" />
+            <element signature="e#1248864#1263546#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Cargo.toml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mnist.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="42348" column="16" selection-start-line="42348" selection-start-column="16" selection-end-line="42348" selection-end-column="16" />
+          <folding>
+            <element signature="e#83#1263625#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="101">
-          <caret line="65" column="9" lean-forward="true" selection-start-line="65" selection-start-column="9" selection-end-line="65" selection-end-column="9" />
+        <state relative-caret-position="88">
+          <caret line="67" column="10" selection-start-line="67" selection-start-column="10" selection-end-line="67" selection-end-column="10" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/neunet/api/defs.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="145" column="8" selection-start-line="145" selection-start-column="8" selection-end-line="145" selection-end-column="8" />
+        <state relative-caret-position="127">
+          <caret line="119" column="7" selection-start-line="119" selection-start-column="7" selection-end-line="119" selection-end-column="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/neunet/api/internal.rs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="561" column="37" selection-start-line="561" selection-start-column="37" selection-end-line="561" selection-end-column="37" />
+        <state relative-caret-position="127">
+          <caret line="582" column="90" selection-start-line="582" selection-start-column="90" selection-end-line="582" selection-end-column="90" />
         </state>
       </provider>
     </entry>

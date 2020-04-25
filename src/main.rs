@@ -61,9 +61,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("NeuralNetwork {:?}", arch);
 
 
-    let mut nn = NNModel::build(arch, &mut rng);
+    let mut nn = NNModel::build(ModelMeta {
+        name: "mnist".to_owned()
+    }, arch, &mut rng);
 
-    nn.save("model.json");
+    nn.save("./")?;
 
     println!("Model saved");
 
@@ -75,7 +77,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let test_labels_one_hot = one_hot(&test_labels);
 
     let training_examples = train_data.shape().1;
-
 
 
     nn.train(

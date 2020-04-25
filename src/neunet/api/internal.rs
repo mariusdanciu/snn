@@ -98,7 +98,7 @@ impl BackProp for NNModel {
 }
 
 impl NNModel {
-    pub fn build<R: RandomInitializer + Copy>(nd: NeuralNetworkArchitecture<R>, rng: &mut rand_pcg::Pcg32) -> NNModel {
+    pub fn build<R: RandomInitializer + Copy>(meta: ModelMeta, nd: NeuralNetworkArchitecture<R>, rng: &mut rand_pcg::Pcg32) -> NNModel {
         let layers = &nd.layers;
 
         let mut num_inputs = nd.num_features;
@@ -138,6 +138,7 @@ impl NNModel {
 
 
         NNModel {
+            meta,
             num_features: nd.num_features,
             num_classes: nd.num_classes,
             layers: initted,
@@ -434,7 +435,12 @@ impl Train for NNModel {
             time: Utc::now()
         });
 
+        let name = self.meta.name.clone();
+
         Ok(NNModel {
+            meta: ModelMeta {
+                name
+            },
             num_features: self.num_features,
             num_classes: self.num_classes,
             layers: self.layers.clone(),
@@ -543,13 +549,8 @@ impl TrainingObserver for ConsoleObserver {
     }
 }
 
-impl Save for NNModel {
-    fn save(&self, path: &str) -> io::Result<String> {
-
-
-        let mut f: File = File::create(path)?;
-
-
+impl Json for NNModel {
+    fn to_json(&self, pretty: bool) -> String {
         let js_layers: Vec<Value> = self.layers.iter().map(|l| {
             let k: Vec<Value> = l.weights.data.as_vec().iter().map(|e| json!(e)).collect();
             let i: Vec<Value> = l.intercepts.data.as_vec().iter().map(|e| json!(e)).collect();
@@ -565,14 +566,37 @@ impl Save for NNModel {
         }).collect();
 
         let mut model = json!({
-           "metadata": json!({
+           "data_info": json!({
                 "num_features" : json!(self.num_features),
                 "num_classes": json!(self.num_classes),
-                "layers": js_layers,
-           })
+           }),
+           "meta" : json!({
+                "version": json!("1.0.0"),
+                "name" : json!(self.meta.name)
+           }),
+           "layers": js_layers,
         });
 
-        let s = serde_json::to_string_pretty(&model).unwrap();
+        match &self.training_info {
+            Some(info) => {
+                let obj = model.as_object_mut().unwrap();
+                obj.insert("training_info".to_owned(), serde_json::to_value(info).unwrap());
+            }
+            _ => ()
+        };
+
+        if pretty {
+            serde_json::to_string_pretty(&model).unwrap()
+        } else {
+            model.to_string()
+        }
+    }
+}
+
+impl Save for NNModel {
+    fn save(&self, path: &str) -> io::Result<String> {
+        let mut f: File = File::create(format!("{}/{}.json", path, self.meta.name))?;
+        let s = self.to_json(true);
         f.write_all(s.as_bytes())?;
         Ok(path.to_owned())
     }

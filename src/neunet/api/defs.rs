@@ -6,6 +6,7 @@ use nalgebra::{DMatrix, DVector};
 use nalgebra::*;
 use rand_distr::{Distribution, Normal};
 use std::io;
+use serde::{Deserialize, Serialize};
 
 pub enum ActivationType {
     Sigmoid,
@@ -14,7 +15,7 @@ pub enum ActivationType {
     SoftMax,
 }
 
-
+#[derive(Serialize, Deserialize)]
 pub struct TrainingInfo {
     pub hyper_params: HyperParams,
     pub num_epochs_used: u32,
@@ -22,13 +23,20 @@ pub struct TrainingInfo {
     pub loss: f32,
 }
 
+#[derive(Clone, Serialize, Deserialize)]
+pub struct ModelMeta {
+    pub name: String
+}
+
 pub struct NNModel {
+    pub meta: ModelMeta,
     pub num_features: usize,
     pub num_classes: usize,
     pub layers: Vec<Layer>,
     pub training_info: Option<TrainingInfo>,
 }
 
+#[derive(Serialize, Deserialize)]
 pub enum OptimizationType {
     MBGD,
     Momentum,
@@ -36,8 +44,10 @@ pub enum OptimizationType {
     Adam,
 }
 
+#[derive(Serialize, Deserialize)]
 pub struct HyperParams {
     pub max_accuracy_threshold: f32,
+    pub auto_save_after_n_iterations: u16,
     pub max_epochs: u32,
     pub momentum_beta: f32,
     pub rms_prop_beta: f32,
@@ -51,6 +61,7 @@ impl Default for HyperParams {
     fn default() -> Self {
         HyperParams {
             max_accuracy_threshold: 0.95,
+            auto_save_after_n_iterations: 0,
             max_epochs: 3,
             momentum_beta: 0.9,
             rms_prop_beta: 0.999,
