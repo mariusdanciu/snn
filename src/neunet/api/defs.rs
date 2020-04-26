@@ -61,7 +61,7 @@ impl Default for HyperParams {
     fn default() -> Self {
         HyperParams {
             max_accuracy_threshold: 0.95,
-            auto_save_after_n_iterations: 0,
+            auto_save_after_n_iterations: 10,
             max_epochs: 3,
             momentum_beta: 0.9,
             rms_prop_beta: 0.999,
@@ -106,6 +106,9 @@ pub enum TrainMessage {
         epoch: u32,
         batch_start: u32,
         metrics: Metrics,
+    },
+    ModelSaved {
+        time: DateTime<Utc>
     },
     Success {
         time: DateTime<Utc>

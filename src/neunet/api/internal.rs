@@ -425,6 +425,15 @@ impl Train for NNModel {
                 });
 
                 iteration += 1;
+
+                if hp.auto_save_after_n_iterations > 0 && iteration % hp.auto_save_after_n_iterations as u32 == 0 {
+                    match self.save("/.") {
+                        Ok(s) => observer.emit(TrainMessage::ModelSaved {
+                            time: Utc::now()
+                        }),
+                        _ => ()
+                    }
+                }
             }
             epoch += 1;
 
@@ -460,6 +469,11 @@ impl Json for TrainMessage {
         let js = match self {
             TrainMessage::Started { time } => json!({
                     "started" : json!({
+                        "time": json!(time.format("%Y%m%dT%H%M%SZ").to_string()),
+                    })
+                }),
+            TrainMessage::ModelSaved { time } => json!({
+                    "model_saved" : json!({
                         "time": json!(time.format("%Y%m%dT%H%M%SZ").to_string()),
                     })
                 }),
