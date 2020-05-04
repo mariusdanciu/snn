@@ -166,8 +166,7 @@ impl Train for NNModel {
     fn train(&mut self,
              hp: HyperParams,
              observer: &mut TrainingObserver,
-             train_data: LabeledData,
-             test_data: LabeledData) -> Result<NNModel, Box<dyn std::error::Error>> {
+             ingest: Box<dyn DataIngest>) -> Result<NNModel, Box<dyn std::error::Error>> {
         fn reset_gradients(model: &mut NNModel) {
             for l in model.layers.iter_mut() {
                 for e in l.dw.iter_mut() {
@@ -329,8 +328,12 @@ impl Train for NNModel {
             (confusion, l_acc, corrects as f32 / (corrects as f32 + incorrects as f32))
         }
 
-        let (_num_features, num_examples) = train_data.features.shape();
-        let (num_labels, _) = train_data.labels.shape();
+        let test_data = ingest.test_data();
+
+
+        //let (_num_features, num_examples) = train_data.features.shape();
+        //let (num_labels, _) = train_data.labels.shape();
+
 
         let mut stop = false;
 
@@ -339,103 +342,105 @@ impl Train for NNModel {
 
         let mut batch_loss = 0.0_f32;
         let mut test_accuracy = 0.0_f32;
-
+        let mut last_batch = false;
+        let mut batch_index = 0;
 
         observer.emit(TrainMessage::Started {
             time: Utc::now()
         });
 
         while !stop {
-            for k in (0..num_examples).step_by(hp.mini_batch_size) {
-                batch_loss = 0.0_f32;
+            if ingest.is_valid_batch(batch_index, hp.mini_batch_size) {
+                batch_index = 0;
+                epoch += 1;
+            }
 
-                reset_gradients(self);
+            let train_data = ingest.train_data(batch_index, hp.mini_batch_size);
 
-                let batch_size = if k + hp.mini_batch_size > num_examples {
-                    num_examples - k
-                } else {
-                    hp.mini_batch_size
-                };
+            batch_loss = 0.0_f32;
 
-                let mean_fact = 1.0f32 / batch_size as f32;
+            reset_gradients(self);
 
-                let cost_reg = match hp.l2_regularization {
+            let k = train_data.features.shape().1;
+
+            let batch_size = std::cmp::min(k, hp.mini_batch_size);
+
+            let mean_fact = 1.0f32 / batch_size as f32;
+
+            let cost_reg = match hp.l2_regularization {
+                None =>
+                    0.0f32,
+                Some(reg) =>
+                    0.5f32 * (reg * norm(self))
+            };
+
+            for i in 0..batch_size {
+                let x = train_data.features.column(i).into();
+
+                let y_hat = self.forward_prop(&x);
+                batch_loss += cross_entropy_one_hot(&train_data.labels.column(i), &y_hat);
+
+                self.back_prop(&x, &y_hat, &train_data.labels.column(i));
+            }
+
+
+            batch_loss = mean_fact * (batch_loss + cost_reg);
+
+
+            for mut l in self.layers.iter_mut() {
+                match hp.l2_regularization {
                     None =>
-                        0.0f32,
+                        l.dw = mean_fact * &l.dw,
                     Some(reg) =>
-                        0.5f32 * (reg * norm(self))
+                        l.dw = mean_fact * (&l.dw + reg * &l.weights),
                 };
 
-                for j in 0..batch_size {
-                    let i = k + j; // partition
-                    let x = train_data.features.column(i).into();
-
-                    let y_hat = self.forward_prop(&x);
-                    batch_loss += cross_entropy_one_hot(&train_data.labels.column(i), &y_hat);
-
-                    self.back_prop(&x, &y_hat, &train_data.labels.column(i));
-                }
+                l.db = mean_fact * &l.db;
+            }
 
 
-                batch_loss = mean_fact * (batch_loss + cost_reg);
+            update_weights(iteration, &hp, self);
 
+            let (train_cm, train_lacc, train_acc) = test(self, &train_data.features, &train_data.labels);
 
-                for mut l in self.layers.iter_mut() {
-                    match hp.l2_regularization {
-                        None =>
-                            l.dw = mean_fact * &l.dw,
-                        Some(reg) =>
-                            l.dw = mean_fact * (&l.dw + reg * &l.weights),
-                    };
+            let (test_cm, test_lacc, test_acc) = test(self, &test_data.features, &test_data.labels);
 
-                    l.db = mean_fact * &l.db;
-                }
+            test_accuracy = test_acc;
 
-
-                update_weights(iteration, &hp, self);
-
-                let (train_cm, train_lacc, train_acc) = test(self,
-                                                             &train_data.features.slice((0, k), (self.num_features, batch_size)),
-                                                             &train_data.labels.slice((0, k), (self.num_classes, batch_size)));
-
-                let (test_cm, test_lacc, test_acc) = test(self, &test_data.features, &test_data.labels);
-
-                test_accuracy = test_acc;
-
-                observer.emit(TrainMessage::Running {
-                    time: Utc::now(),
-                    iteration: iteration,
-                    epoch: epoch,
-                    batch_start: k as u32,
-                    metrics: Metrics {
-                        loss: batch_loss,
-                        train_eval: TrainingEval {
-                            confusion_matrix_dim: num_labels,
-                            confusion_matrix: train_cm,
-                            labels_accuracies: train_lacc,
-                            accuracy: train_acc,
-                        },
-                        test_eval: TrainingEval {
-                            confusion_matrix_dim: num_labels,
-                            confusion_matrix: test_cm,
-                            labels_accuracies: test_lacc,
-                            accuracy: test_acc,
-                        },
+            observer.emit(TrainMessage::Running {
+                time: Utc::now(),
+                iteration: iteration,
+                epoch: epoch,
+                batch_start: k as u32,
+                metrics: Metrics {
+                    loss: batch_loss,
+                    train_eval: TrainingEval {
+                        confusion_matrix_dim: self.num_classes,
+                        confusion_matrix: train_cm,
+                        labels_accuracies: train_lacc,
+                        accuracy: train_acc,
                     },
-                });
+                    test_eval: TrainingEval {
+                        confusion_matrix_dim: self.num_classes,
+                        confusion_matrix: test_cm,
+                        labels_accuracies: test_lacc,
+                        accuracy: test_acc,
+                    },
+                },
+            });
 
-                iteration += 1;
+            iteration += 1;
+            batch_index += hp.mini_batch_size;
 
-                if hp.auto_save_after_n_iterations > 0 && iteration % hp.auto_save_after_n_iterations as u32 == 0 {
-                    match self.save("/.") {
-                        Ok(s) => observer.emit(TrainMessage::ModelSaved {
-                            time: Utc::now()
-                        }),
-                        _ => ()
-                    }
+            if hp.auto_save_after_n_iterations > 0 && iteration % hp.auto_save_after_n_iterations as u32 == 0 {
+                match self.save("/.") {
+                    Ok(s) => observer.emit(TrainMessage::ModelSaved {
+                        time: Utc::now()
+                    }),
+                    _ => ()
                 }
             }
-            epoch += 1;
+
 
             stop = epoch > hp.max_epochs || test_accuracy >= hp.max_accuracy_threshold;
         }

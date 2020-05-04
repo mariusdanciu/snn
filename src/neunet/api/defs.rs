@@ -1,11 +1,12 @@
 #![allow(dead_code)]
 
+use std::io;
+
 use chrono::DateTime;
 use chrono::Utc;
 use nalgebra::{DMatrix, DVector};
 use nalgebra::*;
 use rand_distr::{Distribution, Normal};
-use std::io;
 use serde::{Deserialize, Serialize};
 
 pub enum ActivationType {
@@ -115,7 +116,7 @@ pub enum TrainMessage {
     },
     Error {
         time: DateTime<Utc>,
-        reason: String
+        reason: String,
     },
 }
 
@@ -143,13 +144,21 @@ impl ConsoleObserver {
     }
 }
 
+pub trait DataIngest {
+
+    fn is_valid_batch(&self, index: usize, num: usize) -> bool;
+
+    fn train_data(&self, index: usize, num: usize) -> LabeledData<'_>;
+
+    fn test_data(&self) -> LabeledData<'_>;
+}
 
 pub trait Train {
     fn train(&mut self,
              hp: HyperParams,
              observer: &mut TrainingObserver,
-             train_data: LabeledData,
-             test_data: LabeledData) -> Result<NNModel, Box<dyn std::error::Error>>;
+             ingest: Box<dyn DataIngest>,
+    ) -> Result<NNModel, Box<dyn std::error::Error>>;
 }
 
 
@@ -190,7 +199,6 @@ pub struct NeuralNetworkArchitecture<R: RandomInitializer> {
 }
 
 
-
 #[derive(Debug, Copy, Clone)]
 pub struct HeUniform;
 
@@ -210,7 +218,6 @@ pub trait RandomInitializer {
 pub trait Save {
     fn save(&self, path: &str) -> io::Result<String>;
 }
-
 
 
 impl RandomInitializer for HeUniform {

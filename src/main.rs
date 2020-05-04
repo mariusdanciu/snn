@@ -76,22 +76,49 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let test_labels_one_hot = one_hot(&test_labels);
 
-    let training_examples = train_data.shape().1;
-
+    let my_data = MyDataIngest {
+        train_features: train_data,
+        train_labels: labels_one_hot,
+        test_features: test_data,
+        test_labels: test_labels_one_hot,
+    };
 
     nn.train(
         HyperParams {
             ..Default::default()
         },
         &mut ConsoleObserver::new(),
-        LabeledData {
-            features: train_data.slice((0, 0), (nn.num_features, training_examples)),
-            labels: labels_one_hot.slice((0, 0), (nn.num_classes, training_examples)),
-        },
-        LabeledData {
-            features: test_data.slice((0, 0), (nn.num_features, 1000)),
-            labels: test_labels_one_hot.slice((0, 0), (nn.num_classes, 1000)),
-        })?;
+        Box::new(my_data),
+    )?;
 
     Ok(())
+}
+
+struct MyDataIngest {
+    train_features: DMatrix<f32>,
+    train_labels: DMatrix<f32>,
+    test_features: DMatrix<f32>,
+    test_labels: DMatrix<f32>,
+}
+
+impl DataIngest for MyDataIngest {
+    fn is_valid_batch(&self, index: usize, num: usize) -> bool {
+        let size = std::cmp::min(num, self.train_features.shape().1);
+        index < size
+    }
+
+    fn train_data(&self, index: usize, num: usize) -> LabeledData<'_> {
+        let size = std::cmp::min(num, self.train_features.shape().1);
+        LabeledData {
+            features: self.train_features.slice((0, index), (self.train_features.shape().0, size)),
+            labels: self.train_labels.slice((0, index), (self.train_labels.shape().0, size)),
+        }
+    }
+
+    fn test_data(&self) -> LabeledData<'_> {
+        LabeledData {
+            features: self.test_features.slice((0, 0), (self.test_features.shape().0, 1000)),
+            labels: self.test_labels.slice((0, 0), (self.test_labels.shape().0, 1000)),
+        }
+    }
 }
