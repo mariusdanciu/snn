@@ -56,13 +56,14 @@ pub struct HyperParams {
     pub learning_rate: f32,
     pub optimization_type: OptimizationType,
     pub l2_regularization: Option<f32>,
+    pub model_save_path: String
 }
 
 impl Default for HyperParams {
     fn default() -> Self {
         HyperParams {
             max_accuracy_threshold: 0.95,
-            auto_save_after_n_iterations: 10,
+            auto_save_after_n_iterations: 2,
             max_epochs: 3,
             momentum_beta: 0.9,
             rms_prop_beta: 0.999,
@@ -70,6 +71,7 @@ impl Default for HyperParams {
             learning_rate: 0.01,
             optimization_type: OptimizationType::Adam,
             l2_regularization: None,
+            model_save_path: ".".to_string()
         }
     }
 }
@@ -109,7 +111,8 @@ pub enum TrainMessage {
         metrics: Metrics,
     },
     ModelSaved {
-        time: DateTime<Utc>
+        time: DateTime<Utc>,
+        path: String
     },
     Success {
         time: DateTime<Utc>

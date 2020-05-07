@@ -65,10 +65,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         name: "mnist".to_owned()
     }, arch, &mut rng);
 
-    nn.save("./")?;
-
-    println!("Model saved");
-
     min_max_normalization(&mut train_data);
     min_max_normalization(&mut test_data);
 

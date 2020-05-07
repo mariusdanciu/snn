@@ -330,11 +330,6 @@ impl Train for NNModel {
 
         let test_data = ingest.test_data();
 
-
-        //let (_num_features, num_examples) = train_data.features.shape();
-        //let (num_labels, _) = train_data.labels.shape();
-
-
         let mut stop = false;
 
         let mut iteration: u32 = 0;
@@ -433,9 +428,10 @@ impl Train for NNModel {
             batch_index += hp.mini_batch_size;
 
             if hp.auto_save_after_n_iterations > 0 && iteration % hp.auto_save_after_n_iterations as u32 == 0 {
-                match self.save("/.") {
+                match self.save(hp.model_save_path.as_str()) {
                     Ok(s) => observer.emit(TrainMessage::ModelSaved {
-                        time: Utc::now()
+                        time: Utc::now(),
+                        path: s,
                     }),
                     _ => ()
                 }
@@ -477,9 +473,10 @@ impl Json for TrainMessage {
                         "time": json!(time.format("%Y%m%dT%H%M%SZ").to_string()),
                     })
                 }),
-            TrainMessage::ModelSaved { time } => json!({
+            TrainMessage::ModelSaved { time, path } => json!({
                     "model_saved" : json!({
                         "time": json!(time.format("%Y%m%dT%H%M%SZ").to_string()),
+                        "path": json!(path)
                     })
                 }),
             TrainMessage::Running { time, iteration, epoch, batch_start, metrics } => {
@@ -548,6 +545,10 @@ impl TrainingObserver for ConsoleObserver {
                 self.start_time = Some(time)
             }
 
+            TrainMessage::ModelSaved { time, path } => {
+                println!("\tModel snapshot saved");
+            }
+
             TrainMessage::Running { time, iteration, epoch, batch_start, metrics } => {
                 self.train_accuracy_his.push(metrics.train_eval.accuracy);
                 self.test_accuracy_his.push(metrics.test_eval.accuracy);
@@ -614,9 +615,10 @@ impl Json for NNModel {
 
 impl Save for NNModel {
     fn save(&self, path: &str) -> io::Result<String> {
-        let mut f: File = File::create(format!("{}/{}.json", path, self.meta.name))?;
+        let full = format!("{}/{}.json", path, self.meta.name);
+        let mut f: File = File::create(&full)?;
         let s = self.to_json(true);
         f.write_all(s.as_bytes())?;
-        Ok(path.to_owned())
+        Ok(full)
     }
 }
