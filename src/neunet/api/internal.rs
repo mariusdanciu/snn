@@ -3,11 +3,13 @@
 
 use std::fs::File;
 use std::io;
+use std::io::Read;
 use std::io::Write;
 
 use chrono::Utc;
 use nalgebra::*;
 use serde_json::json;
+use serde_json::Map;
 use serde_json::Value;
 
 use crate::neunet::api::defs::*;
@@ -113,7 +115,6 @@ impl NNModel {
             let dbl = DVector::from_vec(vec![0.0_f32; l.num_activations]);
 
             initted.push(Layer {
-                num_activations: l.num_activations,
                 intercepts: DVector::from_vec(vec![0.0_f32; l.num_activations]),
                 weights: w.clone(),
                 activation_type: l.activation_type.clone(),
@@ -576,8 +577,7 @@ impl Json for NNModel {
             let i: Vec<Value> = l.intercepts.data.as_vec().iter().map(|e| json!(e)).collect();
             let shp = l.weights.shape();
             json!({
-                "rows" : json!(shp.0),
-                "cols" : json!(shp.1),
+                "features" : json!(shp.1),
                 "activations" : json!(shp.0),
                 "activation_type" : json!(format!("{:?}", l.activation_type)),
                 "weights" : json!(k),
@@ -613,12 +613,67 @@ impl Json for NNModel {
     }
 }
 
-impl Save for NNModel {
+impl ModelSave for NNModel {
     fn save(&self, path: &str) -> io::Result<String> {
         let full = format!("{}/{}.json", path, self.meta.name);
         let mut f: File = File::create(&full)?;
         let s = self.to_json(true);
         f.write_all(s.as_bytes())?;
         Ok(full)
+    }
+}
+
+impl ModelLoad {
+    fn load(&self, path: &str) -> io::Result<NNModel> {
+        let mut str: String = String::new();
+
+        let size = std::fs::read_to_string(&mut str)?;
+
+        let v: Value = serde_json::from_str(&str)?;
+
+        let props: &Map<String, Value> = v.as_object().unwrap();
+
+        let layers: &Vec<Value> = &props["layers"].as_array().unwrap();
+
+        let res: Vec<Layer> = layers.iter().map(|l| {
+            let activation_type = ActivationType::from_string(l["activation_type"].as_str().unwrap().to_string());
+
+            let activations = *(&l["activations"].as_u64().unwrap()) as usize;
+            let features = *(&l["features"].as_u64().unwrap()) as usize;
+            let intercepts: &Vec<f32> = &l["intercepts"].as_array().unwrap()
+                .iter()
+                .map(|e| e.as_f64().unwrap() as f32).collect();
+            let weights: &Vec<f32> = &l["weights"].as_array().unwrap()
+                .iter()
+                .map(|e| e.as_f64().unwrap() as f32).collect();
+
+
+            let weights_matrix: DMatrix<f32> = DMatrix::from_vec(activations, features, weights.to_vec());
+            let inter: DVector<f32> = DVector::from_vec(intercepts.to_vec());
+
+
+            Layer::build(weights_matrix, inter, activation_type)
+        }).collect();
+
+        let data = &props["data_info"].as_object().unwrap();
+        let num_features = data["num_features"].as_u64().unwrap() as usize;
+        let num_classes = data["num_classes"].as_u64().unwrap() as usize;
+
+        let meta_data = &props["meta"].as_object().unwrap();
+        let name = data["name"].as_str().unwrap().to_string();
+        let version = data["version"].as_str().unwrap().to_string();
+
+
+        Ok(NNModel {
+            meta: ModelMeta {
+                name,
+            },
+            num_features,
+            num_classes,
+            layers: res,
+            training_info: None,
+
+        })
+
     }
 }

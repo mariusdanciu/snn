@@ -4,7 +4,6 @@ use std::io;
 
 use chrono::DateTime;
 use chrono::Utc;
-use nalgebra::{DMatrix, DVector};
 use nalgebra::*;
 use rand_distr::{Distribution, Normal};
 use serde::{Deserialize, Serialize};
@@ -14,6 +13,18 @@ pub enum ActivationType {
     Relu,
     Tanh,
     SoftMax,
+}
+
+impl ActivationType {
+    pub fn from_string(s: String) -> ActivationType {
+        match s.to_lowercase().as_ref() {
+            "sigmoid" => ActivationType::Sigmoid,
+            "relu" => ActivationType::Relu,
+            "tanh" => ActivationType::Tanh,
+            "softmax" => ActivationType::SoftMax,
+            _ => ActivationType::Relu
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize)]
@@ -56,7 +67,7 @@ pub struct HyperParams {
     pub learning_rate: f32,
     pub optimization_type: OptimizationType,
     pub l2_regularization: Option<f32>,
-    pub model_save_path: String
+    pub model_save_path: String,
 }
 
 impl Default for HyperParams {
@@ -71,7 +82,7 @@ impl Default for HyperParams {
             learning_rate: 0.01,
             optimization_type: OptimizationType::Adam,
             l2_regularization: None,
-            model_save_path: ".".to_string()
+            model_save_path: ".".to_string(),
         }
     }
 }
@@ -112,7 +123,7 @@ pub enum TrainMessage {
     },
     ModelSaved {
         time: DateTime<Utc>,
-        path: String
+        path: String,
     },
     Success {
         time: DateTime<Utc>
@@ -148,7 +159,6 @@ impl ConsoleObserver {
 }
 
 pub trait DataIngest {
-
     fn is_valid_batch(&self, index: usize, num: usize) -> bool;
 
     fn train_data(&self, index: usize, num: usize) -> LabeledData<'_>;
@@ -167,7 +177,6 @@ pub trait Train {
 
 #[derive(Clone)]
 pub struct Layer {
-    pub num_activations: usize,
     pub intercepts: DVector<f32>,
     pub weights: DMatrix<f32>,
     pub activation_type: ActivationType,
@@ -184,6 +193,30 @@ pub struct Layer {
     pub rmsp_dw: DMatrix<f32>,
     pub rmsp_db: DVector<f32>,
 
+}
+
+impl Layer {
+    pub fn build(weights: DMatrix<f32>,
+                 intercepts: DVector<f32>,
+                 activation_type: ActivationType) -> Layer {
+        let zero_mat = DMatrix::from_element(0, 0, 0.0);
+        let zero_vec = DVector::from_vec(Vec::new());
+
+        Layer {
+            activation_type,
+            weights,
+            intercepts,
+            z: zero_vec.clone(),
+            a: zero_vec.clone(),
+            dz: zero_vec.clone(),
+            db: zero_vec.clone(),
+            dw: zero_mat.clone(),
+            momentum_db: zero_vec.clone(),
+            momentum_dw: zero_mat.clone(),
+            rmsp_db: zero_vec.clone(),
+            rmsp_dw: zero_mat.clone(),
+        }
+    }
 }
 
 
@@ -218,8 +251,12 @@ pub trait RandomInitializer {
     fn weights(self, r: usize, c: usize, rng: &mut rand_pcg::Pcg32) -> DMatrix<f32>;
 }
 
-pub trait Save {
+pub trait ModelSave {
     fn save(&self, path: &str) -> io::Result<String>;
+}
+
+pub trait ModelLoad {
+    fn load(&self, path: &str) -> io::Result<NNModel>;
 }
 
 
@@ -280,9 +317,8 @@ impl Clone for ActivationType {
 impl std::fmt::Debug for Layer {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "\n\tLayer {{
-        \t\tnum_activations : {:?}
         \t\tweights : {:?}
         \t\tactivation_type : {:?}
-    }}", self.num_activations, self.weights.shape(), self.activation_type)
+    }}", self.weights.shape(), self.activation_type)
     }
 }
