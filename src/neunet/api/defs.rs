@@ -27,7 +27,7 @@ impl ActivationType {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct TrainingInfo {
     pub hyper_params: HyperParams,
     pub num_epochs_used: u32,
@@ -48,7 +48,7 @@ pub struct NNModel {
     pub training_info: Option<TrainingInfo>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub enum OptimizationType {
     MBGD,
     Momentum,
@@ -56,7 +56,7 @@ pub enum OptimizationType {
     Adam,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct HyperParams {
     pub max_accuracy_threshold: f32,
     pub auto_save_after_n_iterations: u16,

@@ -168,6 +168,8 @@ impl Train for NNModel {
              hp: HyperParams,
              observer: &mut TrainingObserver,
              ingest: Box<dyn DataIngest>) -> Result<NNModel, Box<dyn std::error::Error>> {
+
+
         fn reset_gradients(model: &mut NNModel) {
             for l in model.layers.iter_mut() {
                 for e in l.dw.iter_mut() {
@@ -329,6 +331,7 @@ impl Train for NNModel {
             (confusion, l_acc, corrects as f32 / (corrects as f32 + incorrects as f32))
         }
 
+
         let test_data = ingest.test_data();
 
         let mut stop = false;
@@ -429,6 +432,14 @@ impl Train for NNModel {
             batch_index += hp.mini_batch_size;
 
             if hp.auto_save_after_n_iterations > 0 && iteration % hp.auto_save_after_n_iterations as u32 == 0 {
+
+                self.training_info = Some(TrainingInfo {
+                    hyper_params: hp.clone(),
+                    num_epochs_used: epoch,
+                    num_iterations_used: iteration,
+                    loss: batch_loss,
+                });
+
                 match self.save(hp.model_save_path.as_str()) {
                     Ok(s) => observer.emit(TrainMessage::ModelSaved {
                         time: Utc::now(),
@@ -575,25 +586,57 @@ impl Json for NNModel {
         let js_layers: Vec<Value> = self.layers.iter().map(|l| {
             let k: Vec<Value> = l.weights.data.as_vec().iter().map(|e| json!(e)).collect();
             let i: Vec<Value> = l.intercepts.data.as_vec().iter().map(|e| json!(e)).collect();
+
+            let z: Vec<Value> = l.z.data.as_vec().iter().map(|e| json!(e)).collect();
+            let a: Vec<Value> = l.a.data.as_vec().iter().map(|e| json!(e)).collect();
+
+            let dz: Vec<Value> = l.dz.data.as_vec().iter().map(|e| json!(e)).collect();
+            let dw: Vec<Value> = l.dw.data.as_vec().iter().map(|e| json!(e)).collect();
+            let db: Vec<Value> = l.db.data.as_vec().iter().map(|e| json!(e)).collect();
+
+            let momentum_dw: Vec<Value> = l.momentum_dw.data.as_vec().iter().map(|e| json!(e)).collect();
+            let momentum_db: Vec<Value> = l.momentum_db.data.as_vec().iter().map(|e| json!(e)).collect();
+
+            let rmsp_dw: Vec<Value> = l.rmsp_dw.data.as_vec().iter().map(|e| json!(e)).collect();
+            let rmsp_db: Vec<Value> = l.rmsp_db.data.as_vec().iter().map(|e| json!(e)).collect();
+
             let shp = l.weights.shape();
             json!({
                 "features" : json!(shp.1),
                 "activations" : json!(shp.0),
                 "activation_type" : json!(format!("{:?}", l.activation_type)),
                 "weights" : json!(k),
-                "intercepts" : json!(i)
+                "intercepts" : json!(i),
+                "z" : json!(z),
+                "a" : json!(a),
+                "dz" : json!(dz),
+                "dw" : json!(dw),
+                "db" : json!(db),
+                "momentum_dw" : json!(momentum_dw),
+                "momentum_db" : json!(momentum_db),
+                "rmsp_dw" : json!(rmsp_dw),
+                "rmsp_db" : json!(rmsp_db)
             })
         }).collect();
+
+        let meta = json!({
+                "version": json!("1.0.0"),
+                "name" : json!(self.meta.name)
+           });
+
+        let m = if self.training_info.is_some() {
+            let k = &mut meta.as_object().unwrap().clone();
+            json!(k.insert("training_info".to_string(), json!(self.training_info.clone().unwrap())))
+        } else {
+            meta
+        };
 
         let mut model = json!({
            "data_info": json!({
                 "num_features" : json!(self.num_features),
                 "num_classes": json!(self.num_classes),
            }),
-           "meta" : json!({
-                "version": json!("1.0.0"),
-                "name" : json!(self.meta.name)
-           }),
+           "meta" : m,
            "layers": js_layers,
         });
 
@@ -674,6 +717,5 @@ impl ModelLoad {
             training_info: None,
 
         })
-
     }
 }
