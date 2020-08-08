@@ -168,8 +168,6 @@ impl Train for NNModel {
              hp: HyperParams,
              observer: &mut TrainingObserver,
              ingest: Box<dyn DataIngest>) -> Result<NNModel, Box<dyn std::error::Error>> {
-
-
         fn reset_gradients(model: &mut NNModel) {
             for l in model.layers.iter_mut() {
                 for e in l.dw.iter_mut() {
@@ -432,7 +430,6 @@ impl Train for NNModel {
             batch_index += hp.mini_batch_size;
 
             if hp.auto_save_after_n_iterations > 0 && iteration % hp.auto_save_after_n_iterations as u32 == 0 {
-
                 self.training_info = Some(TrainingInfo {
                     hyper_params: hp.clone(),
                     num_epochs_used: epoch,
@@ -668,6 +665,13 @@ impl ModelSave for NNModel {
 
 impl ModelLoad {
     fn load(&self, path: &str) -> io::Result<NNModel> {
+
+        fn to_f32_array(json: &Value) -> Vec<f32> {
+            json.as_array().unwrap()
+                .iter()
+                .map(|e| e.as_f64().unwrap() as f32).collect()
+        }
+
         let mut str: String = String::new();
 
         let size = std::fs::read_to_string(&mut str)?;
@@ -682,20 +686,45 @@ impl ModelLoad {
             let activation_type = ActivationType::from_string(l["activation_type"].as_str().unwrap().to_string());
 
             let activations = *(&l["activations"].as_u64().unwrap()) as usize;
+
             let features = *(&l["features"].as_u64().unwrap()) as usize;
-            let intercepts: &Vec<f32> = &l["intercepts"].as_array().unwrap()
-                .iter()
-                .map(|e| e.as_f64().unwrap() as f32).collect();
-            let weights: &Vec<f32> = &l["weights"].as_array().unwrap()
-                .iter()
-                .map(|e| e.as_f64().unwrap() as f32).collect();
 
+            let weights = DMatrix::from_vec(activations, features, to_f32_array(&l["weights"]));
 
-            let weights_matrix: DMatrix<f32> = DMatrix::from_vec(activations, features, weights.to_vec());
-            let inter: DVector<f32> = DVector::from_vec(intercepts.to_vec());
+            let intercepts = DVector::from_vec(to_f32_array(&l["intercepts"]));
 
+            let z = DVector::from_vec(to_f32_array(&l["z"]));
 
-            Layer::build(weights_matrix, inter, activation_type)
+            let a = DVector::from_vec(to_f32_array(&l["a"]));
+
+            let dz  = DVector::from_vec(to_f32_array(&l["dz"]));
+
+            let dw  = DMatrix::from_vec(activations, features, to_f32_array(&l["dw"]));
+
+            let db  = DVector::from_vec(to_f32_array(&l["db"]));
+
+            let momentum_dw = DMatrix::from_vec(activations, features, to_f32_array(&l["momentum_dw"]));
+
+            let momentum_db = DVector::from_vec(to_f32_array(&l["momentum_db"]));
+
+            let rmsp_dw = DMatrix::from_vec(activations, features, to_f32_array(&l["rmsp_dw"]));
+
+            let rmsp_db = DVector::from_vec(to_f32_array(&l["rmsp_db"]));
+
+            Layer {
+                activation_type,
+                weights,
+                intercepts,
+                z,
+                a,
+                dz,
+                db,
+                dw,
+                momentum_db,
+                momentum_dw,
+                rmsp_db,
+                rmsp_dw
+            }
         }).collect();
 
         let data = &props["data_info"].as_object().unwrap();
@@ -706,7 +735,6 @@ impl ModelLoad {
         let name = data["name"].as_str().unwrap().to_string();
         let version = data["version"].as_str().unwrap().to_string();
 
-
         Ok(NNModel {
             meta: ModelMeta {
                 name,
@@ -714,8 +742,7 @@ impl ModelLoad {
             num_features,
             num_classes,
             layers: res,
-            training_info: None,
-
+            training_info: serde_json::from_value(props["training_info"].clone()).ok(),
         })
     }
 }
