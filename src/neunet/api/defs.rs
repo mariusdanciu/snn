@@ -37,7 +37,17 @@ pub struct TrainingInfo {
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct ModelMeta {
+    pub version: String,
     pub name: String
+}
+
+impl Default for ModelMeta {
+    fn default() -> Self {
+        ModelMeta {
+            version: "1.0.0".to_string(),
+            name: "".to_string()
+        }
+    }
 }
 
 pub struct NNModel {
@@ -82,7 +92,7 @@ impl Default for HyperParams {
             learning_rate: 0.01,
             optimization_type: OptimizationType::Adam,
             l2_regularization: None,
-            model_save_path: ".".to_string(),
+            model_save_path: "./".to_string(),
         }
     }
 }

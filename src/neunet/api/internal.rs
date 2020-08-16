@@ -454,12 +454,9 @@ impl Train for NNModel {
             time: Utc::now()
         });
 
-        let name = self.meta.name.clone();
 
         Ok(NNModel {
-            meta: ModelMeta {
-                name
-            },
+            meta: self.meta.clone(),
             num_features: self.num_features,
             num_classes: self.num_classes,
             layers: self.layers.clone(),
@@ -730,6 +727,7 @@ impl ModelLoad {
         Ok(NNModel {
             meta: ModelMeta {
                 name,
+                version
             },
             num_features,
             num_classes,

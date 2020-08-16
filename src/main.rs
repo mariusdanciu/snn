@@ -62,7 +62,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 
     let mut nn = NNModel::build(ModelMeta {
-        name: "mnist".to_owned()
+        name: "mnist".to_owned(),
+        ..Default::default()
     }, arch, &mut rng);
 
     min_max_normalization(&mut train_data);
