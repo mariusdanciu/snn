@@ -621,19 +621,12 @@ impl Json for NNModel {
                 "name" : json!(self.meta.name)
            });
 
-        let m = if self.training_info.is_some() {
-            let k = &mut meta.as_object().unwrap().clone();
-            json!(k.insert("training_info".to_string(), json!(self.training_info.clone().unwrap())))
-        } else {
-            meta
-        };
-
         let mut model = json!({
            "data_info": json!({
                 "num_features" : json!(self.num_features),
                 "num_classes": json!(self.num_classes),
            }),
-           "meta" : m,
+           "meta" : meta,
            "layers": js_layers,
         });
 
@@ -665,7 +658,6 @@ impl ModelSave for NNModel {
 
 impl ModelLoad {
     fn load(&self, path: &str) -> io::Result<NNModel> {
-
         fn to_f32_array(json: &Value) -> Vec<f32> {
             json.as_array().unwrap()
                 .iter()
@@ -697,11 +689,11 @@ impl ModelLoad {
 
             let a = DVector::from_vec(to_f32_array(&l["a"]));
 
-            let dz  = DVector::from_vec(to_f32_array(&l["dz"]));
+            let dz = DVector::from_vec(to_f32_array(&l["dz"]));
 
-            let dw  = DMatrix::from_vec(activations, features, to_f32_array(&l["dw"]));
+            let dw = DMatrix::from_vec(activations, features, to_f32_array(&l["dw"]));
 
-            let db  = DVector::from_vec(to_f32_array(&l["db"]));
+            let db = DVector::from_vec(to_f32_array(&l["db"]));
 
             let momentum_dw = DMatrix::from_vec(activations, features, to_f32_array(&l["momentum_dw"]));
 
@@ -723,7 +715,7 @@ impl ModelLoad {
                 momentum_db,
                 momentum_dw,
                 rmsp_db,
-                rmsp_dw
+                rmsp_dw,
             }
         }).collect();
 
