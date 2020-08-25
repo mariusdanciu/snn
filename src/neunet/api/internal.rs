@@ -28,7 +28,7 @@ pub trait BackProp {
 impl ForwardProp for NNModel {
     fn forward_prop(&mut self, x: &DVector<f32>) -> DVector<f32> {
         let mut current = x;
-        let mut t;
+        let mut t: DVector<f32>;
 
 
         let size = self.layers.len();
@@ -166,7 +166,7 @@ impl Prediction for NNModel {
 impl Train for NNModel {
     fn train(&mut self,
              hp: HyperParams,
-             observer: &mut TrainingObserver,
+             observer: &mut dyn TrainingObserver,
              ingest: Box<dyn DataIngest>) -> Result<NNModel, Box<dyn std::error::Error>> {
         fn reset_gradients(model: &mut NNModel) {
             for l in model.layers.iter_mut() {
@@ -406,7 +406,7 @@ impl Train for NNModel {
 
             observer.emit(TrainMessage::Running {
                 time: Utc::now(),
-                iteration: iteration,
+                iteration,
                 epoch: epoch,
                 batch_start: k as u32,
                 metrics: Metrics {
@@ -653,7 +653,7 @@ impl ModelSave for NNModel {
     }
 }
 
-impl ModelLoad {
+impl dyn ModelLoad {
     fn load(&self, path: &str) -> io::Result<NNModel> {
         fn to_f32_array(json: &Value) -> Vec<f32> {
             json.as_array().unwrap()

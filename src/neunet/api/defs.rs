@@ -179,7 +179,7 @@ pub trait DataIngest {
 pub trait Train {
     fn train(&mut self,
              hp: HyperParams,
-             observer: &mut TrainingObserver,
+             observer: &mut dyn TrainingObserver,
              ingest: Box<dyn DataIngest>,
     ) -> Result<NNModel, Box<dyn std::error::Error>>;
 }
