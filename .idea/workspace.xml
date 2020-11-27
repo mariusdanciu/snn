@@ -1,176 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="CargoProjects">
+    <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="4486381d-42e1-40ef-ad33-70ac30de5440" name="Default Changelist" comment="">
+    <list default="true" id="9e7aa48e-0ab4-4ff5-b764-1abd95e614e6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/snn.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/neunet/utils/optimization.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sbt.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/scala_settings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/neunet/api/defs.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/neunet/api/defs.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/neunet/api/internal.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/neunet/api/internal.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/neunet/utils/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/neunet/utils/mod.rs" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/target/" />
-    <ignored path="$PROJECT_DIR$/out/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="-1259895701">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="18" />
-          <entry key="project.open.time.1" value="4" />
-          <entry key="project.open.time.10" value="1" />
-          <entry key="project.open.time.12" value="1" />
-          <entry key="project.open.time.13" value="2" />
-          <entry key="project.open.time.15" value="1" />
-          <entry key="project.open.time.17" value="1" />
-          <entry key="project.open.time.19" value="1" />
-          <entry key="project.open.time.2" value="5" />
-          <entry key="project.open.time.26" value="1" />
-          <entry key="project.open.time.29" value="1" />
-          <entry key="project.open.time.3" value="3" />
-          <entry key="project.open.time.4" value="2" />
-          <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="24" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="iml" value="3" />
-          <entry key="java" value="1" />
-          <entry key="jpg" value="2" />
-          <entry key="json" value="12" />
-          <entry key="lock" value="3" />
-          <entry key="md" value="1" />
-          <entry key="png" value="8" />
-          <entry key="rs" value="328" />
-          <entry key="toml" value="13" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="IDEA_MODULE" value="3" />
-          <entry key="Image" value="10" />
-          <entry key="JAVA" value="1" />
-          <entry key="JSON" value="12" />
-          <entry key="PLAIN_TEXT" value="1" />
-          <entry key="Rust" value="328" />
-          <entry key="TOML" value="16" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="json" value="365" />
-          <entry key="rs" value="55792" />
-          <entry key="toml" value="137" />
-          <entry key="txt" value="668" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="JSON" value="365" />
-          <entry key="PLAIN_TEXT" value="668" />
-          <entry key="Rust" value="55792" />
-          <entry key="TOML" value="137" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/neunet/api/internal.rs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="348">
-              <caret line="729" column="23" lean-forward="true" selection-start-line="729" selection-start-column="23" selection-end-line="729" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main.rs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="65" column="28" lean-forward="true" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_json-1.0.51/src/value/mod.rs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="346">
-              <caret line="993" column="7" selection-start-line="993" selection-start-column="7" selection-end-line="993" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/nn.iml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/neunet/transforms/normalize.rs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/neunet/transforms/mod.rs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="18" selection-start-column="18" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/neunet/api/defs.rs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="40" column="8" selection-start-line="40" selection-start-column="8" selection-end-line="40" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/euclid-0.20.5/src/num.rs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="7" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
-              <folding>
-                <element signature="e#598#599#0" expanded="true" />
-                <element signature="e#637#638#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/neunet/loader.rs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" selection-start-line="7" selection-end-line="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mnist.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2544563">
-              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -179,1242 +32,148 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>fn momentum</find>
-      <find>-0.016565882</find>
-      <find>rmsprop_div</find>
-      <find>HEUn</find>
-      <find>iter</find>
-      <find>NAN</find>
-      <find>panic</find>
-      <find>epo</find>
-      <find>Default</find>
-      <find>Debug</find>
-      <find>confu</find>
-      <find>as_object_mut</find>
-      <find>label</find>
-      <find>accuracy</find>
-      <find>row(</find>
-      <find>unused</find>
-      <find>NNMo</find>
-      <find>Soft</find>
-      <find>json</find>
-      <find>M</find>
-      <find>num_activations</find>
-      <find>build</find>
-      <find>NNModel</find>
-      <find>save</find>
-      <find>lear</find>
-      <find>meta</find>
-      <find>regu</find>
-      <find>training</find>
-      <find>defa</find>
-      <find>defaul</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/src/rust/nn/definitions.rs" />
-        <option value="$PROJECT_DIR$/src/nn/files/idx.rs" />
-        <option value="$PROJECT_DIR$/src/nn/definitions.rs" />
-        <option value="$PROJECT_DIR$/src/nn/loader.rs" />
-        <option value="$PROJECT_DIR$/src/nn/files/mod.rs" />
-        <option value="$PROJECT_DIR$/src/mod.rs" />
-        <option value="$PROJECT_DIR$/src/nn/mod.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/utils/BinaryOps.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/api/OptimizationType.java" />
-        <option value="$PROJECT_DIR$/src/neunet/definitions.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/api/api.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/utils/mod.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/transforms/mod.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/optimization.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/impl/mod.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/api/mod.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/internal/mod.rs" />
-        <option value="$PROJECT_DIR$/src/plotter.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/graphics/mod.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/loader.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/graphics/plotter.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/transforms/normalize.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/utils/binary.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/utils/ml.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/utils/matrix.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/api/a.json" />
-        <option value="$PROJECT_DIR$/src/neunet/files/idx.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/example.rs" />
-        <option value="$PROJECT_DIR$/Cargo.toml" />
-        <option value="$PROJECT_DIR$/src/neunet/mod.rs" />
-        <option value="$PROJECT_DIR$/mnist.json" />
-        <option value="$PROJECT_DIR$/src/neunet/api/defs.rs" />
-        <option value="$PROJECT_DIR$/src/main.rs" />
-        <option value="$PROJECT_DIR$/src/neunet/api/internal.rs" />
-      </list>
-    </option>
+  <component name="KubernetesApiPersistence">
+    <option name="context" value="marius/api-crc-testing:6443/kube:admin" />
+    <option name="namespace" value="marius" />
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="y" value="23" />
-    <option name="width" value="1680" />
-    <option name="height" value="943" />
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="esgdiz91" />
   </component>
-  <component name="ProjectInspectionProfilesVisibleTreeState">
-    <entry key="Project Default">
-      <profile-state>
-        <expanded-state>
-          <State>
-            <id />
-          </State>
-          <State>
-            <id>Abstraction issuesJava</id>
-          </State>
-          <State>
-            <id>Android</id>
-          </State>
-          <State>
-            <id>Android &gt; Lint &gt; Accessibility</id>
-          </State>
-          <State>
-            <id>Android &gt; Lint &gt; Correctness</id>
-          </State>
-          <State>
-            <id>Android &gt; Lint &gt; Correctness &gt; Messages</id>
-          </State>
-          <State>
-            <id>Android &gt; Lint &gt; Internationalization</id>
-          </State>
-          <State>
-            <id>Android &gt; Lint &gt; Lint</id>
-          </State>
-          <State>
-            <id>Android &gt; Lint &gt; Performance</id>
-          </State>
-          <State>
-            <id>Android &gt; Lint &gt; Security</id>
-          </State>
-          <State>
-            <id>Android &gt; Lint &gt; Usability</id>
-          </State>
-          <State>
-            <id>Android &gt; Lint &gt; Usability &gt; Icons</id>
-          </State>
-          <State>
-            <id>Android Lint for Kotlin</id>
-          </State>
-          <State>
-            <id>Assignment issuesGroovy</id>
-          </State>
-          <State>
-            <id>Assignment issuesJava</id>
-          </State>
-          <State>
-            <id>Bitwise operation issuesJava</id>
-          </State>
-          <State>
-            <id>Class structureJava</id>
-          </State>
-          <State>
-            <id>Code maturity issuesJava</id>
-          </State>
-          <State>
-            <id>Code style issuesJava</id>
-          </State>
-          <State>
-            <id>CollectionsScala</id>
-          </State>
-          <State>
-            <id>Control flow issuesGroovy</id>
-          </State>
-          <State>
-            <id>Control flow issuesJava</id>
-          </State>
-          <State>
-            <id>Declaration redundancyJava</id>
-          </State>
-          <State>
-            <id>GPathGroovy</id>
-          </State>
-          <State>
-            <id>General</id>
-          </State>
-          <State>
-            <id>GeneralJava</id>
-          </State>
-          <State>
-            <id>GeneralScala</id>
-          </State>
-          <State>
-            <id>Groovy</id>
-          </State>
-          <State>
-            <id>HTML</id>
-          </State>
-          <State>
-            <id>IndicesCollectionsScala</id>
-          </State>
-          <State>
-            <id>Initialization issuesJava</id>
-          </State>
-          <State>
-            <id>Internationalization issuesJava</id>
-          </State>
-          <State>
-            <id>J2ME issuesJava</id>
-          </State>
-          <State>
-            <id>JUnit issuesJava</id>
-          </State>
-          <State>
-            <id>Java</id>
-          </State>
-          <State>
-            <id>Java 5Java language level migration aidsJava</id>
-          </State>
-          <State>
-            <id>Java 8Java language level migration aidsJava</id>
-          </State>
-          <State>
-            <id>Java interop issuesKotlin</id>
-          </State>
-          <State>
-            <id>Java language level issuesJava</id>
-          </State>
-          <State>
-            <id>Java language level migration aidsJava</id>
-          </State>
-          <State>
-            <id>Javadoc issuesJava</id>
-          </State>
-          <State>
-            <id>Kotlin</id>
-          </State>
-          <State>
-            <id>Logging issuesJava</id>
-          </State>
-          <State>
-            <id>Memory issuesJava</id>
-          </State>
-          <State>
-            <id>Method signatureScala</id>
-          </State>
-          <State>
-            <id>Naming conventionsGroovy</id>
-          </State>
-          <State>
-            <id>Naming conventionsJava</id>
-          </State>
-          <State>
-            <id>Naming conventionsKotlin</id>
-          </State>
-          <State>
-            <id>Numeric issuesJava</id>
-          </State>
-          <State>
-            <id>OptionsCollectionsScala</id>
-          </State>
-          <State>
-            <id>Other problemsKotlin</id>
-          </State>
-          <State>
-            <id>OtherCollectionsScala</id>
-          </State>
-          <State>
-            <id>Performance issuesJava</id>
-          </State>
-          <State>
-            <id>Portability issuesJava</id>
-          </State>
-          <State>
-            <id>Potentially confusing code constructsGroovy</id>
-          </State>
-          <State>
-            <id>Probable bugsGroovy</id>
-          </State>
-          <State>
-            <id>Probable bugsJava</id>
-          </State>
-          <State>
-            <id>Probable bugsKotlin</id>
-          </State>
-          <State>
-            <id>Properties Files</id>
-          </State>
-          <State>
-            <id>Python</id>
-          </State>
-          <State>
-            <id>RELAX NG</id>
-          </State>
-          <State>
-            <id>Redundant constructsKotlin</id>
-          </State>
-          <State>
-            <id>Reflective access issuesJava</id>
-          </State>
-          <State>
-            <id>Scala</id>
-          </State>
-          <State>
-            <id>Security issuesJava</id>
-          </State>
-          <State>
-            <id>Simplifications: filter and existsCollectionsScala</id>
-          </State>
-          <State>
-            <id>Simplifications: forall and existsCollectionsScala</id>
-          </State>
-          <State>
-            <id>Simplifications: otherCollectionsScala</id>
-          </State>
-          <State>
-            <id>Style issuesKotlin</id>
-          </State>
-          <State>
-            <id>StyleGroovy</id>
-          </State>
-          <State>
-            <id>Syntactic ClarificationScala</id>
-          </State>
-          <State>
-            <id>Threading issuesJava</id>
-          </State>
-          <State>
-            <id>Visibility issuesJava</id>
-          </State>
-          <State>
-            <id>XPath</id>
-          </State>
-          <State>
-            <id>XSLT</id>
-          </State>
-        </expanded-state>
-        <selected-state>
-          <State>
-            <id>Android</id>
-          </State>
-        </selected-state>
-      </profile-state>
-    </entry>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
   </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <autoscrollFromSource ProjectPane="true" />
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="PackagesPane" />
-      <pane id="AndroidView" />
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="nn" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="nn" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="nn" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="neunet" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="nn" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="neunet" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="nn" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="neunet" type="462c0819:PsiDirectoryNode" />
-              <item name="transforms" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="serde_json" type="20ee2d1f:SyntheticLibraryElementNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="serde_json" type="20ee2d1f:SyntheticLibraryElementNode" />
-              <item name="serde_json-1.0.51" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="serde_json" type="20ee2d1f:SyntheticLibraryElementNode" />
-              <item name="serde_json-1.0.51" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="nn" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="serde_json" type="20ee2d1f:SyntheticLibraryElementNode" />
-              <item name="serde_json-1.0.51" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="value" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
+  <component name="ProjectId" id="1gY8dcQob0odK3tJc3FNSOtTYoS" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1597589506081" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="org.rust.cargo.project.model.PROJECT_DISCOVERY" value="true" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/neunet/graphics" />
-      <recent name="$PROJECT_DIR$/src/nn" />
-    </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
-  <component name="RunManager" selected="Cargo Command.Run nn">
-    <configuration name="Run example" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="channel" value="DEFAULT" />
-      <option name="command" value="run --package nn --bin example" />
-      <option name="allFeatures" value="false" />
-      <option name="nocapture" value="false" />
-      <option name="backtrace" value="SHORT" />
-      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
-      <envs />
-      <method v="2" />
+  <component name="RunManager">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="Run nn" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="channel" value="DEFAULT" />
       <option name="command" value="run --package nn --bin nn" />
       <option name="allFeatures" value="false" />
-      <option name="nocapture" value="false" />
+      <option name="emulateTerminal" value="false" />
       <option name="backtrace" value="SHORT" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <envs />
-      <method v="2" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
     </configuration>
-    <configuration name="Run plotter" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="channel" value="DEFAULT" />
-      <option name="command" value="run --package nn --bin plotter" />
-      <option name="allFeatures" value="false" />
-      <option name="nocapture" value="false" />
-      <option name="backtrace" value="SHORT" />
-      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <list>
-      <item itemvalue="Cargo Command.Run nn" />
-      <item itemvalue="Cargo Command.Run plotter" />
-      <item itemvalue="Cargo Command.Run example" />
-    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Cargo Command.Run nn" />
-        <item itemvalue="Cargo Command.Run example" />
-        <item itemvalue="Cargo Command.Run plotter" />
+        <item itemvalue="Cargo.Run nn" />
       </list>
     </recent_temporary>
   </component>
-  <component name="SbtLocalSettings">
-    <option name="projectSyncType">
-      <map>
-        <entry key="$USER_HOME$/work-pers/4c-platform" value="PREVIEW" />
-        <entry key="$PROJECT_DIR$/../../cplex/docplex-scala-examples-master" value="PREVIEW" />
-        <entry key="$PROJECT_DIR$/../../pers/shop" value="PREVIEW" />
-      </map>
-    </option>
+  <component name="RustProjectSettings">
+    <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
+    <option name="version" value="2" />
   </component>
-  <component name="ScalaProjectSettings">
-    <option name="intInjectionMapping">
-      <map>
-        <entry key="xml" value="XML" />
-      </map>
-    </option>
-  </component>
-  <component name="SvnConfiguration">
-    <configuration />
-  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="4486381d-42e1-40ef-ad33-70ac30de5440" name="Default Changelist" comment="" />
-      <created>1571729726546</created>
+      <changelist id="9e7aa48e-0ab4-4ff5-b764-1abd95e614e6" name="Default Changelist" comment="" />
+      <created>1598280255676</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1571729726546</updated>
+      <updated>1598280255676</updated>
+      <workItem from="1606460890321" duration="109000" />
+      <workItem from="1606461034904" duration="1182000" />
     </task>
-    <task id="LOCAL-00003" summary="gradient descent - 1">
-      <created>1573394902716</created>
+    <task id="LOCAL-00001" summary="Added dyn">
+      <created>1598345245329</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1598345245330</updated>
+    </task>
+    <task id="LOCAL-00002" summary="ignore">
+      <created>1598345265567</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1598345265567</updated>
+    </task>
+    <task id="LOCAL-00003" summary="ignore">
+      <created>1598345420673</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1573394902716</updated>
+      <updated>1598345420673</updated>
     </task>
-    <task id="LOCAL-00004" summary="structify">
-      <created>1573461483450</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1573461483450</updated>
-    </task>
-    <task id="LOCAL-00005" summary="update">
-      <created>1573474732694</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1573474732694</updated>
-    </task>
-    <task id="LOCAL-00006" summary="update">
-      <created>1573475802699</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1573475802699</updated>
-    </task>
-    <task id="LOCAL-00007" summary="use nalgebra">
-      <created>1573646715620</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1573646715620</updated>
-    </task>
-    <task id="LOCAL-00008" summary="read labels">
-      <created>1574172287302</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1574172287302</updated>
-    </task>
-    <task id="LOCAL-00009" summary="read labels">
-      <created>1574238767112</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1574238767112</updated>
-    </task>
-    <task id="LOCAL-00010" summary="updated">
-      <created>1574683183444</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1574683183444</updated>
-    </task>
-    <task id="LOCAL-00011" summary="updated">
-      <created>1574769300847</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1574769300847</updated>
-    </task>
-    <task id="LOCAL-00012" summary="updated">
-      <created>1574850275034</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1574850275034</updated>
-    </task>
-    <task id="LOCAL-00013" summary="updated">
-      <created>1574851157517</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1574851157517</updated>
-    </task>
-    <task id="LOCAL-00014" summary="updated">
-      <created>1574852354401</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1574852354401</updated>
-    </task>
-    <task id="LOCAL-00015" summary="backprop progress">
-      <created>1575894236350</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1575894236350</updated>
-    </task>
-    <task id="LOCAL-00016" summary="accumulate weights derivatives">
-      <created>1577613160669</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1577613160669</updated>
-    </task>
-    <task id="LOCAL-00017" summary="update weights">
-      <created>1577631119948</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1577631119948</updated>
-    </task>
-    <task id="LOCAL-00018" summary="added momentum">
-      <created>1577967259468</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1577967259468</updated>
-    </task>
-    <task id="LOCAL-00019" summary="init network">
-      <created>1578302970753</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1578302970753</updated>
-    </task>
-    <task id="LOCAL-00020" summary="Debug impl">
-      <created>1578323189498</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1578323189498</updated>
-    </task>
-    <task id="LOCAL-00021" summary="initiate momentum to zero">
-      <created>1579349283637</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1579349283637</updated>
-    </task>
-    <task id="LOCAL-00022" summary="update\s">
-      <created>1584273207471</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1584273207471</updated>
-    </task>
-    <task id="LOCAL-00023" summary="better one_hot">
-      <created>1584357939590</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1584357939590</updated>
-    </task>
-    <task id="LOCAL-00024" summary="looks promising">
-      <created>1584828979186</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1584828979186</updated>
-    </task>
-    <task id="LOCAL-00025" summary="fixes">
-      <created>1585155595853</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1585155595854</updated>
-    </task>
-    <task id="LOCAL-00026" summary="apis">
-      <created>1585400583482</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1585400583482</updated>
-    </task>
-    <task id="LOCAL-00027" summary="more">
-      <created>1586011148475</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1586011148475</updated>
-    </task>
-    <task id="LOCAL-00028" summary="getting better  - 96 % accuracy after 2 epochs">
-      <created>1586035462157</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1586035462157</updated>
-    </task>
-    <task id="LOCAL-00029" summary="plotting">
-      <created>1586104561279</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1586104561279</updated>
-    </task>
-    <task id="LOCAL-00030" summary="use f32 instead of f64">
-      <created>1586197636646</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1586197636646</updated>
-    </task>
-    <task id="LOCAL-00031" summary="optional momentum">
-      <created>1586244706908</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1586244706908</updated>
-    </task>
-    <task id="LOCAL-00032" summary="refined design">
-      <created>1586279034437</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1586279034437</updated>
-    </task>
-    <task id="LOCAL-00033" summary="removed warnings and replace empty structs">
-      <created>1586359177637</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1586359177637</updated>
-    </task>
-    <task id="LOCAL-00034" summary="refactor">
-      <created>1586365759566</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1586365759566</updated>
-    </task>
-    <task id="LOCAL-00035" summary="refactor">
-      <created>1586411890182</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1586411890182</updated>
-    </task>
-    <task id="LOCAL-00036" summary="binary cross entropy one hot">
-      <created>1586411975794</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1586411975794</updated>
-    </task>
-    <task id="LOCAL-00037" summary="rms_prop">
-      <created>1586625976029</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1586625976029</updated>
-    </task>
-    <task id="LOCAL-00038" summary="added adam">
-      <created>1586803199244</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1586803199244</updated>
-    </task>
-    <task id="LOCAL-00039" summary="minor updates">
-      <created>1587040809151</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1587040809151</updated>
-    </task>
-    <task id="LOCAL-00040" summary="emit training events">
-      <created>1587561608024</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1587561608024</updated>
-    </task>
-    <task id="LOCAL-00041" summary="ser">
-      <created>1587629586899</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1587629586899</updated>
-    </task>
-    <task id="LOCAL-00042" summary="better messaging">
-      <created>1587737925421</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1587737925421</updated>
-    </task>
-    <task id="LOCAL-00043" summary="cleanup">
-      <created>1587749490023</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1587749490023</updated>
-    </task>
-    <task id="LOCAL-00044" summary="model save">
-      <created>1587802943320</created>
-      <option name="number" value="00044" />
-      <option name="presentableId" value="LOCAL-00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1587802943320</updated>
-    </task>
-    <task id="LOCAL-00045" summary="model format">
-      <created>1587825480053</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1587825480053</updated>
-    </task>
-    <task id="LOCAL-00046" summary="read data in chunks">
-      <created>1588586887005</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1588586887006</updated>
-    </task>
-    <task id="LOCAL-00047" summary="auto-save">
-      <created>1588843440153</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1588843440153</updated>
-    </task>
-    <task id="LOCAL-00048" summary="zero vec">
-      <created>1593854585292</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1593854585292</updated>
-    </task>
-    <task id="LOCAL-00049" summary="save full model snapshot">
-      <created>1594201622334</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1594201622334</updated>
-    </task>
-    <task id="LOCAL-00050" summary="deserialize the whole state">
-      <created>1596875867614</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1596875867615</updated>
-    </task>
-    <task id="LOCAL-00051" summary="fix">
-      <created>1597589222128</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1597589222128</updated>
-    </task>
-    <option name="localTasksCounter" value="52" />
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1680" height="943" extended-state="0" />
-    <editor active="true" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20085995" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="Image Layers" order="3" />
-      <window_info id="Designer" order="4" />
-      <window_info id="Favorites" order="5" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32876712" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49815726" visible="true" weight="0.42092153" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49938574" weight="0.32876712" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32876712" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50184274" side_tool="true" weight="0.30884185" />
-      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.4987715" weight="0.1369863" />
-      <window_info anchor="bottom" id="Messages" order="11" />
-      <window_info anchor="bottom" id="Log Viewer" order="12" />
-      <window_info anchor="bottom" id="SOQL Query" order="13" />
-      <window_info anchor="bottom" id="Anonymous Apex" order="14" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info anchor="right" id="Cargo" order="4" />
-      <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="right" id="Palette&#9;" order="6" />
-      <window_info anchor="right" id="Maven Projects" order="7" />
-    </layout>
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="apis" />
-    <MESSAGE value="more" />
-    <MESSAGE value="getting better  - 96 % accuracy after 2 epochs" />
-    <MESSAGE value="plotting" />
-    <MESSAGE value="use f32 instead of f64" />
-    <MESSAGE value="optional momentum" />
-    <MESSAGE value="refined design" />
-    <MESSAGE value="removed warnings and replace empty structs" />
-    <MESSAGE value="refactor" />
-    <MESSAGE value="binary cross entropy one hot" />
-    <MESSAGE value="rms_prop" />
-    <MESSAGE value="added adam" />
-    <MESSAGE value="minor updates" />
-    <MESSAGE value="emit training events" />
-    <MESSAGE value="ser" />
-    <MESSAGE value="better messaging" />
-    <MESSAGE value="cleanup" />
-    <MESSAGE value="model save" />
-    <MESSAGE value="model format" />
-    <MESSAGE value="read data in chunks" />
-    <MESSAGE value="auto-save" />
-    <MESSAGE value="zero vec" />
-    <MESSAGE value="save full model snapshot" />
-    <MESSAGE value="deserialize the whole state" />
-    <MESSAGE value="fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix" />
+    <MESSAGE value="Added dyn" />
+    <MESSAGE value="ignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="ignore" />
   </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/result.png" />
-    <entry file="file://$PROJECT_DIR$/sample.png" />
-    <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/liballoc/vec.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="1795" selection-start-line="1795" selection-end-line="1795" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/libstd/error.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="45" column="10" selection-start-line="45" selection-start-column="10" selection-end-line="45" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.19.0/src/base/matrix.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="75" column="11" selection-start-line="75" selection-start-column="11" selection-end-line="75" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/api/a.json" />
-    <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/liballoc/macros.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.19.0/src/base/alias.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="27" column="26" selection-start-line="27" selection-start-column="26" selection-end-line="27" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_json-1.0.51/src/error.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="9" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_json-1.0.51/src/number.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="11" selection-start-line="19" selection-start-column="11" selection-end-line="19" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/utils/matrix.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/utils/binary.rs">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/utils/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/api/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="13" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/libcore/iter/traits/collect.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="340" column="7" selection-start-line="340" selection-start-column="7" selection-end-line="340" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/chrono-0.4.11/src/offset/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="191" column="10" selection-start-line="191" selection-start-column="10" selection-end-line="191" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/chrono-0.4.11/src/datetime.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="66" column="29" selection-start-line="66" selection-start-column="29" selection-end-line="66" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/libstd/io/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="1205" column="7" selection-start-line="1205" selection-start-column="7" selection-end-line="1205" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.19.0/src/io/mod.rs">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/utils/ml.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/files/idx.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="61" column="29" selection-start-line="61" selection-start-column="29" selection-end-line="61" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/liballoc/str.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="204" column="7" selection-start-line="204" selection-start-column="7" selection-end-line="204" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model.json" />
-    <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/liballoc/boxed.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-125">
-          <caret line="111" column="11" selection-start-line="111" selection-start-column="11" selection-end-line="111" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.19.0/src/base/alias_slice.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/graphics/plotter.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-243">
-          <caret line="2" column="109" selection-start-line="2" selection-start-column="109" selection-end-line="2" selection-end-column="109" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/example.rs" />
-    <entry file="file://$PROJECT_DIR$/Cargo.toml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/train.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Cargo.lock">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/libstd/fs.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5880">
-          <caret line="392" column="11" selection-start-line="392" selection-start-column="11" selection-end-line="392" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.19.0/src/base/matrix_slice.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6720">
-          <caret line="450" selection-start-line="450" selection-end-line="450" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/libcore/macros.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="557" column="13" selection-start-line="557" selection-start-column="13" selection-end-line="557" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/liballoc/string.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="491" column="11" selection-start-line="491" selection-start-column="11" selection-end-line="491" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Screen Shot 2020-05-12 at 14.44.42.jpg" />
-    <entry file="file://$PROJECT_DIR$/train_20200504T093644Z.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_json-1.0.51/src/macros.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="780">
-          <caret line="52" column="13" selection-start-line="52" selection-start-column="13" selection-end-line="52" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_json-1.0.51/src/map.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="11" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/nalgebra-0.19.0/src/base/conversion.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5370">
-          <caret line="364" column="7" selection-start-line="364" selection-start-column="7" selection-end-line="364" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/euclid-0.20.5/src/num.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="7" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
-          <folding>
-            <element signature="e#598#599#0" expanded="true" />
-            <element signature="e#637#638#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.cargo/registry/src/github.com-1ecc6299db9ec823/serde_json-1.0.51/src/value/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="346">
-          <caret line="993" column="7" selection-start-line="993" selection-start-column="7" selection-end-line="993" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/transforms/normalize.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/transforms/mod.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="18" selection-start-column="18" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nn.iml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mnist.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2544563">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/loader.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="65" column="28" lean-forward="true" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/api/defs.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="40" column="8" selection-start-line="40" selection-start-column="8" selection-end-line="40" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/neunet/api/internal.rs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="729" column="23" lean-forward="true" selection-start-line="729" selection-start-column="23" selection-end-line="729" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-  </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ProjectJDKs.UI">
-        <settings>
-          <last-edited>11</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-      <state key="ScopeChooserConfigurable.UI">
-        <settings>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
+  <component name="WindowStateProjectService">
+    <state x="473" y="236" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1606460988867">
+      <screen x="0" y="25" width="1680" height="940" />
+    </state>
+    <state x="473" y="236" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.25.1680.940@0.25.1680.940" timestamp="1606460988867" />
+    <state x="413" y="88" key="CommitChangelistDialog2" timestamp="1598345420490">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state x="413" y="88" key="CommitChangelistDialog2/0.23.1680.947@0.23.1680.947" timestamp="1598345420490" />
+    <state width="1467" height="167" key="GridCell.Tab.0.bottom" timestamp="1606462870025">
+      <screen x="0" y="25" width="1680" height="940" />
+    </state>
+    <state width="1358" height="220" key="GridCell.Tab.0.bottom/0.23.1680.947@0.23.1680.947" timestamp="1601664761946" />
+    <state width="1467" height="167" key="GridCell.Tab.0.bottom/0.25.1680.940@0.25.1680.940" timestamp="1606462870025" />
+    <state width="1467" height="167" key="GridCell.Tab.0.center" timestamp="1606462870025">
+      <screen x="0" y="25" width="1680" height="940" />
+    </state>
+    <state width="1358" height="220" key="GridCell.Tab.0.center/0.23.1680.947@0.23.1680.947" timestamp="1601664761946" />
+    <state width="1467" height="167" key="GridCell.Tab.0.center/0.25.1680.940@0.25.1680.940" timestamp="1606462870025" />
+    <state width="1467" height="167" key="GridCell.Tab.0.left" timestamp="1606462870024">
+      <screen x="0" y="25" width="1680" height="940" />
+    </state>
+    <state width="1358" height="220" key="GridCell.Tab.0.left/0.23.1680.947@0.23.1680.947" timestamp="1601664761945" />
+    <state width="1467" height="167" key="GridCell.Tab.0.left/0.25.1680.940@0.25.1680.940" timestamp="1606462870024" />
+    <state width="1467" height="167" key="GridCell.Tab.0.right" timestamp="1606462870025">
+      <screen x="0" y="25" width="1680" height="940" />
+    </state>
+    <state width="1358" height="220" key="GridCell.Tab.0.right/0.23.1680.947@0.23.1680.947" timestamp="1601664761946" />
+    <state width="1467" height="167" key="GridCell.Tab.0.right/0.25.1680.940@0.25.1680.940" timestamp="1606462870025" />
+    <state x="436" y="252" key="Vcs.Push.Dialog.v2" timestamp="1598345421915">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state x="436" y="252" key="Vcs.Push.Dialog.v2/0.23.1680.947@0.23.1680.947" timestamp="1598345421915" />
   </component>
 </project>
